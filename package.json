@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "crossvent": "^1.1.0",
+    "domador": "^1.1.2",
     "kanye": "^2.0.2",
     "local-storage": "^1.4.0"
   }

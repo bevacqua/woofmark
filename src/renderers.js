@@ -1,9 +1,10 @@
 'use strict';
 
 var setText = require('./setText');
+var strings = require('./strings');
 
 function commands (el, id) {
-  setText(el, id);
+  setText(el, strings.buttons[id] || id);
 }
 
 function markdown (el) {

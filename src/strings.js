@@ -21,5 +21,17 @@ module.exports = {
     heading: 'Heading <h1>, <h2>, ... Ctrl+D',
     link: 'Hyperlink <a> Ctrl+K',
     image: 'Image <img> Ctrl+G'
+  },
+  buttons: {
+    bold: 'B',
+    italic: 'I',
+    quote: '\u201c',
+    code: '</>',
+    ol: '1.',
+    ul: '\u29BF',
+    heading: 'Tt',
+    link: 'Link',
+    image: 'Image',
+    hr: '\u21b5'
   }
 };

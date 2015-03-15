@@ -125,7 +125,12 @@ function surface (textarea, editable) {
 
     var range = document.createRange();
     var sel = getSelection();
-    range.setEnd(endNode, endOffset);
+
+    if (endNode) {
+      range.setEnd(endNode, endOffset);
+    } else {
+      range.setEnd(startNode, startOffset);
+    }
     range.setStart(startNode, startOffset);
     sel.removeAllRanges();
     sel.addRange(range);
@@ -133,11 +138,12 @@ function surface (textarea, editable) {
     function peek (context, el) {
       var cursor = context.text.length;
       var content = readNode(el).length;
-      if (!startNode && cursor + content >= start) {
+      var sum = cursor + content;
+      if (!startNode && sum >= start) {
         startNode = el;
         startOffset = start - cursor;
       }
-      if (!endNode && cursor + content >= end) {
+      if (!endNode && sum >= end) {
         endNode = el;
         endOffset = end - cursor;
       }
