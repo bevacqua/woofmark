@@ -1,0 +1,3 @@
+- image uploading
+- arbitrary attachments/endpoints/file types
+- play nicely with autocompletion
