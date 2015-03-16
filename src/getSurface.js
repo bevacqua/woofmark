@@ -86,31 +86,39 @@ function surface (textarea, editable) {
       state.start = textarea.selectionStart;
       state.end = textarea.selectionEnd;
     } else if (doc.selection) {
-      state.text = fixEOL(textarea.value);
-
-      var range = doc.selection.createRange();
-      var fixedRange = fixEOL(range.text);
-      var marker = '\x07';
-      var markedRange = marker + fixedRange + marker;
-      range.text = markedRange;
-      var inputs = fixEOL(textarea.value);
-
-      range.moveStart('character', -markedRange.length);
-      range.text = fixedRange;
-
-      state.start = inputs.indexOf(marker);
-      state.end = inputs.lastIndexOf(marker) - marker.length;
-
-      var diff = state.text.length - fixEOL(textarea.value).length;
-      if (diff) {
-        range.moveStart('character', -fixedRange.length);
-        fixedRange += many('\n', diff);
-        state.end += diff;
-        range.text = fixedRange;
-      }
-
-      state.select();
+      ancientlyReadSelectionTextarea(state);
     }
+  }
+
+  function ancientlyReadSelectionTextarea (state) {
+    if (doc.activeElement && doc.activeElement !== textarea) {
+      return;
+    }
+
+    state.text = fixEOL(textarea.value);
+
+    var range = doc.selection.createRange();
+    var fixedRange = fixEOL(range.text);
+    var marker = '\x07';
+    var markedRange = marker + fixedRange + marker;
+
+    range.text = markedRange;
+
+    var inputText = fixEOL(textarea.value);
+
+    range.moveStart('character', -markedRange.length);
+    range.text = fixedRange;
+    state.start = inputText.indexOf(marker);
+    state.end = inputText.lastIndexOf(marker) - marker.length;
+
+    var diff = state.text.length - fixEOL(textarea.value).length;
+    if (diff) {
+      range.moveStart('character', -fixedRange.length);
+      fixedRange += many('\n', diff);
+      state.end += diff;
+      range.text = fixedRange;
+    }
+    state.select();
   }
 
   function writeSelectionEditable (state) {

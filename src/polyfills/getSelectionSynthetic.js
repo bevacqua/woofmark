@@ -5,9 +5,19 @@ var doc = global.document;
 var body = doc.body;
 
 function GetSelection (selection) {
+  var self = this;
+  var range = selection.createRange();
+
   this._selection = selection;
   this._ranges = [];
-  this.refresh();
+
+  if (selection.type === 'Control') {
+    updateControlSelection(self);
+  } else if (isTextRange(range)) {
+    updateFromTextRange(self, range);
+  } else {
+    updateEmptySelection(self);
+  }
 }
 
 var GetSelectionProto = GetSelection.prototype;
@@ -53,19 +63,6 @@ GetSelectionProto.getRangeAt = function (index) {
     throw new Error('getRangeAt(): index out of bounds');
   } else {
     return this._ranges[index].cloneRange();
-  }
-};
-
-GetSelectionProto.refresh = function () {
-  var sel = this;
-  var range = sel._selection.createRange();
-
-  if (sel._selection.type === 'Control') {
-    updateControlSelection(sel);
-  } else if (isTextRange(range)) {
-    updateFromTextRange(sel, range);
-  } else {
-    updateEmptySelection(sel);
   }
 };
 
