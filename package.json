@@ -24,7 +24,7 @@
   "homepage": "https://github.com/bevacqua/barkup",
   "dependencies": {
     "crossvent": "^1.1.0",
-    "kanye": "^2.0.2",
+    "kanye": "^2.0.3",
     "local-storage": "^1.4.1"
   },
   "devDependencies": {

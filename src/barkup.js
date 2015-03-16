@@ -249,6 +249,7 @@ function barkup (textarea, options) {
     if (title) {
       button.setAttribute('title', mac ? macify(title) : title);
     }
+    button.type = 'button';
     button.tabIndex = -1;
     render(button, id);
     crossvent.add(button, 'click', getCommandHandler(surface, history, fn));
