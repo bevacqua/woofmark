@@ -3,6 +3,7 @@
 var doc = global.document;
 var fixEOL = require('./fixEOL');
 var many = require('./many');
+var cast = require('./cast');
 var getSelection = require('./polyfills/getSelection');
 var ropen = /^(<[^>]+(?: [^>]*)?>)/;
 var rclose = /(<\/[^>]+>)$/;
@@ -195,10 +196,6 @@ function surface (textarea, editable) {
 
   function readNode (el) {
     return el.nodeType === 3 ? fixEOL(el.textContent || el.innerText || '') : '';
-  }
-
-  function cast (collection) {
-    return Array.prototype.slice.call(collection || []);
   }
 }
 
