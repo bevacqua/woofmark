@@ -4,56 +4,25 @@
 .bk-container
   position relative
 
-.bk-switchboard
+.bk-wysiwyg-placeholder
   position absolute
-  bottom 15px
-  right 15px
+  pointer-events none
+  display none
+  top 10px
+  left 10px
+  right 10px
+  bottom 10px
+  color #999
 
-.bk-mode
-  margin-left 10px
-  padding 0.1em 0.6em
-  font-size 12px
-  line-height 1.4
-  border 1px solid #ccc
-  color #555
-  background-color #f8f8f8
-  text-shadow 0 1px 0 #fff
-  box-shadow 0 1px 0 #bbb, 0 0 0 2px #fff inset
-  font-size 11px
-  border-radius 3px
-  font-variant small-caps
-
-  &:hover
-    color #555
-    background-color #f8f8f8
-
-  &:focus
-    color #555
-    background-color #f8f8f8
-
-.bk-mode-inactive
-  color #555
-  background-color #ddd
-  box-shadow 0 1px 0 #bbb, 0 0 0 2px #ddd inset
-
-  &:hover
-    color #fff
-    background-color #888
-    box-shadow 0 1px 0 #bbb, 0 0 0 2px #888 inset
-    text-shadow none
-
-  &:focus
-    color #fff
-    background-color #888
-    box-shadow 0 1px 0 #bbb, 0 0 0 2px #888 inset
-    text-shadow none
+.bk-wysiwyg:empty + .bk-wysiwyg-placeholder
+  display block
 
 .bk-prompt
   position fixed
   top 20%
   left 2%
   right 2%
-  background-color #222
+  background-color #dedede
   padding 10px
   margin 0 auto
   max-width 450px

@@ -74,6 +74,7 @@ function barkup (textarea, options) {
     value: getMarkdown,
     mode: mode
   };
+  var place;
   var entry = { ta: textarea, api: api };
   var i = cache.push(entry);
   var kanyeContext = 'barkup_' + i;
@@ -99,6 +100,11 @@ function barkup (textarea, options) {
 
   ['markdown', 'html', 'wysiwyg'].forEach(addMode);
 
+  if (o.wysiwyg) {
+    place = tag({ c: 'bk-wysiwyg-placeholder bk-hide', x: textarea.placeholder });
+    crossvent.add(place, 'click', focusEditable);
+  }
+
   if (o.defaultMode && o[o.defaultMode]) {
     modes[o.defaultMode].set();
   } else if (o.markdown) {
@@ -115,9 +121,10 @@ function barkup (textarea, options) {
   return api;
 
   function addMode (name) {
+    var custom = o.render.modes;
     if (o[name]) {
       switchboard.appendChild(modes[name].button);
-      (o.render.modes[name] || renderers.modes[name])(modes[name].button);
+      (typeof custom === 'function' ? custom : custom[name] || renderers.modes[name])(modes[name].button, name);
       crossvent.add(modes[name].button, 'click', modes[name].set);
     }
   }
@@ -134,6 +141,7 @@ function barkup (textarea, options) {
     }
     classes[ar](parent, 'bk-container');
     parent[mov](editable);
+    if (place) { parent[mov](place); }
     parent[mov](commands);
     parent[mov](switchboard);
   }
@@ -151,11 +159,13 @@ function barkup (textarea, options) {
     }
     if (name === 'wysiwyg') {
       classes.rm(editable, 'bk-hide');
+      if (place) { classes.rm(place, 'bk-hide'); }
       classes.add(textarea, 'bk-hide');
       setTimeout(focusEditable, 0);
     } else {
       classes.rm(textarea, 'bk-hide');
       classes.add(editable, 'bk-hide');
+      if (place) { classes.add(place, 'bk-hide'); }
       textarea.focus();
     }
     classes.add(button, 'bk-mode-active');
@@ -167,9 +177,10 @@ function barkup (textarea, options) {
     mode = api.mode = name;
     history.setInputMode(name);
     if (o.storage) { ls.set(o.storage, name); }
-    function focusEditable () {
-      editable.focus();
-    }
+  }
+
+  function focusEditable () {
+    editable.focus();
   }
 
   function markdownMode (e) {
@@ -224,7 +235,8 @@ function barkup (textarea, options) {
 
   function addCommandButton (id, combo, fn) {
     var button = tag({ t: 'button', c: 'bk-command', p: commands });
-    var render = o.render.commands[id] || renderers.commands;
+    var custom = o.render.commands;
+    var render = typeof custom === 'function' ? custom : custom[id] || renderers.commands;
     var title = strings.titles[id];
     if (title) {
       button.setAttribute('title', mac ? macify(title) : title);
