@@ -45,6 +45,7 @@ function barkup (textarea, options) {
   if (!o.markdown && !o.html && !o.wysiwyg) {
     throw new Error('Barkup expects at least one input mode to be available');
   }
+  if (o.hr === void 0) { o.hr = false; }
   if (o.storage === void 0) { o.storage = true; }
   if (o.storage === true) { o.storage = 'barkup_input_mode'; }
   if (o.fencing === void 0) { o.fencing = true; }
@@ -124,7 +125,7 @@ function barkup (textarea, options) {
     var custom = o.render.modes;
     if (o[name]) {
       switchboard.appendChild(modes[name].button);
-      (typeof custom === 'function' ? custom : custom[name] || renderers.modes[name])(modes[name].button, name);
+      (typeof custom === 'function' ? custom : renderers.modes)(modes[name].button, name);
       crossvent.add(modes[name].button, 'click', modes[name].set);
     }
   }
@@ -236,7 +237,7 @@ function barkup (textarea, options) {
   function addCommandButton (id, combo, fn) {
     var button = tag({ t: 'button', c: 'bk-command', p: commands });
     var custom = o.render.commands;
-    var render = typeof custom === 'function' ? custom : custom[id] || renderers.commands;
+    var render = typeof custom === 'function' ? custom : renderers.commands;
     var title = strings.titles[id];
     if (title) {
       button.setAttribute('title', mac ? macify(title) : title);

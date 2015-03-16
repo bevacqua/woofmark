@@ -7,23 +7,15 @@ function commands (el, id) {
   setText(el, strings.buttons[id] || id);
 }
 
-function markdown (el) {
-  setText(el, 'm\u2193');
-}
-
-function html (el) {
-  setText(el, 'html');
-}
-
-function wysiwyg (el) {
-  setText(el, '\u0ca0.\u0ca0');
+function modes (el, id) {
+  var texts = {
+    markdown: 'm\u2193',
+    wysiwyg: '\u0ca0.\u0ca0'
+  };
+  setText(el, texts[id] || id);
 }
 
 module.exports = {
-  modes: {
-    markdown: markdown,
-    html: html,
-    wysiwyg: wysiwyg
-  },
+  modes: modes,
   commands: commands
 };

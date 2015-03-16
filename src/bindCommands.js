@@ -33,7 +33,8 @@ function bindCommands (textarea, options, bark) {
   bind('heading', 'cmd+d', router('heading'));
   bind('link', 'cmd+k', link);
   bind('image', 'cmd+g', image);
-  bind('hr', 'cmd+n', router('hr'));
+
+  if (options.hr) { bind('hr', 'cmd+n', router('hr')); }
 
   function bold (mode, chunks) {
     commands[mode].boldOrItalic(chunks, 'bold');
