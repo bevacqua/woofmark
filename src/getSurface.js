@@ -171,15 +171,17 @@ function surface (textarea, editable) {
   function readSelectionEditable (state) {
     var sel = getSelection();
     var distance = walk(editable.firstChild, peek);
+    var start = distance.start || 0;
+    var end = distance.end || 0;
 
     state.text = distance.text;
 
-    if (distance.end > distance.start) {
-      state.start = distance.start;
-      state.end = distance.end;
+    if (end > start) {
+      state.start = start;
+      state.end = end;
     } else {
-      state.start = distance.end;
-      state.end = distance.start;
+      state.start = end;
+      state.end = start;
     }
 
     function peek (context, el) {
@@ -194,6 +196,11 @@ function surface (textarea, editable) {
 
   function walk (el, peek, ctx, siblings) {
     var context = ctx || { text: '' };
+
+    if (!el) {
+      return context;
+    }
+
     var elNode = el.nodeType === 1;
     var textNode = el.nodeType === 3;
 

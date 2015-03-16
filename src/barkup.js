@@ -55,6 +55,8 @@ function barkup (textarea, options) {
   if (o.prompts.link === void 0) { o.prompts.link = linkPrompt; }
   if (o.prompts.image === void 0) { o.prompts.image = imagePrompt; }
   if (o.prompts.close === void 0) { o.prompts.close = closePrompts; }
+  if (o.classes === void 0) { o.classes = {}; }
+  if (o.classes.wysiwyg === void 0) { o.classes.wysiwyg = []; }
 
   var preference = o.storage && ls.get(o.storage);
   if (preference) {
@@ -63,7 +65,7 @@ function barkup (textarea, options) {
 
   var switchboard = tag({ c: 'bk-switchboard' });
   var commands = tag({ c: 'bk-commands' });
-  var editable = tag({ c: 'bk-wysiwyg bk-hide' });
+  var editable = tag({ c: ['bk-wysiwyg', 'bk-hide'].concat(o.classes.wysiwyg).join(' ') });
   var mode = 'markdown';
   var api = {
     addCommand: addCommand,
