@@ -20,7 +20,10 @@ module.exports = {
     ul: 'Bulleted List <ul> Ctrl+U',
     heading: 'Heading <h1>, <h2>, ... Ctrl+D',
     link: 'Hyperlink <a> Ctrl+K',
-    image: 'Image <img> Ctrl+G'
+    image: 'Image <img> Ctrl+G',
+    markdown: 'Markdown Mode Ctrl+M',
+    html: 'HTML Mode Ctrl+H',
+    wysiwyg: 'Preview Mode Ctrl+P'
   },
   buttons: {
     bold: 'B',

@@ -121,12 +121,19 @@ function barkup (textarea, options) {
 
   return api;
 
-  function addMode (name) {
+  function addMode (id) {
+    var button = modes[id].button;
     var custom = o.render.modes;
-    if (o[name]) {
-      switchboard.appendChild(modes[name].button);
-      (typeof custom === 'function' ? custom : renderers.modes)(modes[name].button, name);
-      crossvent.add(modes[name].button, 'click', modes[name].set);
+    if (o[id]) {
+      switchboard.appendChild(button);
+      (typeof custom === 'function' ? custom : renderers.modes)(button, id);
+      crossvent.add(button, 'click', modes[id].set);
+      button.tabIndex = -1;
+
+      var title = strings.titles[id];
+      if (title) {
+        button.setAttribute('title', mac ? macify(title) : title);
+      }
     }
   }
 
@@ -242,6 +249,7 @@ function barkup (textarea, options) {
     if (title) {
       button.setAttribute('title', mac ? macify(title) : title);
     }
+    button.tabIndex = -1;
     render(button, id);
     crossvent.add(button, 'click', getCommandHandler(surface, history, fn));
     addCommand(combo, fn);
