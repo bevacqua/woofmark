@@ -4,6 +4,7 @@ var doc = global.document;
 var fixEOL = require('./fixEOL');
 var many = require('./many');
 var cast = require('./cast');
+var rangeToTextRange = require('./rangeToTextRange');
 var getSelection = require('./polyfills/getSelection');
 var ropen = /^(<[^>]+(?: [^>]*)?>)/;
 var rclose = /(<\/[^>]+>)$/;
@@ -116,37 +117,45 @@ function surface (textarea, editable) {
     var chunks = state.cachedChunks || state.getChunks();
     var start = chunks.before.length;
     var end = start + chunks.selection.length;
-    var startNode;
-    var startOffset;
-    var endNode;
-    var endOffset;
+    var p = {};
 
     walk(editable.firstChild, peek);
     editable.focus();
 
-    var range = document.createRange();
-    var sel = getSelection();
-
-    if (endNode) {
-      range.setEnd(endNode, endOffset);
+    if (document.createRange) {
+      modernSelection();
     } else {
-      range.setEnd(startNode, startOffset);
+      oldSelection();
     }
-    range.setStart(startNode, startOffset);
-    sel.removeAllRanges();
-    sel.addRange(range);
+
+    function modernSelection () {
+      var sel = getSelection();
+      var range = document.createRange();
+      if (p.endContainer) {
+        range.setEnd(p.endContainer, p.endOffset);
+      } else {
+        range.setEnd(p.startContainer, p.startOffset);
+      }
+      range.setStart(p.startContainer, p.startOffset);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    function oldSelection () {
+      rangeToTextRange(p).select();
+    }
 
     function peek (context, el) {
       var cursor = context.text.length;
       var content = readNode(el).length;
       var sum = cursor + content;
-      if (!startNode && sum >= start) {
-        startNode = el;
-        startOffset = start - cursor;
+      if (!p.startContainer && sum >= start) {
+        p.startContainer = el;
+        p.startOffset = start - cursor;
       }
-      if (!endNode && sum >= end) {
-        endNode = el;
-        endOffset = end - cursor;
+      if (!p.endContainer && sum >= end) {
+        p.endContainer = el;
+        p.endOffset = end - cursor;
       }
     }
   }

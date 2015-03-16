@@ -25,7 +25,7 @@
   "devDependencies": {
     "browserify": "^8.1.0",
     "clean-css": "^3.0.4",
-    "domador": "^1.1.0",
+    "domador": "^1.1.3",
     "jshint": "^2.5.11",
     "megamark": "^2.1.3",
     "nib": "^1.0.4",
