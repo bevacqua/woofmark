@@ -1,7 +1,7 @@
 'use strict';
 
 function hr (chunks) {
-  chunks.before += '\n<hr/>';
+  chunks.before += '\n<hr>\n';
   chunks.selection = '';
 }
 

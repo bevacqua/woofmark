@@ -22,6 +22,11 @@
     "url": "https://github.com/bevacqua/barkup/issues"
   },
   "homepage": "https://github.com/bevacqua/barkup",
+  "dependencies": {
+    "crossvent": "^1.1.0",
+    "kanye": "^2.0.2",
+    "local-storage": "^1.4.1"
+  },
   "devDependencies": {
     "browserify": "^8.1.0",
     "clean-css": "^3.0.4",
@@ -32,12 +37,5 @@
     "stylus": "^0.49.3",
     "uglify-js": "^2.4.16",
     "watchify": "^2.2.1"
-  },
-  "dependencies": {
-    "crossvent": "^1.1.0",
-    "domador": "^1.1.4",
-    "kanye": "^2.0.2",
-    "local-storage": "^1.4.1",
-    "megamark": "^2.1.4"
   }
 }

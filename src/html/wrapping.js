@@ -73,8 +73,6 @@ function wrapping (tag, placeholder, chunks) {
       chunks.before = chunks.before.replace(/(<[^>]+(?: [^>]*)?>)$/, '</' + tag + '>$1');
     }
   }
-
-  console.log('before: "%s"\nsel: "%s"\nafter: "%s"\n\n', chunks.before, chunks.selection, chunks.after);
 }
 
 function closebounded (chunks, tag) {
