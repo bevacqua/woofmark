@@ -173,8 +173,14 @@ function surface (textarea, editable) {
     var distance = walk(editable.firstChild, peek);
 
     state.text = distance.text;
-    state.start = distance.start;
-    state.end = distance.end;
+
+    if (distance.end > distance.start) {
+      state.start = distance.start;
+      state.end = distance.end;
+    } else {
+      state.start = distance.end;
+      state.end = distance.start;
+    }
 
     function peek (context, el) {
       if (el === sel.anchorNode) {

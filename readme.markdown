@@ -2,7 +2,7 @@
 
 > Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor
 
-Browser support includes every sane browser and **IE7+**.
+Browser support includes every sane browser and **IE9+**.
 
 # Features
 
