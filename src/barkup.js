@@ -128,6 +128,7 @@ function barkup (textarea, options) {
       switchboard.appendChild(button);
       (typeof custom === 'function' ? custom : renderers.modes)(button, id);
       crossvent.add(button, 'click', modes[id].set);
+      button.type = 'button';
       button.tabIndex = -1;
 
       var title = strings.titles[id];
