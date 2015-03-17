@@ -9,7 +9,8 @@ module.exports = {
     listitem: 'list item',
     heading: 'Heading Text',
     link: 'link text',
-    image: 'image description'
+    image: 'image description',
+    attachment: 'attachment description'
   },
   titles: {
     bold: 'Strong <strong> Ctrl+B',
@@ -21,6 +22,7 @@ module.exports = {
     heading: 'Heading <h1>, <h2>, ... Ctrl+D',
     link: 'Hyperlink <a> Ctrl+K',
     image: 'Image <img> Ctrl+G',
+    attachment: 'Attachment Ctrl+Shift+K',
     markdown: 'Markdown Mode Ctrl+M',
     html: 'HTML Mode Ctrl+H',
     wysiwyg: 'Preview Mode Ctrl+P'

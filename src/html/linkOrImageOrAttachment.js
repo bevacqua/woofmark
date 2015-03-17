@@ -7,7 +7,8 @@ var rleading = /<a( [^>]*)?>$/;
 var rtrailing = /^<\/a>/;
 var rimage = /<img( [^>]*)?\/>$/;
 
-function linkOrImage (chunks, options, type) {
+function linkOrImageOrAttachment (chunks, options) {
+  var type = options.type;
   var image = type === 'image';
   var resume;
 
@@ -20,7 +21,7 @@ function linkOrImage (chunks, options, type) {
   resume = this.async();
 
   options.prompts.close();
-  (options.prompts[type] || options.prompts.link)(once(resolved));
+  (options.prompts[type] || options.prompts.link)(options, once(resolved));
 
   function removal () {
     if (image) {
@@ -66,4 +67,4 @@ function linkOrImage (chunks, options, type) {
   }
 }
 
-module.exports = linkOrImage;
+module.exports = linkOrImageOrAttachment;

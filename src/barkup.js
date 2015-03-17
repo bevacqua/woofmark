@@ -117,7 +117,7 @@ function barkup (textarea, options) {
   }
 
   bindEvents();
-  bindCommands(textarea, o, api);
+  bindCommands(surface, o, api);
 
   return api;
 

@@ -67,7 +67,8 @@ function pushDefinition (chunks, definition) {
   }
 }
 
-function linkOrImage (chunks, options, type) {
+function linkOrImageOrAttachment (chunks, options) {
+  var type = options.type;
   var image = type === 'image';
   var resume;
 
@@ -91,7 +92,7 @@ function linkOrImage (chunks, options, type) {
   resume = this.async();
 
   options.prompts.close();
-  (options.prompts[type] || options.prompts.link)(once(resolved));
+  (options.prompts[type] || options.prompts.link)(options, once(resolved));
 
   function resolved (text) {
     var link = parseLinkInput(text);
@@ -114,4 +115,4 @@ function linkOrImage (chunks, options, type) {
   }
 }
 
-module.exports = linkOrImage;
+module.exports = linkOrImageOrAttachment;

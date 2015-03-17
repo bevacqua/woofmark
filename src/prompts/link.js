@@ -5,17 +5,17 @@ var render = require('./render');
 var ENTER_KEY = 13;
 var ESCAPE_KEY = 27;
 
-function linkPrompt (done) {
+function linkPrompt (options, done) {
   var dom = render({
     id: 'bk-prompt-link',
     title: 'Insert Link',
     description: 'Type or paste the url to your link',
     placeholder: 'http://example.com/ "title"'
   });
-  init(dom, done);
+  init(options, dom, done);
 }
 
-function init (dom, done) {
+function init (options, dom, done) {
   crossvent.add(dom.cancel, 'click', remove);
   crossvent.add(dom.close, 'click', remove);
   crossvent.add(dom.ok, 'click', ok);
@@ -51,6 +51,7 @@ function init (dom, done) {
 
   function remove () {
     dom.dialog.parentElement.removeChild(dom.dialog);
+    options.surface.focus(options.mode);
   }
 }
 

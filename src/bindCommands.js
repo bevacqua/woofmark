@@ -3,7 +3,7 @@
 var commands = {
   markdown: {
     boldOrItalic: require('./markdown/boldOrItalic'),
-    linkOrImage: require('./markdown/linkOrImage'),
+    linkOrImageOrAttachment: require('./markdown/linkOrImageOrAttachment'),
     blockquote: require('./markdown/blockquote'),
     codeblock: require('./markdown/codeblock'),
     heading: require('./markdown/heading'),
@@ -12,7 +12,7 @@ var commands = {
   },
   html: {
     boldOrItalic: require('./html/boldOrItalic'),
-    linkOrImage: require('./html/linkOrImage'),
+    linkOrImageOrAttachment: require('./html/linkOrImageOrAttachment'),
     blockquote: require('./html/blockquote'),
     codeblock: require('./html/codeblock'),
     heading: require('./html/heading'),
@@ -23,7 +23,7 @@ var commands = {
 
 commands.wysiwyg = commands.html;
 
-function bindCommands (textarea, options, bark) {
+function bindCommands (surface, options, bark) {
   bind('bold', 'cmd+b', bold);
   bind('italic', 'cmd+i', italic);
   bind('quote', 'cmd+j', router('blockquote'));
@@ -31,8 +31,9 @@ function bindCommands (textarea, options, bark) {
   bind('ol', 'cmd+o', ol);
   bind('ul', 'cmd+u', ul);
   bind('heading', 'cmd+d', router('heading'));
-  bind('link', 'cmd+k', link);
-  bind('image', 'cmd+g', image);
+  bind('link', 'cmd+k', linkOrImageOrAttachment('link'));
+  bind('image', 'cmd+g', linkOrImageOrAttachment('image'));
+  bind('attachment', 'cmd+shift+k', linkOrImageOrAttachment('attachment'));
 
   if (options.hr) { bind('hr', 'cmd+n', router('hr')); }
 
@@ -51,11 +52,15 @@ function bindCommands (textarea, options, bark) {
   function ol (mode, chunks) {
     commands[mode].list(chunks, true);
   }
-  function link (mode, chunks) {
-    commands[mode].linkOrImage.call(this, chunks, { prompts: options.prompts }, 'link');
-  }
-  function image (mode, chunks) {
-    commands[mode].linkOrImage.call(this, chunks, { prompts: options.prompts }, 'image');
+  function linkOrImageOrAttachment (type) {
+    return function (mode, chunks) {
+      commands[mode].linkOrImageOrAttachment.call(this, chunks, {
+        mode: mode,
+        type: type,
+        surface: surface,
+        prompts: options.prompts
+      });
+    };
   }
   function bind (id, combo, fn) {
     bark.addCommandButton(id, combo, suppress(fn));

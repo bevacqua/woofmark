@@ -1,11 +1,9 @@
 'use strict';
 
-// var xhr = require('xhr');
-// var configure = require('./configure');
 var link = require('./link');
 var render = require('./render');
 
-function imagePrompt (done) {
+function imagePrompt (options, done) {
   var dom = render({
     id: 'bk-prompt-image',
     title: 'Insert Image',
@@ -13,7 +11,7 @@ function imagePrompt (done) {
     placeholder: 'http://example.com/public/image.png "title"'
   });
 
-  link.init(dom, done);
+  link.init(options, dom, done);
 
   // if (configure.imageUploads) {
   //   arrangeImageUpload(dom, done);
