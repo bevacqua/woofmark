@@ -11,8 +11,8 @@ var getCommandHandler = require('./getCommandHandler');
 var getSurface = require('./getSurface');
 var classes = require('./classes');
 var renderers = require('./renderers');
-var linkPrompt = require('./prompts/link');
-var imagePrompt = require('./prompts/image');
+var xhrStub = require('./xhrStub');
+var prompt = require('./prompts/prompt');
 var closePrompts = require('./prompts/close');
 var cache = [];
 var mac = /\bMac OS\b/.test(global.navigator.userAgent);
@@ -53,9 +53,12 @@ function barkup (textarea, options) {
   if (o.render.modes === void 0) { o.render.modes = {}; }
   if (o.render.commands === void 0) { o.render.commands = {}; }
   if (o.prompts === void 0) { o.prompts = {}; }
-  if (o.prompts.link === void 0) { o.prompts.link = linkPrompt; }
-  if (o.prompts.image === void 0) { o.prompts.image = imagePrompt; }
+  if (o.prompts.link === void 0) { o.prompts.link = prompt; }
+  if (o.prompts.image === void 0) { o.prompts.image = prompt; }
+  if (o.prompts.attachment === void 0) { o.prompts.attachment = prompt; }
   if (o.prompts.close === void 0) { o.prompts.close = closePrompts; }
+  if (o.xhr === void 0) { o.xhr = xhrStub; }
+  if (o.imageUploads === void 0) { o.imageUploads = true; }
   if (o.classes === void 0) { o.classes = {}; }
   if (o.classes.wysiwyg === void 0) { o.classes.wysiwyg = []; }
 

@@ -38,5 +38,22 @@ module.exports = {
     link: 'Link',
     image: 'Image',
     hr: '\u21b5'
+  },
+  prompts: {
+    link: {
+      title: 'Insert Link',
+      description: 'Type or paste the url to your link',
+      placeholder: 'http://example.com/ "title"'
+    },
+    image: {
+      title: 'Insert Image',
+      description: 'Type or paste the url to your image',
+      placeholder: 'http://example.com/public/image.png "title"'
+    },
+    attachment: {
+      title: 'Attach File',
+      description: 'Type or paste the url to your attachment',
+      placeholder: 'http://example.com/public/report.pdf "title"'
+    }
   }
 };
