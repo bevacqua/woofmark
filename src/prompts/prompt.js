@@ -35,7 +35,7 @@ function prompt (options, done) {
   crossvent.add(dom.close, 'click', remove);
   crossvent.add(dom.ok, 'click', ok);
   crossvent.add(dom.input, 'keypress', enter);
-  crossvent.add(dom.input, 'keydown', esc);
+  crossvent.add(dom.dialog, 'keydown', esc);
   classify(dom, options.classes);
 
   var xhr = options.xhr;

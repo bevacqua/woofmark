@@ -1,9 +1,11 @@
 'use strict';
 
-var doc = global.document;
+var crossvent = require('crossvent');
 var setText = require('../setText');
+var classes = require('../classes');
 var strings = require('../strings');
 var ac = 'appendChild';
+var doc = global.document;
 
 function e (type, cls, text) {
   var el = doc.createElement(type);
@@ -24,7 +26,7 @@ function render (options) {
     desc: e('p', 'bk-prompt-description', options.description),
     inputContainer: e('div', 'bk-prompt-input-container'),
     input: e('input', 'bk-prompt-input'),
-    cancel: e('a', 'bk-prompt-cancel', 'Cancel'),
+    cancel: e('button', 'bk-prompt-cancel', 'Cancel'),
     ok: e('button', 'bk-prompt-ok', 'Ok'),
     footer: e('footer', 'bk-prompt-buttons')
   };
@@ -34,6 +36,7 @@ function render (options) {
   dom.section[ac](dom.inputContainer);
   dom.inputContainer[ac](dom.input);
   dom.input.placeholder = options.placeholder;
+  dom.cancel.type = 'button';
   dom.footer[ac](dom.cancel);
   dom.footer[ac](dom.ok);
   dom.dialog[ac](dom.close);
@@ -50,7 +53,7 @@ function uploads (dom, warning) {
     area: e('section', 'bk-prompt-upload-area'),
     warning: e('p', 'bk-prompt-error bk-warning', warning),
     failed: e('p', 'bk-prompt-error bk-failed', strings.prompts.uploadfailed),
-    upload: e('button', 'bk-prompt-upload'),
+    upload: e('label', 'bk-prompt-upload'),
     uploading: e('span', 'bk-prompt-progress', strings.prompts.uploading),
     drop: e('span', 'bk-prompt-drop', strings.prompts.drop),
     dropicon: e('p', 'bk-prompt-drop-icon'),
@@ -61,7 +64,6 @@ function uploads (dom, warning) {
   domup.area[ac](domup.drop);
   domup.area[ac](domup.uploading);
   domup.area[ac](domup.dropicon);
-  domup.upload.type = 'button';
   domup.upload[ac](domup.browse);
   domup.upload[ac](domup.fileinput);
   domup.fileinput.id = fup;
@@ -74,6 +76,15 @@ function uploads (dom, warning) {
   dom.section[ac](domup.upload);
   dom.section[ac](domup.dragdrop);
   dom.section[ac](domup.area);
+  crossvent.add(domup.fileinput, 'focus', focusedFileInput);
+  crossvent.add(domup.fileinput, 'blur', blurredFileInput);
+
+  function focusedFileInput () {
+    classes.add(domup.upload, 'bk-focused');
+  }
+  function blurredFileInput () {
+    classes.rm(domup.upload, 'bk-focused');
+  }
   return domup;
 }
 
