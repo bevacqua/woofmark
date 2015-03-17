@@ -60,7 +60,8 @@ function bindCommands (surface, options, bark) {
         surface: surface,
         prompts: options.prompts,
         xhr: options.xhr,
-        upload: options[type + 's']
+        upload: options[type + 's'],
+        classes: options.classes.prompts
       });
     };
   }

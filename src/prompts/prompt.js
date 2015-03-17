@@ -11,6 +11,15 @@ function okop () {
   return true;
 }
 
+function classify (group, classes) {
+  Object.keys(group).forEach(customize);
+  function customize (key) {
+    if (classes[key]) {
+      group[key].className += ' ' + classes[key];
+    }
+  }
+}
+
 function prompt (options, done) {
   var text = strings.prompts[options.type];
   var dom = render({
@@ -26,6 +35,7 @@ function prompt (options, done) {
   crossvent.add(dom.ok, 'click', ok);
   crossvent.add(dom.input, 'keypress', enter);
   crossvent.add(dom.input, 'keydown', esc);
+  classify(dom, options.classes);
 
   var xhr = options.xhr;
   var upload = options.upload;
@@ -75,39 +85,45 @@ function prompt (options, done) {
     crossvent[op](document.body, 'dragend', dragstop);
   }
 
-  function warn (message) {
+  function warn () {
     domup.warning.classList.add('bk-prompt-error-show');
   }
   function dragging () {
-    domup.upload.classList.add(dragClass);
+    domup.area.classList.add(dragClass);
   }
   function dragstop () {
-    domup.upload.classList.remove(dragClass);
+    domup.area.classList.remove(dragClass);
   }
 
   function arrangeUploads (dom, done) {
     domup = render.uploads(dom, strings.prompts.types + (upload.restriction || options.type + 's'));
     bindUploadEvents();
-    crossvent.add(domup.input, 'change', handleChange, false);
-    crossvent.add(domup.upload, 'dragover', handleDragOver, false);
-    crossvent.add(domup.upload, 'drop', handleFileSelect, false);
+    crossvent.add(domup.fileinput, 'change', handleChange, false);
+    crossvent.add(domup.area, 'dragover', handleDragOver, false);
+    crossvent.add(domup.area, 'drop', handleFileSelect, false);
+    classify(domup, options.classes);
 
     function handleChange (e) {
-      e.stopPropagation();
-      e.preventDefault();
-      submit(e.target.files);
+      stop(e);
+      submit(domup.fileinput.files);
+      domup.fileinput.value = '';
+      domup.fileinput.value = null;
     }
 
     function handleDragOver (e) {
-      e.stopPropagation();
-      e.preventDefault();
+      stop(e);
       e.dataTransfer.dropEffect = 'copy';
     }
 
     function handleFileSelect (e) {
+      dragstop();
+      stop(e);
+      submit(e.dataTransfer.files);
+    }
+
+    function stop (e) {
       e.stopPropagation();
       e.preventDefault();
-      submit(e.dataTransfer.files);
     }
 
     function valid (files) {
@@ -138,11 +154,11 @@ function prompt (options, done) {
       };
 
       form.append(upload.key || 'barkup_upload', file, file.name);
-      domup.upload.classList.add('bk-prompt-uploading');
-      xhr(options, done);
+      domup.area.classList.add('bk-prompt-uploading');
+      xhr(options, handleResponse);
 
-      function done (err, body, res) {
-        domup.upload.classList.remove('bk-prompt-uploading');
+      function handleResponse (err, res, body) {
+        domup.area.classList.remove('bk-prompt-uploading');
         if (err || res.statusCode < 200 || res.statusCode > 299) {
           domup.failed.classList.add('bk-prompt-error-show');
           return;

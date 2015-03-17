@@ -61,6 +61,7 @@ function barkup (textarea, options) {
   if (o.imageUploads === void 0) { o.imageUploads = true; }
   if (o.classes === void 0) { o.classes = {}; }
   if (o.classes.wysiwyg === void 0) { o.classes.wysiwyg = []; }
+  if (o.classes.prompts === void 0) { o.classes.prompts = []; }
 
   var preference = o.storage && ls.get(o.storage);
   if (preference) {
