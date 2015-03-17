@@ -1,8 +1,10 @@
 'use strict';
 
+var doc = document;
+
 function homebrewQSA (className) {
   var results = [];
-  var all = document.getElementsByTagName('*');
+  var all = doc.getElementsByTagName('*');
   var i;
   for (i in all) {
     if (wrap(all[i].className).indexOf(wrap(className)) !== -1) {
@@ -17,8 +19,8 @@ function wrap (text) {
 }
 
 function closePrompts () {
-  if (document.body.querySelectorAll) {
-    remove(document.body.querySelectorAll('.bk-prompt'));
+  if (doc.body.querySelectorAll) {
+    remove(doc.body.querySelectorAll('.bk-prompt'));
   } else {
     remove(homebrewQSA('bk-prompt'));
   }
