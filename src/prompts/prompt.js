@@ -2,6 +2,7 @@
 
 var crossvent = require('crossvent');
 var render = require('./render');
+var classes = require('../classes');
 var strings = require('../strings');
 var ENTER_KEY = 13;
 var ESCAPE_KEY = 27;
@@ -86,13 +87,13 @@ function prompt (options, done) {
   }
 
   function warn () {
-    domup.warning.classList.add('bk-prompt-error-show');
+    classes.add(domup.warning, 'bk-prompt-error-show');
   }
   function dragging () {
-    domup.area.classList.add(dragClass);
+    classes.add(domup.area, dragClass);
   }
   function dragstop () {
-    domup.area.classList.remove(dragClass);
+    classes.rm(domup.area, dragClass);
   }
 
   function arrangeUploads (dom, done) {
@@ -128,7 +129,6 @@ function prompt (options, done) {
 
     function valid (files) {
       var i;
-      domup.warning.classList.remove('bk-prompt-error-show');
       for (i = 0; i < files.length; i++) {
         if ((upload.validate || okop)(files[i])) {
           return files[i];
@@ -138,6 +138,8 @@ function prompt (options, done) {
     }
 
     function submit (files) {
+      classes.rm(domup.failed, 'bk-prompt-error-show');
+      classes.rm(domup.warning, 'bk-prompt-error-show');
       var file = valid(files);
       if (!file) {
         return;
@@ -154,13 +156,13 @@ function prompt (options, done) {
       };
 
       form.append(upload.key || 'barkup_upload', file, file.name);
-      domup.area.classList.add('bk-prompt-uploading');
+      classes.add(domup.area, 'bk-prompt-uploading');
       xhr(options, handleResponse);
 
       function handleResponse (err, res, body) {
-        domup.area.classList.remove('bk-prompt-uploading');
+        classes.rm(domup.area, 'bk-prompt-uploading');
         if (err || res.statusCode < 200 || res.statusCode > 299) {
-          domup.failed.classList.add('bk-prompt-error-show');
+          classes.add(domup.failed, 'bk-prompt-error-show');
           return;
         }
         dom.input.value = body.href + ' "' + body.title + '"';
