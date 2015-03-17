@@ -5,15 +5,21 @@ var render = require('./render');
 var strings = require('../strings');
 var ENTER_KEY = 13;
 var ESCAPE_KEY = 27;
+var dragClass = 'bk-prompt-upload-dragging';
+
+function okop () {
+  return true;
+}
 
 function prompt (options, done) {
-  var text = strings.placeholder.prompts[options.type];
+  var text = strings.prompts[options.type];
   var dom = render({
     id: 'bk-prompt-' + options.type,
     title: text.title,
     description: text.description,
     placeholder: text.placeholder
   });
+  var domup;
 
   crossvent.add(dom.cancel, 'click', remove);
   crossvent.add(dom.close, 'click', remove);
@@ -58,7 +64,7 @@ function prompt (options, done) {
   }
 
   function remove () {
-    bindUploadEvents(true);
+    if (upload) { bindUploadEvents(true); }
     dom.dialog.parentElement.removeChild(dom.dialog);
     options.surface.focus(options.mode);
   }
@@ -69,19 +75,27 @@ function prompt (options, done) {
     crossvent[op](document.body, 'dragend', dragstop);
   }
 
-  function arrangeUploads (dom, done) {
-    var up = render.uploads(dom, 'Only GIF, JPEG and PNG images are allowed');
-    var dragClass = 'bk-prompt-upload-dragging';
+  function warn (message) {
+    domup.warning.classList.add('bk-prompt-error-show');
+  }
+  function dragging () {
+    domup.upload.classList.add(dragClass);
+  }
+  function dragstop () {
+    domup.upload.classList.remove(dragClass);
+  }
 
+  function arrangeUploads (dom, done) {
+    domup = render.uploads(dom, strings.prompts.types + (upload.restriction || options.type + 's'));
     bindUploadEvents();
-    crossvent.add(up.input, 'change', handleChange, false);
-    crossvent.add(up.upload, 'dragover', handleDragOver, false);
-    crossvent.add(up.upload, 'drop', handleFileSelect, false);
+    crossvent.add(domup.input, 'change', handleChange, false);
+    crossvent.add(domup.upload, 'dragover', handleDragOver, false);
+    crossvent.add(domup.upload, 'drop', handleFileSelect, false);
 
     function handleChange (e) {
       e.stopPropagation();
       e.preventDefault();
-      go(e.target.files);
+      submit(e.target.files);
     }
 
     function handleDragOver (e) {
@@ -93,40 +107,21 @@ function prompt (options, done) {
     function handleFileSelect (e) {
       e.stopPropagation();
       e.preventDefault();
-      go(e.dataTransfer.files);
+      submit(e.dataTransfer.files);
     }
 
     function valid (files) {
-      var mime = /^image\//i;
       var i;
-      var file;
-
-      up.warning.classList.remove('bk-prompt-error-show');
-
+      domup.warning.classList.remove('bk-prompt-error-show');
       for (i = 0; i < files.length; i++) {
-        file = files[i];
-
-        if (mime.test(file.type)) {
-          return file;
+        if ((upload.validate || okop)(files[i])) {
+          return files[i];
         }
       }
       warn();
     }
 
-    function warn (message) {
-      up.warning.classList.add('bk-prompt-error-show');
-    }
-    function dragging () {
-      up.upload.classList.add(dragClass);
-    }
-    function dragstop () {
-      up.upload.classList.remove(dragClass);
-    }
-    function remove () {
-      dom.dialog.parentElement.removeChild(dom.dialog);
-    }
-
-    function go (files) {
+    function submit (files) {
       var file = valid(files);
       if (!file) {
         return;
@@ -141,18 +136,18 @@ function prompt (options, done) {
         url: upload.url,
         body: form
       };
+
       form.append(upload.key || 'barkup_upload', file, file.name);
-      up.upload.classList.add('bk-prompt-uploading');
+      domup.upload.classList.add('bk-prompt-uploading');
       xhr(options, done);
 
-      function done (err, xhr, body) {
-        up.upload.classList.remove('bk-prompt-uploading');
-        if (err) {
-          up.failed.classList.add('bk-prompt-error-show');
+      function done (err, body, res) {
+        domup.upload.classList.remove('bk-prompt-uploading');
+        if (err || res.statusCode < 200 || res.statusCode > 299) {
+          domup.failed.classList.add('bk-prompt-error-show');
           return;
         }
-        var json = JSON.parse(body);
-        dom.input.value = json.href + ' "' + json.title + '"';
+        dom.input.value = body.href + ' "' + body.title + '"';
         remove();
         done(dom.input.value);
       }

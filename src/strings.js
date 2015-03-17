@@ -54,6 +54,7 @@ module.exports = {
       title: 'Attach File',
       description: 'Type or paste the url to your attachment',
       placeholder: 'http://example.com/public/report.pdf "title"'
-    }
+    },
+    types: 'You can only upload '
   }
 };
