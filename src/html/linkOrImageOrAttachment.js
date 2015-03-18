@@ -36,8 +36,8 @@ function linkOrImageOrAttachment (chunks, options) {
     }
   }
 
-  function resolved (text) {
-    var link = parseLinkInput(text);
+  function resolved (result) {
+    var link = parseLinkInput(result.definition);
     if (link.href.length === 0) {
       resume(); return;
     }

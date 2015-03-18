@@ -71,7 +71,7 @@ function prompt (options, done) {
 
   function ok () {
     remove();
-    done(dom.input.value);
+    done({ definition: dom.input.value });
   }
 
   function remove () {
@@ -145,7 +145,7 @@ function prompt (options, done) {
         return;
       }
       var form = new FormData();
-      var options = {
+      var req = {
         'Content-Type': 'multipart/form-data',
         headers: {
           Accept: 'application/json'
@@ -157,7 +157,7 @@ function prompt (options, done) {
 
       form.append(upload.key || 'barkup_upload', file, file.name);
       classes.add(domup.area, 'bk-prompt-uploading');
-      xhr(options, handleResponse);
+      xhr(req, handleResponse);
 
       function handleResponse (err, res, body) {
         classes.rm(domup.area, 'bk-prompt-uploading');
@@ -167,7 +167,7 @@ function prompt (options, done) {
         }
         dom.input.value = body.href + ' "' + body.title + '"';
         remove();
-        done(dom.input.value);
+        done({ definition: dom.input.value, attachment: options.type === 'attachment' });
       }
     }
   }

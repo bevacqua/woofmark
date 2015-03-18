@@ -3,7 +3,8 @@
 var once = require('../once');
 var strings = require('../strings');
 var parseLinkInput = require('../chunks/parseLinkInput');
-var rdefinitions = /^[ ]{0,3}\[(\d+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?[ \t]*\n?[ \t]*(?:(\n*)["(](.+?)[")][ \t]*)?(?:\n+|$)/gm;
+var rdefinitions = /^[ ]{0,3}\[((?:attachment-)?\d+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?[ \t]*\n?[ \t]*(?:(\n*)["(](.+?)[")][ \t]*)?(?:\n+|$)/gm;
+var rattachment = /^attachment-(\d+)$/i;
 
 function extractDefinitions (text, definitions) {
   rdefinitions.lastIndex = 0;
@@ -19,11 +20,11 @@ function extractDefinitions (text, definitions) {
   }
 }
 
-function pushDefinition (chunks, definition) {
-  var regex = /(\[)((?:\[[^\]]*\]|[^\[\]])*)(\][ ]?(?:\n[ ]*)?\[)(\d+)(\])/g;
+function pushDefinition (chunks, definition, attachment) {
+  var regex = /(\[)((?:\[[^\]]*\]|[^\[\]])*)(\][ ]?(?:\n[ ]*)?\[)((?:attachment-)?\d+)(\])/g;
   var anchor = 0;
   var definitions = {};
-  var footnotes = '';
+  var footnotes = [];
 
   chunks.before = extractDefinitions(chunks.before, definitions);
   chunks.selection = extractDefinitions(chunks.selection, definitions);
@@ -31,7 +32,7 @@ function pushDefinition (chunks, definition) {
   chunks.before = chunks.before.replace(regex, getLink);
 
   if (definition) {
-    pushAnchor(definition);
+    if (!attachment) { pushAnchor(definition); }
   } else {
     chunks.selection = chunks.selection.replace(regex, getLink);
   }
@@ -47,20 +48,32 @@ function pushDefinition (chunks, definition) {
     chunks.selection = chunks.selection.replace(/\n*$/, '');
   }
 
-  chunks.after += '\n\n' + footnotes;
+  anchor = 0;
+  Object.keys(definitions).forEach(pushAttachments);
+
+  if (attachment) {
+    pushAnchor(definition);
+  }
+  chunks.after += '\n\n' + footnotes.join('\n');
 
   return result;
 
-  function pushAnchor (definition) {
-    anchor++;
-    definition = definition.replace(/^[ ]{0,3}\[(\d+)\]:/, '  [' + anchor + ']:');
-    footnotes += '\n' + definition;
+  function pushAttachments (definition) {
+    if (rattachment.test(definition)) {
+      pushAnchor(definitions[definition]);
+    }
   }
 
-  function getLink (all, before, inner, afterInner, id, end) {
+  function pushAnchor (definition) {
+    anchor++;
+    definition = definition.replace(/^[ ]{0,3}\[(attachment-)?(\d+)\]:/, '  [$1' + anchor + ']:');
+    footnotes.push(definition);
+  }
+
+  function getLink (all, before, inner, afterInner, definition, end) {
     inner = inner.replace(regex, getLink);
-    if (definitions[id]) {
-      pushAnchor(definitions[id]);
+    if (definitions[definition]) {
+      pushAnchor(definitions[definition]);
       return before + inner + afterInner + anchor + end;
     }
     return all;
@@ -94,24 +107,32 @@ function linkOrImageOrAttachment (chunks, options) {
   options.prompts.close();
   (options.prompts[type] || options.prompts.link)(options, once(resolved));
 
-  function resolved (text) {
-    var link = parseLinkInput(text);
+  function resolved (result) {
+    var link = parseLinkInput(result.definition);
     if (link.href.length === 0) {
       resume(); return;
     }
 
     chunks.selection = (' ' + chunks.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, '$1\\').substr(1);
 
-    var definition = ' [9999]: ' + link.href + (link.title ? ' "' + link.title + '"' : '');
-    var anchor = pushDefinition(chunks, definition);
+    var key = result.attachment ? '  [attachment-9999]: ' : ' [9999]: ';
+    var definition = key + link.href + (link.title ? ' "' + link.title + '"' : '');
+    var anchor = pushDefinition(chunks, definition, result.attachment);
 
-    chunks.startTag = image ? '![' : '[';
-    chunks.endTag = '][' + anchor + ']';
-
-    if (!chunks.selection) {
-      chunks.selection = strings.placeholders[type];
+    if (!result.attachment) {
+      add();
     }
+
     resume();
+
+    function add () {
+      chunks.startTag = image ? '![' : '[';
+      chunks.endTag = '][' + anchor + ']';
+
+      if (!chunks.selection) {
+        chunks.selection = strings.placeholders[type];
+      }
+    }
   }
 }
 
