@@ -58,7 +58,6 @@ function barkup (textarea, options) {
   if (o.prompts.attachment === void 0) { o.prompts.attachment = prompt; }
   if (o.prompts.close === void 0) { o.prompts.close = closePrompts; }
   if (o.xhr === void 0) { o.xhr = xhrStub; }
-  if (o.imageUploads === void 0) { o.imageUploads = true; }
   if (o.classes === void 0) { o.classes = {}; }
   if (o.classes.wysiwyg === void 0) { o.classes.wysiwyg = []; }
   if (o.classes.prompts === void 0) { o.classes.prompts = []; }

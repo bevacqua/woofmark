@@ -33,8 +33,8 @@ function bindCommands (surface, options, bark) {
   bind('heading', 'cmd+d', router('heading'));
   bind('link', 'cmd+k', linkOrImageOrAttachment('link'));
   bind('image', 'cmd+g', linkOrImageOrAttachment('image'));
-  bind('attachment', 'cmd+shift+k', linkOrImageOrAttachment('attachment'));
 
+  if (options.attachments) { bind('attachment', 'cmd+shift+k', linkOrImageOrAttachment('attachment')); }
   if (options.hr) { bind('hr', 'cmd+n', router('hr')); }
 
   function bold (mode, chunks) {

@@ -47,18 +47,19 @@ module.exports = {
     },
     image: {
       title: 'Insert Image',
-      description: 'Enter the url to your image, or upload a file',
+      description: 'Enter the url to your image',
       placeholder: 'http://example.com/public/image.png "title"'
     },
     attachment: {
       title: 'Attach File',
-      description: 'Enter the url to your attachment, or upload a file',
+      description: 'Enter the url to your attachment',
       placeholder: 'http://example.com/public/report.pdf "title"'
     },
     types: 'You can only upload ',
     browse: 'Browse...',
     drophint: 'You can also drag files from your computer and drop them here!',
     drop: 'Drop your file here to begin upload...',
+    upload: ', or upload a file',
     uploading: 'Uploading your file...',
     uploadfailed: 'The upload failed! That\'s all we know.'
   }
