@@ -159,6 +159,10 @@ function barkup (textarea, options) {
   }
 
   function destroy () {
+    if (mode !== 'markdown') {
+      textarea.value = getMarkdown();
+    }
+    classes.rm(textarea, 'bk-hide');
     bindEvents(true);
     delete cache[i - 1];
   }
