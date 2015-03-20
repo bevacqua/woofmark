@@ -33,9 +33,7 @@ function formatTitle (title) {
 
   return title
     .replace(/^\s+|\s+$/g, '')
-    .replace(/"/g, 'quot;')
-    .replace(/\(/g, '&#40;')
-    .replace(/\)/g, '&#41;')
+    .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
