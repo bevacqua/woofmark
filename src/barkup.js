@@ -43,9 +43,11 @@ function barkup (textarea, options) {
   if (o.markdown === void 0) { o.markdown = true; }
   if (o.html === void 0) { o.html = true; }
   if (o.wysiwyg === void 0) { o.wysiwyg = true; }
+
   if (!o.markdown && !o.html && !o.wysiwyg) {
     throw new Error('Barkup expects at least one input mode to be available');
   }
+
   if (o.hr === void 0) { o.hr = false; }
   if (o.storage === void 0) { o.storage = true; }
   if (o.storage === true) { o.storage = 'barkup_input_mode'; }
@@ -61,7 +63,8 @@ function barkup (textarea, options) {
   if (o.xhr === void 0) { o.xhr = xhrStub; }
   if (o.classes === void 0) { o.classes = {}; }
   if (o.classes.wysiwyg === void 0) { o.classes.wysiwyg = []; }
-  if (o.classes.prompts === void 0) { o.classes.prompts = []; }
+  if (o.classes.prompts === void 0) { o.classes.prompts = {}; }
+  if (o.classes.input === void 0) { o.classes.input = {}; }
 
   var preference = o.storage && ls.get(o.storage);
   if (preference) {
@@ -76,6 +79,7 @@ function barkup (textarea, options) {
     addCommandButton: addCommandButton,
     destroy: destroy,
     value: getMarkdown,
+    editable: o.wysiwyg ? editable : null,
     mode: 'markdown'
   };
   var place;
@@ -229,6 +233,13 @@ function barkup (textarea, options) {
 
     history.setInputMode(nextMode);
     restoreSelection();
+    fireLater('barkup-mode-change');
+  }
+
+  function fireLater () {
+    setTimeout(function fire () {
+      crossvent.fabricate(textarea, 'barkup-mode-change');
+    }, 0);
   }
 
   function focusEditable () {

@@ -152,6 +152,10 @@ Enables HTML user input mode. Defaults to `true`.
 
 Enables WYSIWYG user input mode. Defaults to `true`.
 
+### `options.editable`
+
+If `options.wysiwyg` mode is enabled, `editable` is the DOM element that's used to display the editable content.
+
 ### `options.storage`
 
 Enables this particular instance `barkup` to remember the user's preferred input mode. If enabled, the type of input mode will be persisted across browser refreshes using `localStorage`. You can pass in `true` if you'd like all instances to share the same `localStorage` property name, but you can also pass in the property name you want to use, directly. Useful for grouping preferences as you see fit.

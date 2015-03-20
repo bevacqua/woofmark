@@ -36,7 +36,7 @@ function prompt (options, done) {
   crossvent.add(dom.ok, 'click', ok);
   crossvent.add(dom.input, 'keypress', enter);
   crossvent.add(dom.dialog, 'keydown', esc);
-  classify(dom, options.classes);
+  classify(dom, options.classes.prompts);
 
   var xhr = options.xhr;
   var upload = options.upload;
@@ -102,7 +102,7 @@ function prompt (options, done) {
     crossvent.add(domup.fileinput, 'change', handleChange, false);
     crossvent.add(domup.area, 'dragover', handleDragOver, false);
     crossvent.add(domup.area, 'drop', handleFileSelect, false);
-    classify(domup, options.classes);
+    classify(domup, options.classes.prompts);
 
     function handleChange (e) {
       stop(e);

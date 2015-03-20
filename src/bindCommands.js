@@ -61,7 +61,7 @@ function bindCommands (surface, options, bark) {
         prompts: options.prompts,
         xhr: options.xhr,
         upload: options[type + 's'],
-        classes: options.classes.prompts
+        classes: options.classes
       });
     };
   }

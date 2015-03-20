@@ -61,7 +61,9 @@ function linkOrImageOrAttachment (chunks, options) {
     }
 
     function linkWrap () {
-      chunks.before += '<a href="' + link.href + '"' + title + '>';
+      var names = options.classes.input.links;
+      var classes = names ? ' class="' + names + '"' : '';
+      chunks.before += '<a href="' + link.href + '"' + title + classes + '>';
       chunks.after = '</a>' + chunks.after;
     }
   }
