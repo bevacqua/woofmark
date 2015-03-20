@@ -5,6 +5,7 @@ var crossvent = require('crossvent');
 var kanye = require('kanye');
 var strings = require('./strings');
 var setText = require('./setText');
+var rememberSelection = require('./rememberSelection');
 var bindCommands = require('./bindCommands');
 var InputHistory = require('./InputHistory');
 var getCommandHandler = require('./getCommandHandler');
@@ -70,13 +71,12 @@ function barkup (textarea, options) {
   var switchboard = tag({ c: 'bk-switchboard' });
   var commands = tag({ c: 'bk-commands' });
   var editable = tag({ c: ['bk-wysiwyg', 'bk-hide'].concat(o.classes.wysiwyg).join(' ') });
-  var mode = 'markdown';
   var api = {
     addCommand: addCommand,
     addCommandButton: addCommandButton,
     destroy: destroy,
     value: getMarkdown,
-    mode: mode
+    mode: 'markdown'
   };
   var place;
   var entry = { ta: textarea, api: api };
@@ -159,7 +159,7 @@ function barkup (textarea, options) {
   }
 
   function destroy () {
-    if (mode !== 'markdown') {
+    if (api.mode !== 'markdown') {
       textarea.value = getMarkdown();
     }
     classes.rm(textarea, 'bk-hide');
@@ -167,13 +167,46 @@ function barkup (textarea, options) {
     delete cache[i - 1];
   }
 
-  function persistMode (name) {
-    var old = modes[mode].button;
-    var button = modes[name].button;
-    if (mode === name) {
+  function markdownMode (e) { persistMode('markdown', e); }
+  function htmlMode (e) { persistMode('html', e); }
+  function wysiwygMode (e) { persistMode('wysiwyg', e); }
+
+  function persistMode (nextMode, e) {
+    var restoreSelection;
+    var currentMode = api.mode;
+    var old = modes[currentMode].button;
+    var button = modes[nextMode].button;
+
+    stop(e);
+
+    if (currentMode === nextMode) {
       return;
     }
-    if (name === 'wysiwyg') {
+
+    restoreSelection = rememberSelection(history);
+    textarea.blur(); // avert chrome repaint bugs
+
+    if (nextMode === 'markdown') {
+      if (currentMode === 'html') {
+        textarea.value = o.parseHTML(textarea.value);
+      } else {
+        textarea.value = o.parseHTML(editable);
+      }
+    } else if (nextMode === 'html') {
+      if (currentMode === 'markdown') {
+        textarea.value = o.parseMarkdown(textarea.value);
+      } else {
+        textarea.value = editable.innerHTML;
+      }
+    } else if (nextMode === 'wysiwyg') {
+      if (currentMode === 'markdown') {
+        editable.innerHTML = o.parseMarkdown(textarea.value);
+      } else {
+        editable.innerHTML = textarea.value;
+      }
+    }
+
+    if (nextMode === 'wysiwyg') {
       classes.rm(editable, 'bk-hide');
       if (place) { classes.rm(place, 'bk-hide'); }
       classes.add(textarea, 'bk-hide');
@@ -190,60 +223,23 @@ function barkup (textarea, options) {
     classes.rm(button, 'bk-mode-inactive');
     button.setAttribute('disabled', 'disabled');
     old.removeAttribute('disabled');
-    mode = api.mode = name;
-    history.setInputMode(name);
-    if (o.storage) { ls.set(o.storage, name); }
+    api.mode = nextMode;
+
+    if (o.storage) { ls.set(o.storage, nextMode); }
+
+    history.setInputMode(nextMode);
+    restoreSelection();
   }
 
   function focusEditable () {
     editable.focus();
   }
 
-  function markdownMode (e) {
-    stop(e);
-    if (mode === 'markdown') {
-      return;
-    }
-    if (mode === 'html') {
-      textarea.value = o.parseHTML(textarea.value);
-    } else {
-      textarea.value = o.parseHTML(editable);
-    }
-    persistMode('markdown');
-  }
-
-  function htmlMode (e) {
-    stop(e);
-    if (mode === 'html') {
-      return;
-    }
-    textarea.blur(); // avert chrome repaint bug
-    if (mode === 'markdown') {
-      textarea.value = o.parseMarkdown(textarea.value);
-    } else {
-      textarea.value = editable.innerHTML;
-    }
-    persistMode('html');
-  }
-
-  function wysiwygMode (e) {
-    stop(e);
-    if (mode === 'wysiwyg') {
-      return;
-    }
-    if (mode === 'markdown') {
-      editable.innerHTML = o.parseMarkdown(textarea.value);
-    } else {
-      editable.innerHTML = textarea.value;
-    }
-    persistMode('wysiwyg');
-  }
-
   function getMarkdown () {
-    if (mode === 'wysiwyg') {
+    if (api.mode === 'wysiwyg') {
       return o.parseHTML(editable);
     }
-    if (mode === 'html') {
+    if (api.mode === 'html') {
       return o.parseHTML(textarea.value);
     }
     return textarea.value;

@@ -8,9 +8,10 @@ Browser support includes every sane browser and **IE9+**.
 
 - Small and focused
 - Progressive, enhance a raw `<textarea>`
-- Bring your own parsers
 - Markdown, HTML, and WYSIWYG input modes
-- Customize buttons and WYSIWYG styles to your needs
+- Text selection persists even across input modes!
+- Entirely customizable styles
+- Bring your own parsers
 
 # Install
 

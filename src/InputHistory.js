@@ -48,6 +48,7 @@ InputHistory.prototype.reset = function () {
   state.refreshing = null;
   state.refreshState(true);
   state.saveState();
+  return state;
 };
 
 InputHistory.prototype.setCommandMode = function () {

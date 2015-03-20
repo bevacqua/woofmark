@@ -26,10 +26,7 @@ function getCommandHandler (surface, history, fn) {
 
     function done () {
       surface.focus(history.inputMode);
-
-      if (chunks) {
-        state.setChunks(chunks);
-      }
+      state.setChunks(chunks);
       state.restore();
     }
   };
