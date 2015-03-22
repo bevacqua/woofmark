@@ -245,7 +245,7 @@ function isAncestorOf (ancestor, descendant) {
 }
 
 function getSelection () {
-  return new GetSelection(window.document.selection);
+  return new GetSelection(global.document.selection);
 }
 
 module.exports = getSelection;

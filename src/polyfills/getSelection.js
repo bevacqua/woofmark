@@ -5,7 +5,7 @@ var getSelectionRaw = require('./getSelectionRaw');
 var getSelectionNullOp = require('./getSelectionNullOp');
 var getSelectionSynthetic = require('./getSelectionSynthetic');
 var isHost = require('./isHost');
-if (isHost.method(window, 'getSelection')) {
+if (isHost.method(global, 'getSelection')) {
   module.exports = getSelectionRaw;
 } else if (typeof doc.selection === 'object' && doc.selection) {
   module.exports = getSelectionSynthetic;

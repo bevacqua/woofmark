@@ -159,11 +159,15 @@ function surface (textarea, editable) {
       var sum = cursor + content;
       if (!p.startContainer && sum >= start) {
         p.startContainer = el;
-        p.startOffset = start - cursor;
+        p.startOffset = bounded(start - cursor);
       }
       if (!p.endContainer && sum >= end) {
         p.endContainer = el;
-        p.endOffset = end - cursor;
+        p.endOffset = bounded(end - cursor);
+      }
+
+      function bounded (offset) {
+        return Math.max(0, Math.min(content, offset));
       }
     }
   }
