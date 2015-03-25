@@ -1,5 +1,6 @@
 'use strict';
 
+var crossvent = require('crossvent');
 var once = require('../once');
 var strings = require('../strings');
 var parseLinkInput = require('../chunks/parseLinkInput');
@@ -12,7 +13,9 @@ function linkOrImageOrAttachment (chunks, options) {
   var image = type === 'image';
   var resume;
 
-  chunks.trim();
+  if (type !== 'attachment') {
+    chunks.trim();
+  }
 
   if (removal()) {
     return;
@@ -37,9 +40,20 @@ function linkOrImageOrAttachment (chunks, options) {
   }
 
   function resolved (result) {
+    var parts;
     var link = parseLinkInput(result.definition);
     if (link.href.length === 0) {
       resume(); return;
+    }
+
+    if (type === 'attachment') {
+      parts = options.mergeHtmlAndAttachment(chunks.before + chunks.selection + chunks.after, link);
+      chunks.before = parts.before;
+      chunks.selection = parts.selection;
+      chunks.after = parts.after;
+      resume();
+      crossvent.fabricate(options.surface.textarea, 'barkdown-mode-change');
+      return;
     }
 
     var title = link.title ? ' title="' + link.title + '"' : '';

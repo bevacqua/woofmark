@@ -15,6 +15,7 @@ var renderers = require('./renderers');
 var xhrStub = require('./xhrStub');
 var prompt = require('./prompts/prompt');
 var closePrompts = require('./prompts/close');
+var modeNames = ['markdown', 'html', 'wysiwyg'];
 var cache = [];
 var mac = /\bMac OS\b/.test(global.navigator.userAgent);
 var doc = document;
@@ -22,7 +23,7 @@ var doc = document;
 function find (textarea) {
   for (var i = 0; i < cache.length; i++) {
     if (cache[i] && cache[i].ta === textarea) {
-      return cache[i].api;
+      return cache[i].editor;
     }
   }
   return null;
@@ -74,16 +75,17 @@ function barkdown (textarea, options) {
   var switchboard = tag({ c: 'bk-switchboard' });
   var commands = tag({ c: 'bk-commands' });
   var editable = tag({ c: ['bk-wysiwyg', 'bk-hide'].concat(o.classes.wysiwyg).join(' ') });
-  var api = {
+  var editor = {
     addCommand: addCommand,
     addCommandButton: addCommandButton,
     destroy: destroy,
     value: getMarkdown,
     editable: o.wysiwyg ? editable : null,
+    setMode: persistMode,
     mode: 'markdown'
   };
   var place;
-  var entry = { ta: textarea, api: api };
+  var entry = { ta: textarea, editor: editor };
   var i = cache.push(entry);
   var kanyeContext = 'barkdown_' + i;
   var surface = getSurface(textarea, editable);
@@ -105,8 +107,7 @@ function barkdown (textarea, options) {
 
   editable.contentEditable = true;
   modes.markdown.button.setAttribute('disabled', 'disabled');
-
-  ['markdown', 'html', 'wysiwyg'].forEach(addMode);
+  modeNames.forEach(addMode);
 
   if (o.wysiwyg) {
     place = tag({ c: 'bk-wysiwyg-placeholder bk-hide', x: textarea.placeholder });
@@ -124,9 +125,9 @@ function barkdown (textarea, options) {
   }
 
   bindEvents();
-  bindCommands(surface, o, api);
+  bindCommands(surface, o, editor);
 
-  return api;
+  return editor;
 
   function addMode (id) {
     var button = modes[id].button;
@@ -163,7 +164,7 @@ function barkdown (textarea, options) {
   }
 
   function destroy () {
-    if (api.mode !== 'markdown') {
+    if (editor.mode !== 'markdown') {
       textarea.value = getMarkdown();
     }
     classes.rm(textarea, 'bk-hide');
@@ -177,7 +178,7 @@ function barkdown (textarea, options) {
 
   function persistMode (nextMode, e) {
     var restoreSelection;
-    var currentMode = api.mode;
+    var currentMode = editor.mode;
     var old = modes[currentMode].button;
     var button = modes[nextMode].button;
 
@@ -227,7 +228,7 @@ function barkdown (textarea, options) {
     classes.rm(button, 'bk-mode-inactive');
     button.setAttribute('disabled', 'disabled');
     old.removeAttribute('disabled');
-    api.mode = nextMode;
+    editor.mode = nextMode;
 
     if (o.storage) { ls.set(o.storage, nextMode); }
 
@@ -247,10 +248,10 @@ function barkdown (textarea, options) {
   }
 
   function getMarkdown () {
-    if (api.mode === 'wysiwyg') {
+    if (editor.mode === 'wysiwyg') {
       return o.parseHTML(editable);
     }
-    if (api.mode === 'html') {
+    if (editor.mode === 'html') {
       return o.parseHTML(textarea.value);
     }
     return textarea.value;

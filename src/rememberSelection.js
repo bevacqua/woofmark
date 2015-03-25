@@ -55,14 +55,13 @@ function rememberSelection (history) {
 
   function updateMarkdownChunks (chunks) {
     var all = chunks.before + chunks.selection + chunks.after;
-    var selectionStart = chunks.before.length;
-    var selectionEnd = selectionStart + chunks.selection.length;
-    var balanceTags;
+    var originalStart = chunks.before.length;
+    var originalEnd = originalStart + chunks.selection.length;
+    var selectionStart = move(originalStart, 1);
+    var selectionEnd = move(originalEnd, -1);
+    var moved = originalStart !== selectionStart || originalEnd !== selectionEnd;
 
-    selectionStart = move(selectionStart, 1);
-    selectionEnd = move(selectionEnd, -1);
-
-    updateSelection(chunks, all, selectionStart, selectionEnd, true);
+    updateSelection(chunks, all, selectionStart, selectionEnd, moved);
 
     function move (p, offset) {
       var prev = all[p - 1] || '';
