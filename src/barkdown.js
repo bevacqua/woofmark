@@ -28,7 +28,7 @@ function find (textarea) {
   return null;
 }
 
-function barkup (textarea, options) {
+function barkdown (textarea, options) {
   var cached = find(textarea);
   if (cached) {
     return cached;
@@ -36,7 +36,7 @@ function barkup (textarea, options) {
 
   var parent = textarea.parentElement;
   if (parent.children.length > 1) {
-    throw new Error('Barkup demands <textarea> elements to have no siblings');
+    throw new Error('Barkdown demands <textarea> elements to have no siblings');
   }
 
   var o = options || {};
@@ -45,12 +45,12 @@ function barkup (textarea, options) {
   if (o.wysiwyg === void 0) { o.wysiwyg = true; }
 
   if (!o.markdown && !o.html && !o.wysiwyg) {
-    throw new Error('Barkup expects at least one input mode to be available');
+    throw new Error('Barkdown expects at least one input mode to be available');
   }
 
   if (o.hr === void 0) { o.hr = false; }
   if (o.storage === void 0) { o.storage = true; }
-  if (o.storage === true) { o.storage = 'barkup_input_mode'; }
+  if (o.storage === true) { o.storage = 'barkdown_input_mode'; }
   if (o.fencing === void 0) { o.fencing = true; }
   if (o.render === void 0) { o.render = {}; }
   if (o.render.modes === void 0) { o.render.modes = {}; }
@@ -85,7 +85,7 @@ function barkup (textarea, options) {
   var place;
   var entry = { ta: textarea, api: api };
   var i = cache.push(entry);
-  var kanyeContext = 'barkup_' + i;
+  var kanyeContext = 'barkdown_' + i;
   var surface = getSurface(textarea, editable);
   var history = new InputHistory(surface, 'markdown');
   var modes = {
@@ -233,12 +233,12 @@ function barkup (textarea, options) {
 
     history.setInputMode(nextMode);
     restoreSelection();
-    fireLater('barkup-mode-change');
+    fireLater('barkdown-mode-change');
   }
 
   function fireLater () {
     setTimeout(function fire () {
-      crossvent.fabricate(textarea, 'barkup-mode-change');
+      crossvent.fabricate(textarea, 'barkdown-mode-change');
     }, 0);
   }
 
@@ -300,6 +300,6 @@ function macify (text) {
     .replace(/\bshift\b/i, '\u21e7');
 }
 
-barkup.find = find;
-barkup.strings = strings;
-module.exports = barkup;
+barkdown.find = find;
+barkdown.strings = strings;
+module.exports = barkdown;

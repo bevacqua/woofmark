@@ -1,7 +1,7 @@
 void function () {
   'use strict';
 
-  barkup(ta, {
+  barkdown(ta, {
     parseMarkdown: megamark,
     parseHTML: domador
   });

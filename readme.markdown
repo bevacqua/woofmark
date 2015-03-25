@@ -1,4 +1,4 @@
-# barkup
+# barkdown
 
 > Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor
 
@@ -18,29 +18,29 @@ Browser support includes every sane browser and **IE9+**.
 You can get it on npm.
 
 ```shell
-npm install barkup --save
+npm install barkdown --save
 ```
 
 Or bower, too.
 
 ```shell
-bower install barkup --save
+bower install barkdown --save
 ```
 
-# `barkup.find(textarea)`
+# `barkdown.find(textarea)`
 
-Returns a `barkup` instance associated with `textarea`, or `null` if none exists. When `barkup(textarea, options?)` is called, `barkup.find` will be used to look up an existing instance, which gets immediately returned.
+Returns a `barkdown` instance associated with `textarea`, or `null` if none exists. When `barkdown(textarea, options?)` is called, `barkdown.find` will be used to look up an existing instance, which gets immediately returned.
 
-# `barkup(textarea, options?)`
+# `barkdown(textarea, options?)`
 
 Adds rich editing capabilities to a `textarea` element.
 
 ### `options.parseMarkdown`
 
-A method that's called by `barkup` whenever it needs to parse Markdown into HTML. This way, editing user input is decoupled from a Markdown parser. We suggest you use [megamark][1] to parse Markdown. This parser is used whenever the editor switches from Markdown mode into HTML or WYSIWYG mode.
+A method that's called by `barkdown` whenever it needs to parse Markdown into HTML. This way, editing user input is decoupled from a Markdown parser. We suggest you use [megamark][1] to parse Markdown. This parser is used whenever the editor switches from Markdown mode into HTML or WYSIWYG mode.
 
 ```js
-barkup(textarea, {
+barkdown(textarea, {
   parseMarkdown: require('megamark')
 });
 ```
@@ -49,15 +49,15 @@ For optimal consistency, your `parseMarkdown` method should match whatever Markd
 
 ### `options.parseHTML`
 
-A method that's called by `barkup` whenever it needs to parse HTML or a DOM tree into Markdown. This way, editing user input is decoupled from a DOM parser. We suggest you use [domador][2] to parse HTML and DOM. This parser is used whenever the editor switches to Markdown mode, and also when [.value()](#value) is called while in the HTML or WYSIWYG modes.
+A method that's called by `barkdown` whenever it needs to parse HTML or a DOM tree into Markdown. This way, editing user input is decoupled from a DOM parser. We suggest you use [domador][2] to parse HTML and DOM. This parser is used whenever the editor switches to Markdown mode, and also when [.value()](#value) is called while in the HTML or WYSIWYG modes.
 
 ```js
-barkup(textarea, {
+barkdown(textarea, {
   parseHTML: require('domador')
 });
 ```
 
-If you're implementing your own `parseHTML` method, note that `barkup` will call `parseHTML` with either a DOM element or a Markdown string.
+If you're implementing your own `parseHTML` method, note that `barkdown` will call `parseHTML` with either a DOM element or a Markdown string.
 
 While the `parseHTML` method will never map HTML back to the original Markdown in 100% cases, _(because you can't really know if the original source was plain HTML or Markdown)_, it should strive to detokenize whatever special tokens you may allow in `parseMarkdown`, so that the user isn't met with inconsistent output when switching between the different editing modes.
 
@@ -71,19 +71,19 @@ assert.equal(parseHTML(parseMarkdown(parsed)), parsed);
 As an example, consider the following piece of Markdown:
 
 ```markdown
-Hey @bevacqua I _love_ [barkup](https://github.com/bevacqua/barkup)!
+Hey @bevacqua I _love_ [barkdown](https://github.com/bevacqua/barkdown)!
 ```
 
 Without any custom Markdown hooks, it would translate to HTML similar to the following:
 
 ```html
-<p>Hey @bevacqua I <em>love</em> <a href="https://github.com/bevacqua/barkup">barkup</a>!</p>
+<p>Hey @bevacqua I <em>love</em> <a href="https://github.com/bevacqua/barkdown">barkdown</a>!</p>
 ```
 
 However, suppose we were to add a tokenizer in our `megamark` configuration, like below:
 
 ```js
-barkup(textarea, {
+barkdown(textarea, {
   parseMarkdown: function (input) {
     return require('megamark')(input, {
       tokenizers: [{
@@ -101,19 +101,19 @@ barkup(textarea, {
 Our HTML output would now look slightly different.
 
 ```html
-<p>Hey <a href="/users/bevacqua">@bevacqua</a> I <em>love</em> <a href="https://github.com/bevacqua/barkup">barkup</a>!</p>
+<p>Hey <a href="/users/bevacqua">@bevacqua</a> I <em>love</em> <a href="https://github.com/bevacqua/barkdown">barkdown</a>!</p>
 ```
 
 The problem is that `parseHTML` doesn't know about the tokenizer, so if you were to convert the HTML back into Markdown, you'd get:
 
 ```markdown
-Hey [@bevacqua](/users/bevacqua) I _love_ [barkup](https://github.com/bevacqua/barkup)!
+Hey [@bevacqua](/users/bevacqua) I _love_ [barkdown](https://github.com/bevacqua/barkdown)!
 ```
 
 The solution is to let `parseHTML` _"know"_ about the tokenizer, so to speak. In the example below, `domador` is now aware that links that start with `@` should be converted back into something like `@bevacqua`. This kind of nudge to the Markdown compiler is particularly useful in simpler use cases where you'd want to preserve HTML elements entirely when they have CSS classes, as well.
 
 ```js
-barkup(textarea, {
+barkdown(textarea, {
   parseMarkdown: function (input) {
     return require('megamark')(input, {
       tokenizers: [{
@@ -158,11 +158,11 @@ If `options.wysiwyg` mode is enabled, `editable` is the DOM element that's used 
 
 ### `options.storage`
 
-Enables this particular instance `barkup` to remember the user's preferred input mode. If enabled, the type of input mode will be persisted across browser refreshes using `localStorage`. You can pass in `true` if you'd like all instances to share the same `localStorage` property name, but you can also pass in the property name you want to use, directly. Useful for grouping preferences as you see fit.
+Enables this particular instance `barkdown` to remember the user's preferred input mode. If enabled, the type of input mode will be persisted across browser refreshes using `localStorage`. You can pass in `true` if you'd like all instances to share the same `localStorage` property name, but you can also pass in the property name you want to use, directly. Useful for grouping preferences as you see fit.
 
-# `barkup.strings`
+# `barkdown.strings`
 
-To enable localization, `barkup.strings` exposes all user-facing messages used in Barkup. Make sure not to replace `barkup.strings` with a new object, as a reference to it is cached during module load.
+To enable localization, `barkdown.strings` exposes all user-facing messages used in Barkdown. Make sure not to replace `barkdown.strings` with a new object, as a reference to it is cached during module load.
 
 # License
 

@@ -155,7 +155,7 @@ function prompt (options, done) {
         body: form
       };
 
-      form.append(upload.key || 'barkup_upload', file, file.name);
+      form.append(upload.key || 'barkdown_upload', file, file.name);
       classes.add(domup.area, 'bk-prompt-uploading');
       xhr(req, handleResponse);
 

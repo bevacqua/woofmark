@@ -6,13 +6,23 @@ var rbulletafter = /^\d+\. /;
 var rbulletline = /^\s*\d+\.$/;
 var rbulletleft = /^\s*\d+$/;
 var rbulletright = /\d|\./;
-var rwhitespace = /^\s+$/;
+var rwhitespace = /^\s*$/;
 var rhr = /^---+$/;
+var rend = /^$|\s|\n/;
+var rfootnotedeclaration = /^\[[^\]]+\]\s*:\s*[A-z\/]/;
+var rfootnotebegin = /^\s*\[[^\]]*$/;
+var rfootnotebegan = /^\s*\[[^\]]+$/;
+var rfootnoteleft = /^\s*\[[^\]]+\]\s*$/;
+var rfootnoteanchor = /^\s*\[[^\]]+\]\s*:$/;
+var rfootnotelink = /^\s*\[[^\]]+\]\s*:\s*[A-z\/]/;
+var rfootnotefull = /^\s*\[[^\]]+\]\s*:\s*[A-z\/].*\s*"[^"]*"/;
+var rspaceorquote = /\s|"/;
+var rspaceorcolon = /\s|:/;
 
 function rememberSelection (history) {
   var code = Math.random().toString(2).substr(2);
-  var open = 'BarkupSelectionOpenMarker' + code;
-  var close = 'BarkupSelectionCloseMarker' + code;
+  var open = 'BarkdownSelectionOpenMarker' + code;
+  var close = 'BarkdownSelectionCloseMarker' + code;
   var rmarkers = new RegExp(open + '|' + close, 'g');
   mark();
   return unmark;
@@ -57,20 +67,52 @@ function rememberSelection (history) {
     function move (p, offset) {
       var prev = all[p - 1] || '';
       var next = all[p] || '';
-      var line = backtrace(p - 1);
+      var line = backtrace(p - 1, '\n');
       var jumps = prev === '' || prev === '\n';
-
-      // todo: link refs, footnotes
-      console.log('%s%s%s', prev, offset === 1 ? '[' : ']', next, p);
-      console.log('line: "%s"', line);
 
       if (next === ' ' && (jumps || prev === ' ')) {
         return again();
       }
 
+      var close = backtrace(p - 1, ']');
+      var reopened = close.indexOf('[');
+
+      // these two handle anchored references '[foo][1]', or even '[bar]  \n [2]'
+      if (reopened !== -1 && rwhitespace.test(close.substr(0, reopened))) {
+        return again(-close.length);
+      } else {
+        reopened = all.substr(p).indexOf('[');
+        if (reopened !== -1 && rwhitespace.test(all.substr(p, reopened))) {
+          return again(-1);
+        }
+      }
+
+      // the seven following rules together handle footnote references
+      if ((jumps || rwhitespace.test(line)) && rfootnotedeclaration.test(all.substr(p))) {
+        return again(); // started with '', '\n', or '  ' and continued with '[a-1]: h'
+      }
+      if (rfootnotebegin.test(line) && next !== ']') {
+        return again(); // started with '[' and continued with 'a-1'
+      }
+      if (rfootnotebegan.test(line) && next === ']') {
+        return again(); // started with '[a-1' and continued with ']: h'
+      }
+      if (rfootnoteleft.test(line) && rspaceorcolon.test(next)) {
+        return again(); // started with '[a-1]  ' and continued with ':'
+      }
+      if (rfootnoteanchor.test(line) && next === ' ') {
+        return again(); // started with '[a-1]  :' and continued with ' '
+      }
+      if (rfootnotelink.test(line) && prev === ' ' && rspaceorquote.test(next) && offset === 1) {
+        return again(); // started with '[a-1]  :' and continued with ' ', or '"', on the left
+      }
+      if (rfootnotefull.test(line) && rend.test(next)) {
+        return again(-1); // started with '[a-1]  : something "something"' and continued with '', ' ', or '\n'
+      }
+
       // the three following rules together handle ordered list items: '\n1. foo\n2. bar'
       if ((jumps || rwhitespace.test(line)) && rbulletafter.test(all.substr(p))) {
-        return again(); // started with '', '\n', or '  ' and continued with '  123. '
+        return again(); // started with '', '\n', or '  ' and continued with '123. '
       }
       if (rbulletleft.test(line) && rbulletright.test(next)) {
         return again(); // started with '  123' and ended in '4' or '.'
@@ -98,13 +140,14 @@ function rememberSelection (history) {
       }
       return p;
 
-      function again () {
-        return move(p + offset, offset);
+      function again (override) {
+        var diff = override || offset;
+        return move(p + diff, diff > 0 ? 1 : -1);
       }
-      function backtrace (p) {
+      function backtrace (p, edge) {
         var last = all[p];
         var text = '';
-        while (last && last !== '\n') {
+        while (last && last !== edge) {
           text = last + text;
           last = all[--p];
         }

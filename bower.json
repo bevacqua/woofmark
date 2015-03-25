@@ -1,9 +1,9 @@
 {
-  "name": "barkup",
+  "name": "barkdown",
   "version": "1.0.0",
   "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
-  "main": "dist/barkup.js",
-  "homepage": "https://github.com/bevacqua/barkup",
+  "main": "dist/barkdown.js",
+  "homepage": "https://github.com/bevacqua/barkdown",
   "authors": [
     "Nicolas Bevacqua <nicolasbevacqua@gmail.com>"
   ],
