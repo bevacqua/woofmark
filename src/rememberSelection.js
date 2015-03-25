@@ -1,12 +1,13 @@
 'use strict';
 
 var ranchored = /^[#>*-]$/;
-var rboundary = /^[*_`#]$/;
+var rboundary = /^[*_`#-]$/;
 var rbulletafter = /^\d+\. /;
 var rbulletline = /^\s*\d+\.$/;
 var rbulletleft = /^\s*\d+$/;
 var rbulletright = /\d|\./;
 var rwhitespace = /^\s+$/;
+var rhr = /^---+$/;
 
 function rememberSelection (history) {
   var code = Math.random().toString(2).substr(2);
@@ -85,6 +86,9 @@ function rememberSelection (history) {
         return again();
       }
       if (next === prev && rboundary.test(next)) {
+        return again();
+      }
+      if (rhr.test(line) && next === '\n') {
         return again();
       }
       if (all.substr(p - 3, 3) === '```' && offset === 1) { // handles '```javascript\ncode\n```'
