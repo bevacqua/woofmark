@@ -187,7 +187,7 @@ function barkup (textarea, options) {
       return;
     }
 
-    restoreSelection = rememberSelection(history);
+    restoreSelection = rememberSelection(history, o);
     textarea.blur(); // avert chrome repaint bugs
 
     if (nextMode === 'markdown') {
