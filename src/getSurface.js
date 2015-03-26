@@ -139,6 +139,9 @@ function surface (textarea, editable) {
     function modernSelection () {
       var sel = getSelection();
       var range = document.createRange();
+      if (!p.startContainer) {
+        return;
+      }
       if (p.endContainer) {
         range.setEnd(p.endContainer, p.endOffset);
       } else {
