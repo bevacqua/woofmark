@@ -20,6 +20,7 @@ var modeNames = ['markdown', 'html', 'wysiwyg'];
 var cache = [];
 var mac = /\bMac OS\b/.test(global.navigator.userAgent);
 var doc = document;
+var rparagraph = /^<p><\/p>\n?$/i;
 
 function find (textarea) {
   for (var i = 0; i < cache.length; i++) {
@@ -192,30 +193,27 @@ function barkdown (textarea, options) {
     if (currentMode === nextMode) {
       return;
     }
-    if (currentMode === 'html' && nextMode === 'wysiwyg' && !textarea.value) {
-      textarea.value = '<p></p>\n';
-    }
 
     restoreSelection = focusing && rememberSelection(history, o);
     textarea.blur(); // avert chrome repaint bugs
 
     if (nextMode === 'markdown') {
       if (currentMode === 'html') {
-        textarea.value = o.parseHTML(textarea.value);
+        textarea.value = o.parseHTML(textarea.value).trim();
       } else {
-        textarea.value = o.parseHTML(editable);
+        textarea.value = o.parseHTML(editable).trim();
       }
     } else if (nextMode === 'html') {
       if (currentMode === 'markdown') {
-        textarea.value = o.parseMarkdown(textarea.value);
+        textarea.value = o.parseMarkdown(textarea.value).trim();
       } else {
-        textarea.value = editable.innerHTML;
+        textarea.value = editable.innerHTML.trim();
       }
     } else if (nextMode === 'wysiwyg') {
       if (currentMode === 'markdown') {
-        editable.innerHTML = o.parseMarkdown(textarea.value);
+        editable.innerHTML = o.parseMarkdown(textarea.value).replace(rparagraph, '').trim();
       } else {
-        editable.innerHTML = textarea.value;
+        editable.innerHTML = textarea.value.replace(rparagraph, '').trim();
       }
     }
 

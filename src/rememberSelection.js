@@ -19,6 +19,7 @@ var rfootnotelink = /^\s*\[[^\]]+\]\s*:\s*[A-z\/]/;
 var rfootnotefull = /^\s*\[[^\]]+\]\s*:\s*[A-z\/].*\s*"[^"]*"/;
 var rspaceorquote = /\s|"/;
 var rspaceorcolon = /\s|:/;
+var rempty = /^(<p><\/p>)?\n?$/i;
 
 function rememberSelection (history) {
   var code = Math.random().toString(18).substr(2).replace(/\d+/g, '');
@@ -32,6 +33,10 @@ function rememberSelection (history) {
     var state = history.reset().inputState;
     var chunks = state.getChunks();
     var mode = state.mode;
+    var all = chunks.before + chunks.selection + chunks.after;
+    if (rempty.test(all)) {
+      return;
+    }
     if (mode === 'markdown') {
       updateMarkdownChunks(chunks);
     } else {
