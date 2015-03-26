@@ -1,5 +1,6 @@
 'use strict';
 
+var bullseye = require('bullseye');
 var ranchored = /^[#>*-]$/;
 var rboundary = /^[*_`#-]$/;
 var rbulletafter = /^\d+\. /;
@@ -20,7 +21,7 @@ var rspaceorquote = /\s|"/;
 var rspaceorcolon = /\s|:/;
 
 function rememberSelection (history) {
-  var code = Math.random().toString(2).substr(2);
+  var code = Math.random().toString(18).substr(2).replace(/\d+/g, '');
   var open = 'BarkdownSelectionOpenMarker' + code;
   var close = 'BarkdownSelectionCloseMarker' + code;
   var rmarkers = new RegExp(open + '|' + close, 'g');
@@ -51,8 +52,14 @@ function rememberSelection (history) {
     chunks.before = all.substr(0, selectionStart).replace(rmarkers, '');
     chunks.selection = all.substr(selectionStart, selectionEnd - selectionStart).replace(rmarkers, '');
     chunks.after = all.substr(end).replace(rmarkers, '');
+    var el = history.surface.current(history.inputMode);
+    var eye = bullseye(el, {
+      caret: true, autoupdateToCaret: false, tracking: false
+    });
     state.setChunks(chunks);
     state.restore(false);
+    state.scrollTop = el.scrollTop = eye.read().y - el.getBoundingClientRect().top - 50;
+    eye.destroy();
   }
 
   function updateMarkdownChunks (chunks) {
