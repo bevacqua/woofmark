@@ -46,8 +46,10 @@ function rememberSelection (history) {
     var all = chunks.before + chunks.selection + chunks.after;
     var start = all.lastIndexOf(open);
     var end = all.lastIndexOf(close) + close.length;
-    chunks.before = all.substr(0, start).replace(rmarkers, '');
-    chunks.selection = all.substr(start, end - start).replace(rmarkers, '');
+    var selectionStart = start === -1 ? 0 : start;
+    var selectionEnd = end === -1 ? 0 : end;
+    chunks.before = all.substr(0, selectionStart).replace(rmarkers, '');
+    chunks.selection = all.substr(selectionStart, selectionEnd - selectionStart).replace(rmarkers, '');
     chunks.after = all.substr(end).replace(rmarkers, '');
     state.setChunks(chunks);
     state.restore(false);

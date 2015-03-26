@@ -5,6 +5,7 @@ var crossvent = require('crossvent');
 var kanye = require('kanye');
 var strings = require('./strings');
 var setText = require('./setText');
+var getSelection = require('./polyfills/getSelection');
 var rememberSelection = require('./rememberSelection');
 var bindCommands = require('./bindCommands');
 var InputHistory = require('./InputHistory');
@@ -78,6 +79,9 @@ function barkdown (textarea, options) {
   var editor = {
     addCommand: addCommand,
     addCommandButton: addCommandButton,
+    runCommand: runCommand,
+    parseMarkdown: o.parseMarkdown,
+    parseHTML: o.parseHTML,
     destroy: destroy,
     value: getMarkdown,
     editable: o.wysiwyg ? editable : null,
@@ -181,14 +185,18 @@ function barkdown (textarea, options) {
     var currentMode = editor.mode;
     var old = modes[currentMode].button;
     var button = modes[nextMode].button;
+    var focusing = !!e || doc.activeElement === textarea || doc.activeElement === editable;
 
     stop(e);
 
     if (currentMode === nextMode) {
       return;
     }
+    if (currentMode === 'html' && nextMode === 'wysiwyg' && !textarea.value) {
+      textarea.value = '<p></p>\n';
+    }
 
-    restoreSelection = rememberSelection(history, o);
+    restoreSelection = focusing && rememberSelection(history, o);
     textarea.blur(); // avert chrome repaint bugs
 
     if (nextMode === 'markdown') {
@@ -212,15 +220,15 @@ function barkdown (textarea, options) {
     }
 
     if (nextMode === 'wysiwyg') {
+      classes.add(textarea, 'bk-hide');
       classes.rm(editable, 'bk-hide');
       if (place) { classes.rm(place, 'bk-hide'); }
-      classes.add(textarea, 'bk-hide');
-      setTimeout(focusEditable, 0);
+      if (focusing) { setTimeout(focusEditable, 0); }
     } else {
       classes.rm(textarea, 'bk-hide');
       classes.add(editable, 'bk-hide');
       if (place) { classes.add(place, 'bk-hide'); }
-      textarea.focus();
+      if (focusing) { textarea.focus(); }
     }
     classes.add(button, 'bk-mode-active');
     classes.rm(old, 'bk-mode-active');
@@ -233,13 +241,13 @@ function barkdown (textarea, options) {
     if (o.storage) { ls.set(o.storage, nextMode); }
 
     history.setInputMode(nextMode);
-    restoreSelection();
+    if (restoreSelection) { restoreSelection(); }
     fireLater('barkdown-mode-change');
   }
 
-  function fireLater () {
+  function fireLater (type) {
     setTimeout(function fire () {
-      crossvent.fabricate(textarea, 'barkdown-mode-change');
+      crossvent.fabricate(textarea, type);
     }, 0);
   }
 
@@ -276,6 +284,13 @@ function barkdown (textarea, options) {
   function addCommand (combo, fn) {
     kanye.on(combo, parent, getCommandHandler(surface, history, fn), kanyeContext);
   }
+
+  function runCommand (fn) {
+    getCommandHandler(surface, history, rearrange)(null);
+    function rearrange (e, mode, chunks) {
+      return fn.call(this, chunks, mode);
+    }
+  }
 }
 
 function tag (options) {
@@ -288,10 +303,7 @@ function tag (options) {
 }
 
 function stop (e) {
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
+  if (e) { e.preventDefault(); e.stopPropagation(); }
 }
 
 function macify (text) {
@@ -303,4 +315,5 @@ function macify (text) {
 
 barkdown.find = find;
 barkdown.strings = strings;
+barkdown.getSelection = getSelection;
 module.exports = barkdown;
