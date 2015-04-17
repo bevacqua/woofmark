@@ -93,6 +93,10 @@ function barkdown (textarea, options) {
   var entry = { ta: textarea, editor: editor };
   var i = cache.push(entry);
   var kanyeContext = 'barkdown_' + i;
+  var kanyeOptions = {
+    parent: parent,
+    context: kanyeContext
+  };
   var surface = getSurface(textarea, editable);
   var history = new InputHistory(surface, 'markdown');
   var modes = {
@@ -157,9 +161,9 @@ function barkdown (textarea, options) {
     if (remove) {
       kanye.clear(kanyeContext);
     } else {
-      if (o.markdown) { kanye.on('cmd+m', parent, markdownMode, kanyeContext); }
-      if (o.html) { kanye.on('cmd+h', parent, htmlMode, kanyeContext); }
-      if (o.wysiwyg) { kanye.on('cmd+p', parent, wysiwygMode, kanyeContext); }
+      if (o.markdown) { kanye.on('cmd+m', kanyeOptions, markdownMode); }
+      if (o.html) { kanye.on('cmd+h', kanyeOptions, htmlMode); }
+      if (o.wysiwyg) { kanye.on('cmd+p', kanyeOptions, wysiwygMode); }
     }
     classes[ar](parent, 'bk-container');
     parent[mov](editable);
@@ -280,7 +284,7 @@ function barkdown (textarea, options) {
   }
 
   function addCommand (combo, fn) {
-    kanye.on(combo, parent, getCommandHandler(surface, history, fn), kanyeContext);
+    kanye.on(combo, kanyeOptions, getCommandHandler(surface, history, fn));
   }
 
   function runCommand (fn) {
