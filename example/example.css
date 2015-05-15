@@ -107,6 +107,7 @@ button {
   padding: 18px 12px;
   cursor: pointer;
   outline: none;
+  height: 55px;
 }
 
 button:hover {
@@ -130,11 +131,8 @@ kbd {
   vertical-align: middle;
 }
 
-.nsg-tag {
-  border-color: #e74c3c;
-}
-
-.inline {
+.bk-commands,
+.bk-switchboard {
   display: inline-block;
 }
 
@@ -144,9 +142,4 @@ kbd {
   right: 0;
   border: 0;
   z-index: 1;
-}
-
-.autofruit {
-  width: 16px;
-  margin-right: 3px;
 }
