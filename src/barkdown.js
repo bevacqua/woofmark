@@ -94,7 +94,7 @@ function barkdown (textarea, options) {
   var i = cache.push(entry);
   var kanyeContext = 'barkdown_' + i;
   var kanyeOptions = {
-    parent: parent,
+    filter: parent,
     context: kanyeContext
   };
   var surface = getSurface(textarea, editable);
