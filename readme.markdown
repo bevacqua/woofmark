@@ -186,8 +186,10 @@ If you wish to set up file uploads, _in addition to letting the user just paste 
   // what to call the FormData field?
   key: 'woofmark_upload',
 
-  // should return whether `e.dataTransfer.files[i]` is valid
-  validate: isItAnImageFile
+  // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
+  validate: function isItAnImageFile (file) {
+    return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
+  }
 }
 ```
 
