@@ -246,7 +246,7 @@ Example:
 
 # `editor`
 
-The `editor` API allows you to interact with `woofmark` editor instances.
+The `editor` API allows you to interact with `woofmark` editor instances. This is what you get back from `woofmark(textarea, options)` or `woofmark.find(textarea)`.
 
 ### `editor.addCommand(combo, fn)`
 
@@ -320,7 +320,7 @@ Shows the insert attachment dialog as if the button to insert a attachment had b
 
 ## `chunks`
 
-Describes the current state of the editor. <sub>Please ignore undocumented functionality in the `chunks` object.</sub>
+Describes the current state of the editor. This is the context you get on command event handlers such as the method passed to `editor.runCommand`. <sub>Please ignore undocumented functionality in the `chunks` object.</sub>
 
 #### `chunks.selection`
 
