@@ -116,7 +116,7 @@ The problem is that `parseHTML` doesn't know about the tokenizer, so if you were
 Hey [@bevacqua](/users/bevacqua) I _love_ [woofmark](https://github.com/bevacqua/woofmark)!
 ```
 
-The solution is to let `parseHTML` _"know"_ about the tokenizer, so to speak. In the example below, `domador` is now aware that links that start with `@` should be converted back into something like `@bevacqua`. This kind of nudge to the Markdown compiler is particularly useful in simpler use cases where you'd want to preserve HTML elements entirely when they have CSS classes, as well.
+The solution is to let `parseHTML` _"know"_ about the tokenizer, so to speak. In the example below, `domador` is now aware that links that start with `@` should be converted back into something like `@bevacqua`.
 
 ```js
 woofmark(textarea, {
@@ -141,6 +141,8 @@ woofmark(textarea, {
   }
 });
 ```
+
+This kind of nudge to the Markdown compiler is particularly useful in simpler use cases where you'd want to preserve HTML elements entirely when they have CSS classes, as well.
 
 ### `options.fencing`
 
