@@ -205,6 +205,20 @@ If you want to use either `options.images` or `options.attachments` for file upl
 }
 ```
 
+The server will receive the file upload as `req.files[key]` _(Express)_. Afterwards you should respond with the following:
+
+- Status code between `200` and `299` if the upload succeeded
+- A JSON object in the response body, containing an `href` and a `title`
+
+Example:
+
+```js
+{
+  "href": "http://localhost:9000/img/2015060123502510300.png",
+  "title": "Screen Shot 2015-06-01 at 21.44.35 (43.82 KB)"
+}
+```
+
 # `woofmark.strings`
 
 To enable localization, `woofmark.strings` exposes all user-facing messages used in woofmark. Make sure not to replace `woofmark.strings` with a new object, as a reference to it is cached during module load.
