@@ -10,6 +10,7 @@ Browser support includes every sane browser and **IE9+**.
 - Progressive, enhance a raw `<textarea>`
 - Markdown, HTML, and WYSIWYG input modes
 - Text selection persists even across input modes!
+- Built in Undo and Redo
 - Entirely customizable styles
 - Bring your own parsers
 
@@ -35,11 +36,11 @@ bower install woofmark --save
 
 # `woofmark.find(textarea)`
 
-Returns a `woofmark` instance associated with `textarea`, or `null` if none exists. When `woofmark(textarea, options?)` is called, `woofmark.find` will be used to look up an existing instance, which gets immediately returned.
+Returns an [editor](#editor) object associated with a `woofmark` instance, or `null` if none exists for the `textarea` yet. When `woofmark(textarea, options?)` is called, `woofmark.find` will be used to look up an existing instance, which gets immediately returned.
 
 # `woofmark(textarea, options?)`
 
-Adds rich editing capabilities to a `textarea` element.
+Adds rich editing capabilities to a `textarea` element. Returns an [editor](#editor) object.
 
 ### `options.parseMarkdown`
 
@@ -55,7 +56,7 @@ For optimal consistency, your `parseMarkdown` method should match whatever Markd
 
 ### `options.parseHTML`
 
-A method that's called by `woofmark` whenever it needs to parse HTML or a DOM tree into Markdown. This way, editing user input is decoupled from a DOM parser. We suggest you use [domador][2] to parse HTML and DOM. This parser is used whenever the editor switches to Markdown mode, and also when [.value()](#value) is called while in the HTML or WYSIWYG modes.
+A method that's called by `woofmark` whenever it needs to parse HTML or a DOM tree into Markdown. This way, editing user input is decoupled from a DOM parser. We suggest you use [domador][2] to parse HTML and DOM. This parser is used whenever the editor switches to Markdown mode, and also when [.value()](#editorvalue) is called while in the HTML or WYSIWYG modes.
 
 ```js
 woofmark(textarea, {
@@ -160,13 +161,35 @@ Enables HTML user input mode. Defaults to `true`.
 
 Enables WYSIWYG user input mode. Defaults to `true`.
 
-### `options.editable`
+### `options.defaultMode`
 
-If `options.wysiwyg` mode is enabled, `editable` is the DOM element that's used to display the editable content.
+Sets the default `mode` for the editor.
 
 ### `options.storage`
 
 Enables this particular instance `woofmark` to remember the user's preferred input mode. If enabled, the type of input mode will be persisted across browser refreshes using `localStorage`. You can pass in `true` if you'd like all instances to share the same `localStorage` property name, but you can also pass in the property name you want to use, directly. Useful for grouping preferences as you see fit.
+
+<sub>Note that the mode saved by storage is always preferred over the default mode.</sub>
+
+### `options.render.modes`
+
+This option can be set to a method that determines how to fill the Markdown, HTML, and WYSIWYG mode buttons. The method will be called once for each of them.
+
+###### Example
+
+```js
+woofmark(textarea, {
+  render: {
+    modes: function (button, id) {
+      button.className = 'woofmark-mode-' + id;
+    }
+  }
+});
+```
+
+### `options.render.commands`
+
+Same as `options.render.modes` but for command buttons. Called once on each button.
 
 ### `options.images`
 
@@ -221,6 +244,105 @@ Example:
 }
 ```
 
+# `editor`
+
+The `editor` API allows you to interact with `woofmark` editor instances.
+
+### `editor.addCommand(combo, fn)`
+
+Binds a keyboard key combination such as `cmd+shift+b` to a method _using [kanye][5]_. Please note that you should always use `cmd` rather than `ctrl`. In non-OSX environments it'll be properly mapped to `ctrl`. When the combo is entered, `fn(e, mode, chunks)` will be called.
+
+- `e` is the original event object
+- `mode` can be `markdown`, `html`, or `wysiwyg`
+- `chunks` is a [chunks](#chunks) object, describing the current state of the editor
+
+In addition, `fn` is given a `this` context similar to that of Grunt tasks, where you can choose to do nothing and the command is assumed to be synchronous, or you can call `this.async()` and get back a `done` callback like in the example below.
+
+```js
+editor.addCommand('cmd+j', function jump (e, mode, chunks) {
+  var done = this.async();
+  // TODO: async operation
+  done();
+});
+```
+
+When the command finishes, the editor will recover focus, and whatever changes where made to the `chunks` object will be applied to the editor. All commands performed by `woofmark` work this way, so please take a look [at the source code][6] if you want to implement your own commands.
+
+### `editor.addCommandButton(id, combo?, fn)`
+
+Adds a button to the editor using an `id` and an event handler. When the button is pressed, `fn(e, mode, chunks)` will be called with the same arguments as the ones passed if using [`editor.addCommand(combo, fn)`](#editoraddcommandcombo-fn).
+
+You can optionally pass in a `combo`, in which case `editor.addCommand(combo, fn)` will be called, in addition to creating the command button.
+
+### `editor.runCommand(fn)`
+
+If you just want to run a command without setting up a keyboard shortcut or a button, you can use this method. Note that there won't be any `e` event argument in this case, you'll only get `mode, chunks` passed to `fn`. You can still run the command asynchronously using `this.async()`.
+
+### `editor.parseMarkdown()`
+
+This is the same method passed as an option.
+
+### `editor.parseHTML()`
+
+This is the same method passed as an option.
+
+### `editor.destroy()`
+
+Destroys the `editor` instance, removing all event handlers. The editor is reverted to `markdown` mode, and assigned the proper Markdown source code if needed. Then we go back to being a plain old and dull `<textarea>` element.
+
+### `editor.value()`
+
+Returns the current Markdown value for the `editor`.
+
+### `editor.editable`
+
+If `options.wysiwyg` then this will be the `contentEditable` `<div>`. Otherwise it'll be set to `null`.
+
+### `editor.mode`
+
+The current `mode` for the editor. Can be `markdown`, `html`, or `wysiwyg`.
+
+### `editor.setMode(mode)`
+
+Sets the current `mode` of the editor.
+
+### `editor.showLinkDialog()`
+
+Shows the insert link dialog as if the button to insert a link had been clicked.
+
+### `editor.showImageDialog()`
+
+Shows the insert image dialog as if the button to insert a image had been clicked.
+
+### `editor.showAttachmentDialog()`
+
+Shows the insert attachment dialog as if the button to insert a attachment had been clicked.
+
+## `chunks`
+
+Describes the current state of the editor. <sub>Please ignore undocumented functionality in the `chunks` object.</sub>
+
+#### `chunks.selection`
+
+The currently selected piece of text in the editor, regardless of input `mode`.
+
+#### `chunks.before`
+
+The text that comes before `chunks.selection` in the editor.
+
+#### `chunks.after`
+
+The text that comes after `chunks.selection` in the editor.
+
+#### `chunks.scrollTop`
+
+The current `scrollTop` for the element. Useful to restore later in action history navigation.
+
+#### `chunks.trim(remove?)`
+
+Moves whitespace on either end of `chunks.selection` to `chunks.before` and `chunks.after` respectively. If `remove` has been set to `true`, the whitespace in the selection is discarded instead.
+
+
 # `woofmark.strings`
 
 To enable localization, `woofmark.strings` exposes all user-facing messages used in woofmark. Make sure not to replace `woofmark.strings` with a new object, as a reference to it is cached during module load.
@@ -233,3 +355,5 @@ MIT
 [2]: https://github.com/bevacqua/domador
 [3]: http://i.imgur.com/AhwXSLu.png
 [4]: http://bevacqua.github.io/woofmark
+[5]: https://github.com/bevacqua/kanye#kanyeoncombo-options-listener
+[6]: https://github.com/bevacqua/woofmark/blob/master/src/html/hr.js

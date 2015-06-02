@@ -53,7 +53,7 @@ function woofmark (textarea, options) {
 
   if (o.hr === void 0) { o.hr = false; }
   if (o.storage === void 0) { o.storage = true; }
-  if (o.storage === true) { o.storage = 'barkdown_input_mode'; }
+  if (o.storage === true) { o.storage = 'woofmark_input_mode'; }
   if (o.fencing === void 0) { o.fencing = true; }
   if (o.render === void 0) { o.render = {}; }
   if (o.render.modes === void 0) { o.render.modes = {}; }
@@ -92,7 +92,7 @@ function woofmark (textarea, options) {
   var place;
   var entry = { ta: textarea, editor: editor };
   var i = cache.push(entry);
-  var kanyeContext = 'barkdown_' + i;
+  var kanyeContext = 'woofmark_' + i;
   var kanyeOptions = {
     filter: parent,
     context: kanyeContext
@@ -268,6 +268,10 @@ function woofmark (textarea, options) {
   }
 
   function addCommandButton (id, combo, fn) {
+    if (arguments.length === 2) {
+      fn = combo;
+      combo = null;
+    }
     var button = tag({ t: 'button', c: 'wk-command', p: commands });
     var custom = o.render.commands;
     var render = typeof custom === 'function' ? custom : renderers.commands;
@@ -279,7 +283,9 @@ function woofmark (textarea, options) {
     button.tabIndex = -1;
     render(button, id);
     crossvent.add(button, 'click', getCommandHandler(surface, history, fn));
-    addCommand(combo, fn);
+    if (combo) {
+      addCommand(combo, fn);
+    }
     return button;
   }
 
