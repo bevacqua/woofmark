@@ -1,5 +1,5 @@
 body {
-  background-color: #e74c3c;
+  background-color: #8e44ad;
   margin: 0 auto;
   max-width: 760px;
 }
@@ -93,7 +93,7 @@ textarea {
   outline: none;
   background-color: #ecf0f1;
   padding: 10px;
-  color: #e74c3c;
+  color: #8e44ad;
   border: 0;
   display: block;
   width: 100%;
@@ -106,7 +106,7 @@ textarea {
 
 button {
   background-color: #ecf0f1;
-  color: #e74c3c;
+  color: #8e44ad;
   border: 0;
   padding: 18px 12px;
   cursor: pointer;
@@ -115,7 +115,7 @@ button {
 }
 
 button:hover {
-  background-color: #e74c3c;
+  background-color: #8e44ad;
   color: #ecf0f1;
 }
 
@@ -140,8 +140,11 @@ kbd {
   display: inline-block;
 }
 
+.wk-wysiwyg {
+  outline: none;
+}
 .wk-mode-active {
-  background-color: #fcc;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .gh-fork {

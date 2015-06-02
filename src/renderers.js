@@ -10,7 +10,7 @@ function commands (el, id) {
 function modes (el, id) {
   var texts = {
     markdown: 'm\u2193',
-    wysiwyg: '\u0ca0.\u0ca0'
+    wysiwyg: 'wysiwyg'
   };
   setText(el, texts[id] || id);
 }

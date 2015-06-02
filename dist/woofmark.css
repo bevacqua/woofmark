@@ -23,6 +23,7 @@
   left: 2%;
   right: 2%;
   background-color: #dedede;
+  color: #555;
   padding: 10px;
   margin: 0 auto;
   max-width: 450px;
@@ -74,7 +75,7 @@
 .wk-prompt-error {
   display: none;
   padding: 10px;
-  background-color: #fc9a9a;
+  background-color: rgba(0,0,0,0.1);
 }
 .wk-prompt-error-show {
   display: block;
