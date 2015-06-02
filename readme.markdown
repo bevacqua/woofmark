@@ -13,6 +13,12 @@ Browser support includes every sane browser and **IE9+**.
 - Entirely customizable styles
 - Bring your own parsers
 
+# Screenshot in the wild
+
+[![woofmark-stompflow][3]][4]
+
+<sub>_Look and feel is meant to blend into your designs_</sub>
+
 # Install
 
 You can get it on npm.
@@ -170,3 +176,5 @@ MIT
 
 [1]: https://github.com/bevacqua/megamark
 [2]: https://github.com/bevacqua/domador
+[3]: http://i.imgur.com/AhwXSLu.png
+[4]: http://bevacqua.github.io/woofmark
