@@ -168,6 +168,43 @@ If `options.wysiwyg` mode is enabled, `editable` is the DOM element that's used 
 
 Enables this particular instance `woofmark` to remember the user's preferred input mode. If enabled, the type of input mode will be persisted across browser refreshes using `localStorage`. You can pass in `true` if you'd like all instances to share the same `localStorage` property name, but you can also pass in the property name you want to use, directly. Useful for grouping preferences as you see fit.
 
+### `options.images`
+
+If you wish to set up file uploads, _in addition to letting the user just paste a link to an image (which is always enabled)_, you can configure `options.images` like below.
+
+```js
+{
+  // http method to use, defaults to PUT
+  method: 'PUT',
+
+  // endpoint where the images will be uploaded to, required
+  url: '/uploads',
+
+  // optional text describing the kind of files that can be uploaded
+  restriction: 'GIF, JPG, and PNG images',
+
+  // what to call the FormData field?
+  key: 'woofmark_upload',
+
+  // should return whether `e.dataTransfer.files[i]` is valid
+  validate: isItAnImageFile
+}
+```
+
+### `options.attachments`
+
+Virtually the same as `images`, except an anchor `<a>` tag will be used instead of an image `<img>` tag.
+
+### `options.xhr`
+
+If you want to use either `options.images` or `options.attachments` for file uploads, you'll have to tell `woofmark` how to communicate with the servers. You can use the `xhr` module for this, or anything that exposes a similar API.
+
+```js
+{
+  xhr: require('xhr')
+}
+```
+
 # `woofmark.strings`
 
 To enable localization, `woofmark.strings` exposes all user-facing messages used in woofmark. Make sure not to replace `woofmark.strings` with a new object, as a reference to it is cached during module load.
