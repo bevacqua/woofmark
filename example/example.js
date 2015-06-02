@@ -1,7 +1,7 @@
 void function () {
   'use strict';
 
-  woofmark(ta, {
+  woofmark(document.querySelector('#ta'), {
     parseMarkdown: megamark,
     parseHTML: domador
   });
