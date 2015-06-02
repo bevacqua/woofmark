@@ -23,8 +23,8 @@ var rempty = /^(<p><\/p>)?\n?$/i;
 
 function rememberSelection (history) {
   var code = Math.random().toString(18).substr(2).replace(/\d+/g, '');
-  var open = 'BarkdownSelectionOpenMarker' + code;
-  var close = 'BarkdownSelectionCloseMarker' + code;
+  var open = 'WoofmarkSelectionOpenMarker' + code;
+  var close = 'WoofmarkSelectionCloseMarker' + code;
   var rmarkers = new RegExp(open + '|' + close, 'g');
   mark();
   return unmark;

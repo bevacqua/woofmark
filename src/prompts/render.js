@@ -19,17 +19,17 @@ function e (type, cls, text) {
 
 function render (options) {
   var dom = {
-    dialog: e('article', 'bk-prompt ' + options.id),
-    close: e('a', 'bk-prompt-close'),
-    header: e('header', 'bk-prompt-header'),
-    h1: e('h1', 'bk-prompt-title', options.title),
-    section: e('section', 'bk-prompt-body'),
-    desc: e('p', 'bk-prompt-description', options.description),
-    inputContainer: e('div', 'bk-prompt-input-container'),
-    input: e('input', 'bk-prompt-input'),
-    cancel: e('button', 'bk-prompt-cancel', 'Cancel'),
-    ok: e('button', 'bk-prompt-ok', 'Ok'),
-    footer: e('footer', 'bk-prompt-buttons')
+    dialog: e('article', 'wk-prompt ' + options.id),
+    close: e('a', 'wk-prompt-close'),
+    header: e('header', 'wk-prompt-header'),
+    h1: e('h1', 'wk-prompt-title', options.title),
+    section: e('section', 'wk-prompt-body'),
+    desc: e('p', 'wk-prompt-description', options.description),
+    inputContainer: e('div', 'wk-prompt-input-container'),
+    input: e('input', 'wk-prompt-input'),
+    cancel: e('button', 'wk-prompt-cancel', 'Cancel'),
+    ok: e('button', 'wk-prompt-ok', 'Ok'),
+    footer: e('footer', 'wk-prompt-buttons')
   };
   dom.ok.type = 'button';
   dom.header[ac](dom.h1);
@@ -49,17 +49,17 @@ function render (options) {
 }
 
 function uploads (dom, warning) {
-  var fup = 'bk-prompt-fileupload';
+  var fup = 'wk-prompt-fileupload';
   var domup = {
-    area: e('section', 'bk-prompt-upload-area'),
-    warning: e('p', 'bk-prompt-error bk-warning', warning),
-    failed: e('p', 'bk-prompt-error bk-failed', strings.prompts.uploadfailed),
-    upload: e('label', 'bk-prompt-upload'),
-    uploading: e('span', 'bk-prompt-progress', strings.prompts.uploading),
-    drop: e('span', 'bk-prompt-drop', strings.prompts.drop),
-    dropicon: e('p', 'bk-prompt-drop-icon'),
-    browse: e('span', 'bk-prompt-browse', strings.prompts.browse),
-    dragdrop: e('p', 'bk-prompt-dragdrop', strings.prompts.drophint),
+    area: e('section', 'wk-prompt-upload-area'),
+    warning: e('p', 'wk-prompt-error wk-warning', warning),
+    failed: e('p', 'wk-prompt-error wk-failed', strings.prompts.uploadfailed),
+    upload: e('label', 'wk-prompt-upload'),
+    uploading: e('span', 'wk-prompt-progress', strings.prompts.uploading),
+    drop: e('span', 'wk-prompt-drop', strings.prompts.drop),
+    dropicon: e('p', 'wk-prompt-drop-icon'),
+    browse: e('span', 'wk-prompt-browse', strings.prompts.browse),
+    dragdrop: e('p', 'wk-prompt-dragdrop', strings.prompts.drophint),
     fileinput: e('input', fup)
   };
   domup.area[ac](domup.drop);
@@ -69,9 +69,9 @@ function uploads (dom, warning) {
   domup.upload[ac](domup.fileinput);
   domup.fileinput.id = fup;
   domup.fileinput.type = 'file';
-  dom.dialog.className += ' bk-prompt-uploads';
-  dom.inputContainer.className += ' bk-prompt-input-container-uploads';
-  dom.input.className += ' bk-prompt-input-uploads';
+  dom.dialog.className += ' wk-prompt-uploads';
+  dom.inputContainer.className += ' wk-prompt-input-container-uploads';
+  dom.input.className += ' wk-prompt-input-uploads';
   dom.section.insertBefore(domup.warning, dom.inputContainer);
   dom.section.insertBefore(domup.failed, dom.inputContainer);
   dom.section[ac](domup.upload);
@@ -82,10 +82,10 @@ function uploads (dom, warning) {
   crossvent.add(domup.fileinput, 'blur', blurredFileInput);
 
   function focusedFileInput () {
-    classes.add(domup.upload, 'bk-focused');
+    classes.add(domup.upload, 'wk-focused');
   }
   function blurredFileInput () {
-    classes.rm(domup.upload, 'bk-focused');
+    classes.rm(domup.upload, 'wk-focused');
   }
   return domup;
 }

@@ -20,9 +20,9 @@ function wrap (text) {
 
 function closePrompts () {
   if (doc.body.querySelectorAll) {
-    remove(doc.body.querySelectorAll('.bk-prompt'));
+    remove(doc.body.querySelectorAll('.wk-prompt'));
   } else {
-    remove(homebrewQSA('bk-prompt'));
+    remove(homebrewQSA('wk-prompt'));
   }
 }
 

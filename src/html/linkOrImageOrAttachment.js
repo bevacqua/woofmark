@@ -52,7 +52,7 @@ function linkOrImageOrAttachment (chunks, options) {
       chunks.selection = parts.selection;
       chunks.after = parts.after;
       resume();
-      crossvent.fabricate(options.surface.textarea, 'barkdown-mode-change');
+      crossvent.fabricate(options.surface.textarea, 'woofmark-mode-change');
       return;
     }
 

@@ -31,7 +31,7 @@ function find (textarea) {
   return null;
 }
 
-function barkdown (textarea, options) {
+function woofmark (textarea, options) {
   var cached = find(textarea);
   if (cached) {
     return cached;
@@ -39,7 +39,7 @@ function barkdown (textarea, options) {
 
   var parent = textarea.parentElement;
   if (parent.children.length > 1) {
-    throw new Error('Barkdown demands <textarea> elements to have no siblings');
+    throw new Error('woofmark demands <textarea> elements to have no siblings');
   }
 
   var o = options || {};
@@ -48,7 +48,7 @@ function barkdown (textarea, options) {
   if (o.wysiwyg === void 0) { o.wysiwyg = true; }
 
   if (!o.markdown && !o.html && !o.wysiwyg) {
-    throw new Error('Barkdown expects at least one input mode to be available');
+    throw new Error('woofmark expects at least one input mode to be available');
   }
 
   if (o.hr === void 0) { o.hr = false; }
@@ -74,9 +74,9 @@ function barkdown (textarea, options) {
     o.defaultMode = preference;
   }
 
-  var switchboard = tag({ c: 'bk-switchboard' });
-  var commands = tag({ c: 'bk-commands' });
-  var editable = tag({ c: ['bk-wysiwyg', 'bk-hide'].concat(o.classes.wysiwyg).join(' ') });
+  var switchboard = tag({ c: 'wk-switchboard' });
+  var commands = tag({ c: 'wk-commands' });
+  var editable = tag({ c: ['wk-wysiwyg', 'wk-hide'].concat(o.classes.wysiwyg).join(' ') });
   var editor = {
     addCommand: addCommand,
     addCommandButton: addCommandButton,
@@ -101,15 +101,15 @@ function barkdown (textarea, options) {
   var history = new InputHistory(surface, 'markdown');
   var modes = {
     markdown: {
-      button: tag({ t: 'button', c: 'bk-mode bk-mode-active' }),
+      button: tag({ t: 'button', c: 'wk-mode wk-mode-active' }),
       set: markdownMode
     },
     html: {
-      button: tag({ t: 'button', c: 'bk-mode bk-mode-inactive' }),
+      button: tag({ t: 'button', c: 'wk-mode wk-mode-inactive' }),
       set: htmlMode
     },
     wysiwyg: {
-      button: tag({ t: 'button', c: 'bk-mode bk-mode-inactive' }),
+      button: tag({ t: 'button', c: 'wk-mode wk-mode-inactive' }),
       set: wysiwygMode
     }
   };
@@ -119,7 +119,7 @@ function barkdown (textarea, options) {
   modeNames.forEach(addMode);
 
   if (o.wysiwyg) {
-    place = tag({ c: 'bk-wysiwyg-placeholder bk-hide', x: textarea.placeholder });
+    place = tag({ c: 'wk-wysiwyg-placeholder wk-hide', x: textarea.placeholder });
     crossvent.add(place, 'click', focusEditable);
   }
 
@@ -165,7 +165,7 @@ function barkdown (textarea, options) {
       if (o.html) { kanye.on('cmd+h', kanyeOptions, htmlMode); }
       if (o.wysiwyg) { kanye.on('cmd+p', kanyeOptions, wysiwygMode); }
     }
-    classes[ar](parent, 'bk-container');
+    classes[ar](parent, 'wk-container');
     parent[mov](editable);
     if (place) { parent[mov](place); }
     parent[mov](commands);
@@ -176,7 +176,7 @@ function barkdown (textarea, options) {
     if (editor.mode !== 'markdown') {
       textarea.value = getMarkdown();
     }
-    classes.rm(textarea, 'bk-hide');
+    classes.rm(textarea, 'wk-hide');
     bindEvents(true);
     delete cache[i - 1];
   }
@@ -222,20 +222,20 @@ function barkdown (textarea, options) {
     }
 
     if (nextMode === 'wysiwyg') {
-      classes.add(textarea, 'bk-hide');
-      classes.rm(editable, 'bk-hide');
-      if (place) { classes.rm(place, 'bk-hide'); }
+      classes.add(textarea, 'wk-hide');
+      classes.rm(editable, 'wk-hide');
+      if (place) { classes.rm(place, 'wk-hide'); }
       if (focusing) { setTimeout(focusEditable, 0); }
     } else {
-      classes.rm(textarea, 'bk-hide');
-      classes.add(editable, 'bk-hide');
-      if (place) { classes.add(place, 'bk-hide'); }
+      classes.rm(textarea, 'wk-hide');
+      classes.add(editable, 'wk-hide');
+      if (place) { classes.add(place, 'wk-hide'); }
       if (focusing) { textarea.focus(); }
     }
-    classes.add(button, 'bk-mode-active');
-    classes.rm(old, 'bk-mode-active');
-    classes.add(old, 'bk-mode-inactive');
-    classes.rm(button, 'bk-mode-inactive');
+    classes.add(button, 'wk-mode-active');
+    classes.rm(old, 'wk-mode-active');
+    classes.add(old, 'wk-mode-inactive');
+    classes.rm(button, 'wk-mode-inactive');
     button.setAttribute('disabled', 'disabled');
     old.removeAttribute('disabled');
     editor.mode = nextMode;
@@ -244,7 +244,7 @@ function barkdown (textarea, options) {
 
     history.setInputMode(nextMode);
     if (restoreSelection) { restoreSelection(); }
-    fireLater('barkdown-mode-change');
+    fireLater('woofmark-mode-change');
   }
 
   function fireLater (type) {
@@ -268,7 +268,7 @@ function barkdown (textarea, options) {
   }
 
   function addCommandButton (id, combo, fn) {
-    var button = tag({ t: 'button', c: 'bk-command', p: commands });
+    var button = tag({ t: 'button', c: 'wk-command', p: commands });
     var custom = o.render.commands;
     var render = typeof custom === 'function' ? custom : renderers.commands;
     var title = strings.titles[id];
@@ -315,7 +315,7 @@ function macify (text) {
     .replace(/\bshift\b/i, '\u21e7');
 }
 
-barkdown.find = find;
-barkdown.strings = strings;
-barkdown.getSelection = getSelection;
-module.exports = barkdown;
+woofmark.find = find;
+woofmark.strings = strings;
+woofmark.getSelection = getSelection;
+module.exports = woofmark;

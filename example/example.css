@@ -48,6 +48,10 @@ a:hover {
   color: #ecf0f1;
 }
 
+img {
+  max-width: 100%;
+}
+
 pre code {
   color: #fff;
   font-size: 18px;
@@ -131,9 +135,13 @@ kbd {
   vertical-align: middle;
 }
 
-.bk-commands,
-.bk-switchboard {
+.wk-commands,
+.wk-switchboard {
   display: inline-block;
+}
+
+.wk-mode-active {
+  background-color: #fcc;
 }
 
 .gh-fork {

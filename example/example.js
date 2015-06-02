@@ -1,7 +1,7 @@
 void function () {
   'use strict';
 
-  barkdown(ta, {
+  woofmark(ta, {
     parseMarkdown: megamark,
     parseHTML: domador
   });

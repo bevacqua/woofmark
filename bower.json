@@ -1,9 +1,9 @@
 {
-  "name": "barkdown",
+  "name": "woofmark",
   "version": "1.0.0",
   "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
-  "main": "dist/barkdown.js",
-  "homepage": "https://github.com/bevacqua/barkdown",
+  "main": "dist/woofmark.js",
+  "homepage": "https://github.com/bevacqua/woofmark",
   "authors": [
     "Nicolas Bevacqua <nicolasbevacqua@gmail.com>"
   ],

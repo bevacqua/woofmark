@@ -6,7 +6,7 @@ var classes = require('../classes');
 var strings = require('../strings');
 var ENTER_KEY = 13;
 var ESCAPE_KEY = 27;
-var dragClass = 'bk-prompt-upload-dragging';
+var dragClass = 'wk-prompt-upload-dragging';
 
 function okop () {
   return true;
@@ -24,7 +24,7 @@ function classify (group, classes) {
 function prompt (options, done) {
   var text = strings.prompts[options.type];
   var dom = render({
-    id: 'bk-prompt-' + options.type,
+    id: 'wk-prompt-' + options.type,
     title: text.title,
     description: text.description,
     placeholder: text.placeholder
@@ -87,7 +87,7 @@ function prompt (options, done) {
   }
 
   function warn () {
-    classes.add(domup.warning, 'bk-prompt-error-show');
+    classes.add(domup.warning, 'wk-prompt-error-show');
   }
   function dragging () {
     classes.add(domup.area, dragClass);
@@ -138,8 +138,8 @@ function prompt (options, done) {
     }
 
     function submit (files) {
-      classes.rm(domup.failed, 'bk-prompt-error-show');
-      classes.rm(domup.warning, 'bk-prompt-error-show');
+      classes.rm(domup.failed, 'wk-prompt-error-show');
+      classes.rm(domup.warning, 'wk-prompt-error-show');
       var file = valid(files);
       if (!file) {
         return;
@@ -155,14 +155,14 @@ function prompt (options, done) {
         body: form
       };
 
-      form.append(upload.key || 'barkdown_upload', file, file.name);
-      classes.add(domup.area, 'bk-prompt-uploading');
+      form.append(upload.key || 'woofmark_upload', file, file.name);
+      classes.add(domup.area, 'wk-prompt-uploading');
       xhr(req, handleResponse);
 
       function handleResponse (err, res, body) {
-        classes.rm(domup.area, 'bk-prompt-uploading');
+        classes.rm(domup.area, 'wk-prompt-uploading');
         if (err || res.statusCode < 200 || res.statusCode > 299) {
-          classes.add(domup.failed, 'bk-prompt-error-show');
+          classes.add(domup.failed, 'wk-prompt-error-show');
           return;
         }
         dom.input.value = body.href + ' "' + body.title + '"';

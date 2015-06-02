@@ -1,10 +1,10 @@
-.bk-hide {
+.wk-hide {
   display: none !important;
 }
-.bk-container {
+.wk-container {
   position: relative;
 }
-.bk-wysiwyg-placeholder {
+.wk-wysiwyg-placeholder {
   position: absolute;
   pointer-events: none;
   display: none;
@@ -14,10 +14,10 @@
   bottom: 10px;
   color: #999;
 }
-.bk-wysiwyg:empty + .bk-wysiwyg-placeholder {
+.wk-wysiwyg:empty + .wk-wysiwyg-placeholder {
   display: block;
 }
-.bk-prompt {
+.wk-prompt {
   position: fixed;
   top: 20%;
   left: 2%;
@@ -27,32 +27,32 @@
   margin: 0 auto;
   max-width: 450px;
 }
-.bk-prompt-body {
+.wk-prompt-body {
   text-align: left;
 }
-.bk-prompt-buttons {
+.wk-prompt-buttons {
   text-align: center;
   margin-top: 20px;
 }
-.bk-prompt-cancel {
+.wk-prompt-cancel {
   margin-right: 10px;
   cursor: pointer;
 }
-.bk-prompt-upload {
+.wk-prompt-upload {
   position: relative;
   overflow: hidden;
 }
-.bk-prompt-browse {
+.wk-prompt-browse {
   font-weight: bold;
 }
-.bk-prompt-dragdrop {
+.wk-prompt-dragdrop {
   text-align: center;
   font-style: italic;
   margin-left: auto;
   margin-right: auto;
   max-width: 300px;
 }
-.bk-prompt-fileupload {
+.wk-prompt-fileupload {
   position: absolute;
   top: 0;
   left: -200%;
@@ -61,7 +61,7 @@
   opacity: 0;
   cursor: pointer;
 }
-.bk-prompt-upload-dragging {
+.wk-prompt-upload-dragging {
   position: absolute;
   text-align: center;
   padding: 10px;
@@ -71,36 +71,36 @@
   bottom: 0;
   background: #fff;
 }
-.bk-prompt-error {
+.wk-prompt-error {
   display: none;
   padding: 10px;
   background-color: #fc9a9a;
 }
-.bk-prompt-error-show {
+.wk-prompt-error-show {
   display: block;
 }
-.bk-prompt-drop,
-.bk-prompt-drop-icon,
-.bk-prompt-progress {
+.wk-prompt-drop,
+.wk-prompt-drop-icon,
+.wk-prompt-progress {
   display: none;
 }
-.bk-prompt-upload-dragging .bk-prompt-drop,
-.bk-prompt-upload-dragging .bk-prompt-drop-icon {
+.wk-prompt-upload-dragging .wk-prompt-drop,
+.wk-prompt-upload-dragging .wk-prompt-drop-icon {
   display: block;
 }
-.bk-prompt-upload-dragging .bk-prompt-dragdrop {
+.wk-prompt-upload-dragging .wk-prompt-dragdrop {
   display: none;
 }
-.bk-prompt-uploading {
+.wk-prompt-uploading {
   pointer-events: none;
 }
-.bk-prompt-uploading .bk-prompt-progress {
+.wk-prompt-uploading .wk-prompt-progress {
   display: block;
 }
-.bk-prompt-uploading .bk-prompt-drop,
-.bk-prompt-uploading .bk-prompt-dragdrop {
+.wk-prompt-uploading .wk-prompt-drop,
+.wk-prompt-uploading .wk-prompt-dragdrop {
   display: none;
 }
-.bk-prompt-progress {
+.wk-prompt-progress {
   cursor: not-allowed;
 }
