@@ -77,6 +77,8 @@ function woofmark (textarea, options) {
   var switchboard = tag({ c: 'wk-switchboard' });
   var commands = tag({ c: 'wk-commands' });
   var editable = tag({ c: ['wk-wysiwyg', 'wk-hide'].concat(o.classes.wysiwyg).join(' ') });
+  var surface = getSurface(textarea, editable);
+  var history = new InputHistory(surface, 'markdown');
   var editor = {
     addCommand: addCommand,
     addCommandButton: addCommandButton,
@@ -87,9 +89,14 @@ function woofmark (textarea, options) {
     value: getMarkdown,
     editable: o.wysiwyg ? editable : null,
     setMode: persistMode,
+    history: {
+      undo: history.undo,
+      redo: history.redo,
+      canUndo: history.canUndo,
+      canRedo: history.canRedo
+    },
     mode: 'markdown'
   };
-  var place;
   var entry = { ta: textarea, editor: editor };
   var i = cache.push(entry);
   var kanyeContext = 'woofmark_' + i;
@@ -97,8 +104,6 @@ function woofmark (textarea, options) {
     filter: parent,
     context: kanyeContext
   };
-  var surface = getSurface(textarea, editable);
-  var history = new InputHistory(surface, 'markdown');
   var modes = {
     markdown: {
       button: tag({ t: 'button', c: 'wk-mode wk-mode-active' }),
@@ -113,6 +118,7 @@ function woofmark (textarea, options) {
       set: wysiwygMode
     }
   };
+  var place;
 
   editable.contentEditable = true;
   modes.markdown.button.setAttribute('disabled', 'disabled');

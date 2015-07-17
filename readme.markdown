@@ -318,6 +318,26 @@ Shows the insert image dialog as if the button to insert a image had been clicke
 
 Shows the insert attachment dialog as if the button to insert a attachment had been clicked.
 
+### `editor.history`
+
+Exposes a few methods to gain insight into the operation history for the `editor` instance.
+
+#### `editor.history.undo()`
+
+Undo the last operation.
+
+#### `editor.history.redo()`
+
+Re-applies the most recently undone operation.
+
+#### `editor.history.canUndo()`
+
+Returns a boolean value indicating whether there are any operations left to undo.
+
+#### `editor.history.canRedo()`
+
+Returns a boolean value indicating whether there are any operations left to redo.
+
 ## `chunks`
 
 <sub>_Please ignore undocumented functionality in the `chunks` object._</sub>
