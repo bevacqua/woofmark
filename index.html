@@ -1,6 +1,7 @@
 <!doctype html>
 <link href='dist/woofmark.css' rel='stylesheet' type='text/css' />
 <link href='example/example.css' rel='stylesheet' type='text/css' />
+<link href='example/highlights.css' rel='stylesheet' type='text/css' />
 <title>woofmark</title>
 <h1>woofmark</h1>
 <h3>Barking up the DOM tree. <b>**woof** &lt;strong&gt;woof&lt;/strong&gt;</b><br/>A modular, progressive, and beautiful Markdown and HTML editor</h3>
@@ -21,6 +22,18 @@ Creating **links** is merely a matter of [wrapping some text in brackets][2] and
 > Click on the <kbd>HTML</kbd> button to see this text come to life as HTML, the <mark>markup</mark> language of the web.
 >
 > -- Nico
+
+Note that,
+
+```js
+var markTags = 'still work';
+var within = true;
+
+function code (<mark>here, are, some, args</mark>) {
+  // do wonderful things!
+  return here * are - some + args;
+}
+```
 
 [1]: http://daringfireball.net/projects/markdown/ "Original introduction to Markdown"
 [2]: http://stompflow.com</textarea>

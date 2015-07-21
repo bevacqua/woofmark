@@ -1,10 +1,27 @@
 void function () {
   'use strict';
 
+  var rfence = /(^|\s)md-lang-((?:[^\s]|$)+)/;
+
   woofmark(document.querySelector('#ta'), {
     parseMarkdown: megamark,
-    parseHTML: domador
+    parseHTML: parseHTML,
+    fencing: true
   });
+
+  function parseHTML (value) {
+    return domador(value, {
+      fencing: true,
+      fencinglanguage: fences
+    });
+  }
+
+  function fences (el) {
+    var match = el.firstChild.className.match(rfence);
+    if (match) {
+      return match.pop();
+    }
+  }
 
   function events (el, type, fn) {
     if (el.addEventListener) {

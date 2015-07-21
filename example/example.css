@@ -135,11 +135,6 @@ kbd {
   vertical-align: middle;
 }
 
-.md-mark {
-  background-color: #ffe270;
-  padding: 1px 2px;
-}
-
 .wk-commands,
 .wk-switchboard {
   display: inline-block;

@@ -1,0 +1,105 @@
+.md-code-block,
+:not(.md-code-block) > .md-code {
+  line-height: 22px;
+  margin: 0;
+}
+.md-code-block {
+  padding: 0;
+}
+:not(.md-code-block) > .md-code {
+  padding: 0px 6px;
+}
+.md-code {
+  display: inline-block;
+  padding: 8px 10px;
+  background-color: #ECE0F1;
+  color: #555;
+}
+.md-code-block .md-code {
+  display: block;
+}
+
+a:hover .md-code {
+  background-color: #1fa3ca;
+  color: #fff;
+}
+.md-code-comment,
+.md-code-template_comment {
+  color: #998;
+  font-style: italic;
+}
+.md-code-keyword,
+.md-lang-css .md-code-keyword,
+.md-lang-javascript .md-code-title,
+.md-lang-nginx .md-code-title,
+.md-code-subst,
+.md-code-request,
+.md-code-status {
+  color: #333;
+  font-weight: bold;
+}
+.md-code-number,
+.md-code-hexcolor,
+.md-lang-ruby .md-code-constant {
+  color: #099;
+}
+.md-code-string,
+.md-code-tag .md-code-value {
+  color: #d14;
+}
+.md-code-title,
+.md-code-id,
+color #900 {
+  font-weight: bold;
+}
+.md-lang-javascript .md-code-title,
+.md-code-subst {
+  font-weight: normal;
+}
+.md-code-class .md-code-title {
+  color: #458;
+  font-weight: bold;
+}
+.md-code-tag,
+.md-code-tag .md-code-title,
+.md-code-rules .md-code-property {
+  color: #000080;
+  font-weight: normal;
+}
+.md-code-attribute,
+.md-code-variable {
+  color: #008080;
+}
+.md-code-regexp {
+  color: #009926;
+}
+.md-code-symbol,
+.md-lang-ruby .md-code-symbol .md-code-string,
+.md-code-prompt {
+  color: #990073;
+}
+.md-code-built_in {
+  color: #0086b3;
+}
+.md-code-preprocessor,
+.md-code-pragma,
+.md-code-pi,
+.md-code-doctype,
+.md-code-shebang,
+.md-code-cdata {
+  color: #999;
+  font-weight: bold;
+}
+.md-code-deletion {
+  background: #fdd;
+}
+.md-code-addition {
+  background: #dfd;
+}
+.md-code-chunk {
+  color: #aaa;
+}
+.md-mark {
+  background-color: #ffe270;
+  padding: 1px 2px;
+}
