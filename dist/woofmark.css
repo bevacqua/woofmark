@@ -4,6 +4,12 @@
 .wk-container {
   position: relative;
 }
+.wk-container-drop {
+  display: none;
+}
+.wk-container-dragging {
+  display: block;
+}
 .wk-wysiwyg-placeholder {
   position: absolute;
   pointer-events: none;
@@ -62,7 +68,7 @@
   opacity: 0;
   cursor: pointer;
 }
-.wk-prompt-upload-dragging {
+.wk-dragging {
   position: absolute;
   text-align: center;
   padding: 10px;

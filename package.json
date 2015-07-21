@@ -1,6 +1,6 @@
 {
   "name": "woofmark",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
   "main": "src/woofmark.js",
   "scripts": {
@@ -24,20 +24,20 @@
   },
   "homepage": "https://github.com/bevacqua/woofmark",
   "dependencies": {
-    "bullseye": "^1.4.3",
-    "crossvent": "^1.3.1",
+    "bullseye": "1.4.3",
+    "crossvent": "1.5.0",
     "kanye": "3.0.2",
-    "local-storage": "^1.4.1"
+    "local-storage": "1.4.2"
   },
   "devDependencies": {
-    "browserify": "^8.1.0",
-    "clean-css": "^3.0.4",
+    "browserify": "8.1.0",
+    "clean-css": "3.0.4",
     "domador": "2.1.2",
-    "jshint": "^2.5.11",
+    "jshint": "2.5.11",
     "megamark": "3.0.4",
-    "nib": "^1.0.4",
-    "stylus": "^0.49.3",
-    "uglify-js": "^2.4.16",
-    "watchify": "^2.2.1"
+    "nib": "1.0.4",
+    "stylus": "0.49.3",
+    "uglify-js": "2.4.16",
+    "watchify": "2.2.1"
   }
 }

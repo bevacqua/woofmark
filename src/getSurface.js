@@ -9,10 +9,11 @@ var getSelection = require('./polyfills/getSelection');
 var ropen = /^(<[^>]+(?: [^>]*)?>)/;
 var rclose = /(<\/[^>]+>)$/;
 
-function surface (textarea, editable) {
+function surface (textarea, editable, droparea) {
   return {
     textarea: textarea,
     editable: editable,
+    droparea: droparea,
     focus: setFocus,
     read: read,
     write: write,

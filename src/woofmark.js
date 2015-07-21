@@ -3,6 +3,7 @@
 var ls = require('local-storage');
 var crossvent = require('crossvent');
 var kanye = require('kanye');
+var uploads = require('./uploads');
 var strings = require('./strings');
 var setText = require('./setText');
 var getSelection = require('./polyfills/getSelection');
@@ -74,10 +75,11 @@ function woofmark (textarea, options) {
     o.defaultMode = preference;
   }
 
+  var droparea = tag({ c: 'wk-container-drop' });
   var switchboard = tag({ c: 'wk-switchboard' });
   var commands = tag({ c: 'wk-commands' });
   var editable = tag({ c: ['wk-wysiwyg', 'wk-hide'].concat(o.classes.wysiwyg).join(' ') });
-  var surface = getSurface(textarea, editable);
+  var surface = getSurface(textarea, editable, droparea);
   var history = new InputHistory(surface, 'markdown');
   var editor = {
     addCommand: addCommand,
@@ -120,6 +122,9 @@ function woofmark (textarea, options) {
   };
   var place;
 
+  tag({ t: 'span', c: 'wk-drop-text', x: strings.prompts.drop, p: droparea });
+  tag({ t: 'p', c: ['wk-drop-icon'].concat(o.classes.dropicon).join(' '), p: droparea });
+
   editable.contentEditable = true;
   modes.markdown.button.setAttribute('disabled', 'disabled');
   modeNames.forEach(addMode);
@@ -139,8 +144,8 @@ function woofmark (textarea, options) {
     modes.wysiwyg.set();
   }
 
-  bindEvents();
   bindCommands(surface, o, editor);
+  bindEvents();
 
   return editor;
 
@@ -176,6 +181,10 @@ function woofmark (textarea, options) {
     if (place) { parent[mov](place); }
     parent[mov](commands);
     parent[mov](switchboard);
+    if ((o.images || o.attachments) && o.xhr) {
+      parent[mov](droparea);
+      uploads(parent, droparea, editor, o, remove);
+    }
   }
 
   function destroy () {

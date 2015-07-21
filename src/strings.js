@@ -37,6 +37,7 @@ module.exports = {
     heading: 'Tt',
     link: 'Link',
     image: 'Image',
+    attachment: 'Attachment',
     hr: '\u21b5'
   },
   prompts: {

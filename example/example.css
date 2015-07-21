@@ -136,10 +136,12 @@ kbd {
 
 .wk-container {
   background-color: #ecf0f1;
+  color: #a469bc;
 }
 
 .wk-wysiwyg {
   background-color: #a469bc;
+  color: #fff;
   outline: none;
 }
 

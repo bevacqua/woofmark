@@ -34,6 +34,7 @@ function bindCommands (surface, options, editor) {
   bind('heading', 'cmd+d', router('heading'));
   editor.showLinkDialog = fabricator(bind('link', 'cmd+k', linkOrImageOrAttachment('link')));
   editor.showImageDialog = fabricator(bind('image', 'cmd+g', linkOrImageOrAttachment('image')));
+  editor.linkOrImageOrAttachment = linkOrImageOrAttachment;
 
   if (options.attachments) {
     editor.showAttachmentDialog = fabricator(bind('attachment', 'cmd+shift+k', linkOrImageOrAttachment('attachment')));
@@ -60,8 +61,8 @@ function bindCommands (surface, options, editor) {
   function ol (mode, chunks) {
     commands[mode].list(chunks, true);
   }
-  function linkOrImageOrAttachment (type) {
-    return function (mode, chunks) {
+  function linkOrImageOrAttachment (type, autoUpload) {
+    return function linkOrImageOrAttachmentInvoke (mode, chunks) {
       commands[mode].linkOrImageOrAttachment.call(this, chunks, {
         editor: editor,
         mode: mode,
@@ -71,7 +72,8 @@ function bindCommands (surface, options, editor) {
         xhr: options.xhr,
         upload: options[type + 's'],
         classes: options.classes,
-        mergeHtmlAndAttachment: options.mergeHtmlAndAttachment
+        mergeHtmlAndAttachment: options.mergeHtmlAndAttachment,
+        autoUpload: autoUpload
       });
     };
   }

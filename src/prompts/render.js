@@ -57,7 +57,7 @@ function uploads (dom, warning) {
     upload: e('label', 'wk-prompt-upload'),
     uploading: e('span', 'wk-prompt-progress', strings.prompts.uploading),
     drop: e('span', 'wk-prompt-drop', strings.prompts.drop),
-    dropicon: e('p', 'wk-prompt-drop-icon'),
+    dropicon: e('p', 'wk-drop-icon wk-prompt-drop-icon'),
     browse: e('span', 'wk-prompt-browse', strings.prompts.browse),
     dragdrop: e('p', 'wk-prompt-dragdrop', strings.prompts.drophint),
     fileinput: e('input', fup)
