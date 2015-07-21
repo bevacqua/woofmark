@@ -1,4 +1,4 @@
-# 2.0.0 Fast Drop
+# 3.0.0 Fast Drop
 
 - Drag and drop for images and attachments can now be initiated directly on the input
 
