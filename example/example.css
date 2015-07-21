@@ -29,7 +29,7 @@ h1 {
 }
 
 h1,h2,h3,h4,h5,h6{
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #b586c8;
 }
 
 h3 {
@@ -81,17 +81,10 @@ ul {
   padding: 0;
 }
 
-.parent {
-  background-color: rgba(255, 255, 255, 0.2);
-  margin: 50px 0;
-  padding: 20px;
-}
-
 input,
 textarea {
   border: none;
   outline: none;
-  background-color: #ecf0f1;
   padding: 10px;
   color: #8e44ad;
   border: 0;
@@ -135,16 +128,28 @@ kbd {
   vertical-align: middle;
 }
 
+.parent {
+  background-color: #a469bc;
+  margin: 50px 0;
+  padding: 20px;
+}
+
+.wk-container {
+  background-color: #ecf0f1;
+}
+
+.wk-wysiwyg {
+  background-color: #a469bc;
+  outline: none;
+}
+
 .wk-commands,
 .wk-switchboard {
   display: inline-block;
 }
 
-.wk-wysiwyg {
-  outline: none;
-}
 .wk-mode-active {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #ece0f1;
 }
 
 .gh-fork {

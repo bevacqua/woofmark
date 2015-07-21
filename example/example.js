@@ -6,7 +6,8 @@ void function () {
   woofmark(document.querySelector('#ta'), {
     parseMarkdown: megamark,
     parseHTML: parseHTML,
-    fencing: true
+    fencing: true,
+    defaultMode: 'wysiwyg'
   });
 
   function parseHTML (value) {
