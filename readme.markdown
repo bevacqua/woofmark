@@ -4,6 +4,12 @@
 
 Browser support includes every sane browser and **IE9+**.
 
+# Demo
+
+[![woofmark-stompflow][3]][4]
+
+Try out the [demo][4]!
+
 # Features
 
 - Small and focused
@@ -13,10 +19,6 @@ Browser support includes every sane browser and **IE9+**.
 - Built in Undo and Redo
 - Entirely customizable styles
 - Bring your own parsers
-
-# Screenshot in the wild
-
-[![woofmark-stompflow][3]][4]
 
 <sub>_Look and feel is meant to blend into your designs_</sub>
 
@@ -377,7 +379,7 @@ MIT
 
 [1]: https://github.com/bevacqua/megamark
 [2]: https://github.com/bevacqua/domador
-[3]: http://i.imgur.com/AhwXSLu.png
+[3]: https://github.com/bevacqua/woofmark/blob/master/resources/demo.png
 [4]: http://bevacqua.github.io/woofmark
 [5]: https://github.com/bevacqua/kanye#kanyeoncombo-options-listener
 [6]: https://github.com/bevacqua/woofmark/blob/master/src/html/hr.js
