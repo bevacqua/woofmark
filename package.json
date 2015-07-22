@@ -1,6 +1,6 @@
 {
   "name": "woofmark",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
   "main": "src/woofmark.js",
   "scripts": {
