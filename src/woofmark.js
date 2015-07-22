@@ -6,7 +6,6 @@ var kanye = require('kanye');
 var uploads = require('./uploads');
 var strings = require('./strings');
 var setText = require('./setText');
-var getSelection = require('./polyfills/getSelection');
 var rememberSelection = require('./rememberSelection');
 var bindCommands = require('./bindCommands');
 var InputHistory = require('./InputHistory');
@@ -339,5 +338,4 @@ function macify (text) {
 
 woofmark.find = find;
 woofmark.strings = strings;
-woofmark.getSelection = getSelection;
 module.exports = woofmark;

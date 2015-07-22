@@ -1,3 +1,7 @@
+# 4.0.0 Short Sell
+
+- Extracted `getSelection` polyfills into `seleccion` module
+
 # 3.0.1 Area 51
 
 - Exposed `textarea` on public API of `editor`

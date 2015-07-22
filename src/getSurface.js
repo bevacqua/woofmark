@@ -1,11 +1,11 @@
 'use strict';
 
 var doc = global.document;
+var getSelection = require('seleccion');
 var fixEOL = require('./fixEOL');
 var many = require('./many');
 var cast = require('./cast');
-var rangeToTextRange = require('./rangeToTextRange');
-var getSelection = require('./polyfills/getSelection');
+var rangeToTextRange = getSelection.rangeToTextRange;
 var ropen = /^(<[^>]+(?: [^>]*)?>)/;
 var rclose = /(<\/[^>]+>)$/;
 
