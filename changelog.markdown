@@ -1,3 +1,7 @@
+# 3.0.1 Area 51
+
+- Exposed `textarea` on public API of `editor`
+
 # 3.0.0 Fast Drop
 
 - Drag and drop for images and attachments can now be initiated directly on the input

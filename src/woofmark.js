@@ -89,6 +89,7 @@ function woofmark (textarea, options) {
     parseHTML: o.parseHTML,
     destroy: destroy,
     value: getMarkdown,
+    textarea: textarea,
     editable: o.wysiwyg ? editable : null,
     setMode: persistMode,
     history: {
