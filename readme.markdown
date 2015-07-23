@@ -386,5 +386,5 @@ MIT
 [4]: http://bevacqua.github.io/woofmark
 [5]: https://github.com/bevacqua/kanye#kanyeoncombo-options-listener
 [6]: https://github.com/bevacqua/woofmark/blob/master/src/html/hr.js
-[7]: https://github.com/bevacqua/woofmark
+[7]: https://github.com/bevacqua/horsey
 [8]: https://github.com/bevacqua/banksy
