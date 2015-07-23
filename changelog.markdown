@@ -1,6 +1,7 @@
-# 4.0.1 Buy In
+# 4.0.2 Buy In
 
 - Moved `setSelection` into `seleccion` as well
+- Updated `bullseye@1.4.6`
 
 # 4.0.0 Short Sell
 
