@@ -1,3 +1,7 @@
+# 4.0.1 Buy In
+
+- Moved `setSelection` into `seleccion` as well
+
 # 4.0.0 Short Sell
 
 - Extracted `getSelection` polyfills into `seleccion` module

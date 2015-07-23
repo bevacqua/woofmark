@@ -1,11 +1,12 @@
 'use strict';
 
 var doc = global.document;
-var getSelection = require('seleccion');
+var seleccion = require('seleccion');
 var fixEOL = require('./fixEOL');
 var many = require('./many');
 var cast = require('./cast');
-var rangeToTextRange = getSelection.rangeToTextRange;
+var getSelection = seleccion.get;
+var setSelection = seleccion.set;
 var ropen = /^(<[^>]+(?: [^>]*)?>)/;
 var rclose = /(<\/[^>]+>)$/;
 
@@ -130,32 +131,7 @@ function surface (textarea, editable, droparea) {
 
     walk(editable.firstChild, peek);
     editable.focus();
-
-    if (document.createRange) {
-      modernSelection();
-    } else {
-      oldSelection();
-    }
-
-    function modernSelection () {
-      var sel = getSelection();
-      var range = document.createRange();
-      if (!p.startContainer) {
-        return;
-      }
-      if (p.endContainer) {
-        range.setEnd(p.endContainer, p.endOffset);
-      } else {
-        range.setEnd(p.startContainer, p.startOffset);
-      }
-      range.setStart(p.startContainer, p.startOffset);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
-
-    function oldSelection () {
-      rangeToTextRange(p).select();
-    }
+    setSelection(p);
 
     function peek (context, el) {
       var cursor = context.text.length;
