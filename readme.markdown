@@ -368,10 +368,13 @@ The current `scrollTop` for the element. Useful to restore later in action histo
 
 Moves whitespace on either end of `chunks.selection` to `chunks.before` and `chunks.after` respectively. If `remove` has been set to `true`, the whitespace in the selection is discarded instead.
 
-
 # `woofmark.strings`
 
 To enable localization, `woofmark.strings` exposes all user-facing messages used in woofmark. Make sure not to replace `woofmark.strings` with a new object, as a reference to it is cached during module load.
+
+# Usage with [horsey][7]
+
+See [banksy][8] to integrate [horsey][7] into `woofmark`.
 
 # License
 
@@ -383,3 +386,5 @@ MIT
 [4]: http://bevacqua.github.io/woofmark
 [5]: https://github.com/bevacqua/kanye#kanyeoncombo-options-listener
 [6]: https://github.com/bevacqua/woofmark/blob/master/src/html/hr.js
+[7]: https://github.com/bevacqua/woofmark
+[8]: https://github.com/bevacqua/banksy
