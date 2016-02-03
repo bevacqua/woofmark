@@ -161,3 +161,7 @@ kbd {
   border: 0;
   z-index: 1;
 }
+
+#ta {
+  font-family: Consolas, monaco, monospace;
+}
