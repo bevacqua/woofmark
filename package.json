@@ -33,7 +33,7 @@
   "devDependencies": {
     "browserify": "8.1.0",
     "clean-css": "3.0.4",
-    "domador": "2.1.2",
+    "domador": "2.2.0",
     "jshint": "2.5.11",
     "megamark": "3.0.4",
     "nib": "1.0.4",
