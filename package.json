@@ -27,7 +27,6 @@
     "crossvent": "1.5.0",
     "kanye": "3.0.2",
     "local-storage": "1.4.2",
-    "megamark": "3.2.0",
     "seleccion": "2.0.0"
   },
   "devDependencies": {
@@ -35,7 +34,7 @@
     "clean-css": "3.0.4",
     "domador": "2.3.0",
     "jshint": "2.5.11",
-    "megamark": "3.2.1",
+    "megamark": "3.2.2",
     "nib": "1.0.4",
     "stylus": "0.49.3",
     "uglify-js": "2.4.16",
