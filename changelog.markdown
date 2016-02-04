@@ -1,3 +1,7 @@
+# 4.0.3 Hard Place
+
+- Drastically simplified selection remembrance architecture, relayed to parsers that know better
+
 # 4.0.2 Buy In
 
 - Moved `setSelection` into `seleccion` as well

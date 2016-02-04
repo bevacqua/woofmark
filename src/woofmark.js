@@ -201,7 +201,7 @@ function woofmark (textarea, options) {
   function wysiwygMode (e) { persistMode('wysiwyg', e); }
 
   function persistMode (nextMode, e) {
-    var restoreSelection;
+    var remembrance;
     var currentMode = editor.mode;
     var old = modes[currentMode].button;
     var button = modes[nextMode].button;
@@ -213,24 +213,24 @@ function woofmark (textarea, options) {
       return;
     }
 
-    restoreSelection = focusing && rememberSelection(history, o);
+    remembrance = focusing && rememberSelection(history, o);
     textarea.blur(); // avert chrome repaint bugs
 
     if (nextMode === 'markdown') {
       if (currentMode === 'html') {
-        textarea.value = o.parseHTML(textarea.value).trim();
+        textarea.value = parse('parseHTML', textarea.value).trim();
       } else {
-        textarea.value = o.parseHTML(editable).trim();
+        textarea.value = parse('parseHTML', editable).trim();
       }
     } else if (nextMode === 'html') {
       if (currentMode === 'markdown') {
-        textarea.value = o.parseMarkdown(textarea.value).trim();
+        textarea.value = parse('parseMarkdown', textarea.value).trim();
       } else {
         textarea.value = editable.innerHTML.trim();
       }
     } else if (nextMode === 'wysiwyg') {
       if (currentMode === 'markdown') {
-        editable.innerHTML = o.parseMarkdown(textarea.value).replace(rparagraph, '').trim();
+        editable.innerHTML = parse('parseMarkdown', textarea.value).replace(rparagraph, '').trim();
       } else {
         editable.innerHTML = textarea.value.replace(rparagraph, '').trim();
       }
@@ -258,8 +258,14 @@ function woofmark (textarea, options) {
     if (o.storage) { ls.set(o.storage, nextMode); }
 
     history.setInputMode(nextMode);
-    if (restoreSelection) { restoreSelection(); }
+    if (remembrance) { remembrance.unmark(); }
     fireLater('woofmark-mode-change');
+
+    function parse (method, input) {
+      return o[method](input, {
+        markers: remembrance && remembrance.markers || []
+      });
+    }
   }
 
   function fireLater (type) {

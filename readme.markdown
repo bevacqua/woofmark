@@ -147,6 +147,10 @@ woofmark(textarea, {
 
 This kind of nudge to the Markdown compiler is particularly useful in simpler use cases where you'd want to preserve HTML elements entirely when they have CSS classes, as well.
 
+### Preserving Selection Across Input Modes
+
+Note that both `megamark` and `domador` support a special option called `markers`, needed to preserve selection across input modes. Unless your `parseHTML` function supports this option, you'll lose that functionality when providing your own custom parsing functions. That's one of the reasons we strongly recommend using `megamark` and `domador`.
+
 ### `options.fencing`
 
 Prefers to wrap code blocks in "fences" _(GitHub style)_ instead of indenting code blocks using four spaces. Defaults to `true`.
