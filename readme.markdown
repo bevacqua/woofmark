@@ -98,7 +98,7 @@ woofmark(textarea, {
       tokenizers: [{
         token: /(^|\s)@([A-z]+)\b/g,
         transform: function (all, separator, id) {
-          return separator + '<a href="/users/' + id '">@' + id + '</a>';
+          return separator + '<a href="/users/' + id + '">@' + id + '</a>';
         }
       }]
     });
@@ -128,7 +128,7 @@ woofmark(textarea, {
       tokenizers: [{
         token: /(^|\s)@([A-z]+)\b/g,
         transform: function (all, separator, id) {
-          return separator + '<a href="/users/' + id '">@' + id + '</a>';
+          return separator + '<a href="/users/' + id + '">@' + id + '</a>';
         }
       }]
     });
