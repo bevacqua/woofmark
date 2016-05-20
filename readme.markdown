@@ -296,9 +296,9 @@ This is the same method passed as an option.
 
 Destroys the `editor` instance, removing all event handlers. The editor is reverted to `markdown` mode, and assigned the proper Markdown source code if needed. Then we go back to being a plain old and dull `<textarea>` element.
 
-### `editor.value()`
+### `editor.value(text)`
 
-Returns the current Markdown value for the `editor`.
+If optional Markdown string `text` is provided, it is used to overwrite the current editor content, parsing into HTML if necessary. Whether or not `text is provided, `value()` returns the current Markdown value for the `editor`. 
 
 ### `editor.editable`
 
