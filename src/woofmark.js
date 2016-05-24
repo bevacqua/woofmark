@@ -87,7 +87,7 @@ function woofmark (textarea, options) {
     parseMarkdown: o.parseMarkdown,
     parseHTML: o.parseHTML,
     destroy: destroy,
-    value: getMarkdown,
+    value: value,
     textarea: textarea,
     editable: o.wysiwyg ? editable : null,
     setMode: persistMode,
@@ -276,6 +276,17 @@ function woofmark (textarea, options) {
 
   function focusEditable () {
     editable.focus();
+  }
+
+  function value (text) {
+    if (arguments.length === 1) {
+      if (editor.mode !== 'wysiwyg') {
+        textarea.value = new String(text);
+      } else {
+        editable.innerHTML = o.parseHTML(text);
+      }
+    }
+    return getMarkdown();
   }
 
   function getMarkdown () {
