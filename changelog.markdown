@@ -1,3 +1,7 @@
+# 4.1.0 Value Add
+
+- Changed `.value()` method into a getter/setter
+
 # 4.0.3 Hard Place
 
 - Drastically simplified selection remembrance architecture, relayed to parsers that know better

@@ -87,7 +87,7 @@ function woofmark (textarea, options) {
     parseMarkdown: o.parseMarkdown,
     parseHTML: o.parseHTML,
     destroy: destroy,
-    value: getMarkdown,
+    value: getOrSetValue,
     textarea: textarea,
     editable: o.wysiwyg ? editable : null,
     setMode: persistMode,
@@ -286,6 +286,23 @@ function woofmark (textarea, options) {
       return o.parseHTML(textarea.value);
     }
     return textarea.value;
+  }
+
+  function getOrSetValue (input) {
+    var markdown = String(input);
+    var sets = arguments.length === 1;
+    if (sets) {
+      if (editor.mode === 'wysiwyg') {
+        editable.innerHTML = asHtml();
+      } else {
+        textarea.value = editor.mode === 'html' ? asHtml() : markdown;
+      }
+      history.reset();
+    }
+    return getMarkdown();
+    function asHtml () {
+      return o.parseMarkdown(markdown);
+    }
   }
 
   function addCommandButton (id, combo, fn) {

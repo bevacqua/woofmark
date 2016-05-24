@@ -296,9 +296,11 @@ This is the same method passed as an option.
 
 Destroys the `editor` instance, removing all event handlers. The editor is reverted to `markdown` mode, and assigned the proper Markdown source code if needed. Then we go back to being a plain old and dull `<textarea>` element.
 
-### `editor.value()`
+### `editor.value(markdown?)`
 
-Returns the current Markdown value for the `editor`.
+Returns the current Markdown value for the `editor`. If `markdown` is provided, the editor state will be replaced with the provided `markdown` value.
+
+<sub>Note that setting the editor's value this way will reset Undo/Redo history.</sub>
 
 ### `editor.editable`
 
