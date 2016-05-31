@@ -1,4 +1,4 @@
-# 4.1.0 Value Add
+# 4.1.1 Value Add
 
 - Changed `.value()` method into a getter/setter
 
