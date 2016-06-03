@@ -282,7 +282,7 @@ You can optionally pass in a `combo`, in which case `editor.addCommand(combo, fn
 
 ### `editor.runCommand(fn)`
 
-If you just want to run a command without setting up a keyboard shortcut or a button, you can use this method. Note that there won't be any `e` event argument in this case, you'll only get `mode, chunks` passed to `fn`. You can still run the command asynchronously using `this.async()`.
+If you just want to run a command without setting up a keyboard shortcut or a button, you can use this method. Note that there won't be any `e` event argument in this case, you'll only get `chunks, mode` passed to `fn`. You can still run the command asynchronously using `this.async()`. Note that the argument order `chunks, mode` is the reverse of that passed to addCommand (`mode, chunks`).
 
 ### `editor.parseMarkdown()`
 
@@ -296,11 +296,9 @@ This is the same method passed as an option.
 
 Destroys the `editor` instance, removing all event handlers. The editor is reverted to `markdown` mode, and assigned the proper Markdown source code if needed. Then we go back to being a plain old and dull `<textarea>` element.
 
-### `editor.value(markdown?)`
+### `editor.value(text)`
 
-Returns the current Markdown value for the `editor`. If `markdown` is provided, the editor state will be replaced with the provided `markdown` value.
-
-<sub>Note that setting the editor's value this way will reset Undo/Redo history.</sub>
+If optional Markdown string `text` is provided, it is used to overwrite the current editor content, parsing into HTML if necessary. Regardless of whether `text` is provided, `value()` returns the current Markdown value for the `editor`. 
 
 ### `editor.editable`
 
