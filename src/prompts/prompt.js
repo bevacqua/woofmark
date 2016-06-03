@@ -169,9 +169,8 @@ function prompt (options, done) {
 
     form.append(upload.key || 'woofmark_upload', file, file.name);
     classes.add(domup.area, 'wk-prompt-uploading');
-    xhr(req, handleResponse);
 
-    function handleResponse (err, res, body) {
+    var handleResponse = upload.handleResponse || function (err, res, body) {
       classes.rm(domup.area, 'wk-prompt-uploading');
       if (err || res.statusCode < 200 || res.statusCode > 299) {
         classes.add(domup.failed, 'wk-prompt-error-show');
@@ -181,6 +180,8 @@ function prompt (options, done) {
       remove();
       done({ definition: dom.input.value, attachment: options.type === 'attachment' });
     }
+
+    xhr(req, handleResponse);
   }
 }
 

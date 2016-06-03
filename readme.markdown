@@ -256,16 +256,16 @@ The `editor` API allows you to interact with `woofmark` editor instances. This i
 
 ### `editor.addCommand(combo, fn)`
 
-Binds a keyboard key combination such as `cmd+shift+b` to a method _using [kanye][5]_. Please note that you should always use `cmd` rather than `ctrl`. In non-OSX environments it'll be properly mapped to `ctrl`. When the combo is entered, `fn(e, mode, chunks)` will be called.
+Binds a keyboard key combination such as `cmd+shift+b` to a method _using [kanye][5]_. Please note that you should always use `cmd` rather than `ctrl`. In non-OSX environments it'll be properly mapped to `ctrl`. When the combo is entered, `fn(e, chunks, mode)` will be called.
 
 - `e` is the original event object
-- `mode` can be `markdown`, `html`, or `wysiwyg`
 - `chunks` is a [chunks](#chunks) object, describing the current state of the editor
+- `mode` can be `markdown`, `html`, or `wysiwyg`
 
 In addition, `fn` is given a `this` context similar to that of Grunt tasks, where you can choose to do nothing and the command is assumed to be synchronous, or you can call `this.async()` and get back a `done` callback like in the example below.
 
 ```js
-editor.addCommand('cmd+j', function jump (e, mode, chunks) {
+editor.addCommand('cmd+j', function jump (e, chunks, mode) {
   var done = this.async();
   // TODO: async operation
   done();
@@ -276,13 +276,13 @@ When the command finishes, the editor will recover focus, and whatever changes w
 
 ### `editor.addCommandButton(id, combo?, fn)`
 
-Adds a button to the editor using an `id` and an event handler. When the button is pressed, `fn(e, mode, chunks)` will be called with the same arguments as the ones passed if using [`editor.addCommand(combo, fn)`](#editoraddcommandcombo-fn).
+Adds a button to the editor using an `id` and an event handler. When the button is pressed, `fn(e, chunks, mode)` will be called with the same arguments as the ones passed if using [`editor.addCommand(combo, fn)`](#editoraddcommandcombo-fn).
 
 You can optionally pass in a `combo`, in which case `editor.addCommand(combo, fn)` will be called, in addition to creating the command button.
 
 ### `editor.runCommand(fn)`
 
-If you just want to run a command without setting up a keyboard shortcut or a button, you can use this method. Note that there won't be any `e` event argument in this case, you'll only get `mode, chunks` passed to `fn`. You can still run the command asynchronously using `this.async()`.
+If you just want to run a command without setting up a keyboard shortcut or a button, you can use this method. Note that there won't be any `e` event argument in this case, you'll only get `chunks, mode` passed to `fn`. You can still run the command asynchronously using `this.async()`.
 
 ### `editor.parseMarkdown()`
 
@@ -296,11 +296,9 @@ This is the same method passed as an option.
 
 Destroys the `editor` instance, removing all event handlers. The editor is reverted to `markdown` mode, and assigned the proper Markdown source code if needed. Then we go back to being a plain old and dull `<textarea>` element.
 
-### `editor.value(markdown?)`
+### `editor.value(text)`
 
-Returns the current Markdown value for the `editor`. If `markdown` is provided, the editor state will be replaced with the provided `markdown` value.
-
-<sub>Note that setting the editor's value this way will reset Undo/Redo history.</sub>
+If optional Markdown string `text` is provided, it is used to overwrite the current editor content, parsing into HTML if necessary. Whether or not `text is provided, `value()` returns the current Markdown value for the `editor`. 
 
 ### `editor.editable`
 
