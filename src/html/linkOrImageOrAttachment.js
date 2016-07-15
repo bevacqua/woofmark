@@ -78,30 +78,30 @@ function linkOrImageOrAttachment (chunks, options) {
 
     function imageWrap (link, rest) {
       var after = chunks.after;
-      chunks.before += open(link);
-      chunks.after = close(link);
+      chunks.before += tagopen(link);
+      chunks.after = tagclose(link);
       if (rest.length) {
         chunks.after += rest.map(toAnotherImage).join('');
       }
       chunks.after += after;
-      function open (link) { return '<img src="' + link.href + '" alt="'; }
-      function close (link) { return '"' + getTitle(link) + ' />'; }
-      function toAnotherImage (link) { return ' ' + open(link) + close(link); }
+      function tagopen (link) { return '<img src="' + link.href + '" alt="'; }
+      function tagclose (link) { return '"' + getTitle(link) + ' />'; }
+      function toAnotherImage (link) { return ' ' + tagopen(link) + tagclose(link); }
     }
 
     function linkWrap (link, rest) {
       var after = chunks.after;
       var names = options.classes.input.links;
       var classes = names ? ' class="' + names + '"' : '';
-      chunks.before += open(link);
-      chunks.after = close();
+      chunks.before += tagopen(link);
+      chunks.after = tagclose();
       if (rest.length) {
         chunks.after += rest.map(toAnotherLink).join('');
       }
       chunks.after += after;
-      function open (link) { return '<a href="' + link.href + '"' + getTitle(link) + classes + '>'; }
-      function close () { return '</a>'; }
-      function toAnotherLink (link) { return ' ' + open(link) + close(); }
+      function tagopen (link) { return '<a href="' + link.href + '"' + getTitle(link) + classes + '>'; }
+      function tagclose () { return '</a>'; }
+      function toAnotherLink (link) { return ' ' + tagopen(link) + tagclose(); }
     }
   }
 }
