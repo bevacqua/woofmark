@@ -212,9 +212,6 @@ If you wish to set up file uploads, _in addition to letting the user just paste 
   // optional text describing the kind of files that can be uploaded
   restriction: 'GIF, JPG, and PNG images',
 
-  // what to call the FormData field?
-  key: 'woofmark_upload',
-
   // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
   validate: function isItAnImageFile (file) {
     return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
@@ -222,33 +219,11 @@ If you wish to set up file uploads, _in addition to letting the user just paste 
 }
 ```
 
+For more information on file uploads, see [`bureaucracy`](https://github.com/bevacqua/bureaucracy).
+
 ### `options.attachments`
 
 Virtually the same as `images`, except an anchor `<a>` tag will be used instead of an image `<img>` tag.
-
-### `options.xhr`
-
-If you want to use either `options.images` or `options.attachments` for file uploads, you'll have to tell `woofmark` how to communicate with the servers. You can use the `xhr` module for this, or anything that exposes a similar API.
-
-```js
-{
-  xhr: require('xhr')
-}
-```
-
-The server will receive the file upload as `req.files[key]` _(Express)_. Afterwards you should respond with the following:
-
-- Status code between `200` and `299` if the upload succeeded
-- A JSON object in the response body, containing an `href` and a `title`
-
-Example:
-
-```js
-{
-  "href": "http://localhost:9000/img/2015060123502510300.png",
-  "title": "Screen Shot 2015-06-01 at 21.44.35 (43.82 KB)"
-}
-```
 
 # `editor`
 

@@ -13,7 +13,6 @@ var getCommandHandler = require('./getCommandHandler');
 var getSurface = require('./getSurface');
 var classes = require('./classes');
 var renderers = require('./renderers');
-var xhrStub = require('./xhrStub');
 var prompt = require('./prompts/prompt');
 var closePrompts = require('./prompts/close');
 var modeNames = ['markdown', 'html', 'wysiwyg'];
@@ -63,7 +62,6 @@ function woofmark (textarea, options) {
   if (o.prompts.image === void 0) { o.prompts.image = prompt; }
   if (o.prompts.attachment === void 0) { o.prompts.attachment = prompt; }
   if (o.prompts.close === void 0) { o.prompts.close = closePrompts; }
-  if (o.xhr === void 0) { o.xhr = xhrStub; }
   if (o.classes === void 0) { o.classes = {}; }
   if (o.classes.wysiwyg === void 0) { o.classes.wysiwyg = []; }
   if (o.classes.prompts === void 0) { o.classes.prompts = {}; }
@@ -181,7 +179,7 @@ function woofmark (textarea, options) {
     if (place) { parent[mov](place); }
     parent[mov](commands);
     parent[mov](switchboard);
-    if ((o.images || o.attachments) && o.xhr) {
+    if (o.images || o.attachments) {
       parent[mov](droparea);
       uploads(parent, droparea, editor, o, remove);
     }
