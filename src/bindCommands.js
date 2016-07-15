@@ -69,7 +69,6 @@ function bindCommands (surface, options, editor) {
         type: type,
         surface: surface,
         prompts: options.prompts,
-        xhr: options.xhr,
         upload: options[type + 's'],
         classes: options.classes,
         mergeHtmlAndAttachment: options.mergeHtmlAndAttachment,

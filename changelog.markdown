@@ -1,3 +1,7 @@
+# 4.2.0 Bureaucracy
+
+- Use `bureaucracy` as a replacement for file upload browsing
+
 # 4.1.1 Value Add
 
 - Changed `.value()` method into a getter/setter
