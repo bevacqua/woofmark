@@ -209,6 +209,9 @@ If you wish to set up file uploads, _in addition to letting the user just paste 
   // endpoint where the images will be uploaded to, required
   url: '/uploads',
 
+  // optional additional form submission data, passed to bureaucracy
+  formData: { description: 'A new image' },
+
   // optional text describing the kind of files that can be uploaded
   restriction: 'GIF, JPG, and PNG images',
 
