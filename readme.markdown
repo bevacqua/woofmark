@@ -225,6 +225,16 @@ If you wish to set up file uploads, _in addition to letting the user just paste 
 }
 ```
 
+`woofmark` expects a JSON response including a `results` property that's an array describing the success of each file upload. Each file's entry should include an `href` and a `title`:
+
+```js
+{
+  results: [
+    { href: '/images/new.jpg', title: 'New image' }
+  ]
+}
+```
+
 For more information on file uploads, see [`bureaucracy`](https://github.com/bevacqua/bureaucracy).
 
 ### `options.attachments`
