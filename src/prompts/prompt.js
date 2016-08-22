@@ -110,6 +110,7 @@ function prompt (options, done) {
 
     var bureaucrat = bureaucracy.setup(domup.fileinput, {
       method: upload.method,
+      formData: upload.formData,
       endpoint: upload.url,
       validate: 'image'
     });
