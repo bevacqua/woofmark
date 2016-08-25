@@ -112,6 +112,7 @@ function prompt (options, done) {
       method: upload.method,
       formData: upload.formData,
       fieldKey: upload.fieldKey,
+      xhrOptions: upload.xhrOptions,
       endpoint: upload.url,
       validate: 'image'
     });
