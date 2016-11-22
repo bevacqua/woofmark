@@ -113,7 +113,7 @@ function prompt (options, done) {
       formData: upload.formData,
       fieldKey: upload.fieldKey,
       endpoint: upload.url,
-      validate: 'image'
+      validate: upload.validate || 'image'
     });
 
     bureaucrat.on('started', function () {

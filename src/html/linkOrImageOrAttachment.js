@@ -48,7 +48,7 @@ function linkOrImageOrAttachment (chunks, options) {
     var link = links[0];
 
     if (type === 'attachment') {
-      parts = options.mergeHtmlAndAttachment(chunks.before + chunks.selection + chunks.after, link);
+      parts = options.mergeHtmlAndAttachment(chunks, link);
       chunks.before = parts.before;
       chunks.selection = parts.selection;
       chunks.after = parts.after;
