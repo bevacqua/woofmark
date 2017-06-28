@@ -2,7 +2,10 @@
   "name": "woofmark",
   "version": "4.2.3",
   "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
-  "main": "dist/woofmark.js",
+  "main": [
+    "dist/woofmark.js",
+    "dist/woofmark.css",
+  ],
   "homepage": "https://github.com/bevacqua/woofmark",
   "authors": [
     "Nicolas Bevacqua <nicolasbevacqua@gmail.com>"
