@@ -4,7 +4,7 @@
   "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
   "main": [
     "dist/woofmark.js",
-    "dist/woofmark.css",
+    "dist/woofmark.css"
   ],
   "homepage": "https://github.com/bevacqua/woofmark",
   "authors": [
