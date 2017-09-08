@@ -244,6 +244,19 @@ For more information on file uploads, see [`bureaucracy`](https://github.com/bev
 
 Virtually the same as `images`, except an anchor `<a>` tag will be used instead of an image `<img>` tag.
 
+To set the formatting of the inserted attachment link, set `options.mergeHtmlAndAttachment`; the default follows this format:
+
+```js
+function mergeHtmlAndAttachment (chunks, link) {
+  var linkText = chunks.selection || link.title;
+  return {
+    before: chunks.before,
+    selection: '<a href="' + link.href + '">' + linkText + '</a>',
+    after: chunks.after,
+  };
+}
+```
+
 # `editor`
 
 The `editor` API allows you to interact with `woofmark` editor instances. This is what you get back from `woofmark(textarea, options)` or `woofmark.find(textarea)`.
