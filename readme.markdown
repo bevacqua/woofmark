@@ -212,8 +212,11 @@ If you wish to set up file uploads, _in addition to letting the user just paste 
   // image field key, passed to bureaucracy, which defaults to 'uploads'
   fieldKey: 'uploads',
 
-  // optional additional form submission data, passed to bureaucracy
+  // optional additional form submission data, passed to `bureaucracy`
   formData: { description: 'A new image' },
+
+  // optional options for `xhr` upload request, passed to `bureaucracy`
+  xhrOptions: { headers: {} },
 
   // optional text describing the kind of files that can be uploaded
   restriction: 'GIF, JPG, and PNG images',
@@ -240,6 +243,19 @@ For more information on file uploads, see [`bureaucracy`](https://github.com/bev
 ### `options.attachments`
 
 Virtually the same as `images`, except an anchor `<a>` tag will be used instead of an image `<img>` tag.
+
+To set the formatting of the inserted attachment link, set `options.mergeHtmlAndAttachment`; the default follows this format:
+
+```js
+function mergeHtmlAndAttachment (chunks, link) {
+  var linkText = chunks.selection || link.title;
+  return {
+    before: chunks.before,
+    selection: '<a href="' + link.href + '">' + linkText + '</a>',
+    after: chunks.after,
+  };
+}
+```
 
 # `editor`
 
