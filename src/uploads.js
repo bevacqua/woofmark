@@ -5,15 +5,15 @@ var classes = require('./classes');
 var dragClass = 'wk-dragging';
 var dragClassSpecific = 'wk-container-dragging';
 var root = document.documentElement;
-var dragginCss = 0;
+var dragginCss = 0; // variable to count the enter and leaving numbers.
 
 function uploads (container, droparea, editor, options, remove) {
   var op = remove ? 'remove' : 'add';
   crossvent[op](root, 'dragend', dragstopforce);
   crossvent[op](root, 'mouseout', dragstopforce);
   crossvent[op](container, 'dragover', handleDragOver, false);
-  crossvent[op](container, 'dragenter', dragging, false);
-  crossvent[op](container, 'dragleave', dragstop, false);
+  crossvent[op](container, 'dragenter', dragging, false);  // whenever the drag with components enter the container
+  crossvent[op](container, 'dragleave', dragstop, false);  // whenever the drag with components moves out of container
   crossvent[op](droparea, 'drop', handleFileSelect, false);
 
   function dragging () {
