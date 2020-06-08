@@ -35,6 +35,7 @@ function prompt (options, done) {
   var domup;
 
   crossvent.add(dom.cancel, 'click', remove);
+  crossvent.add(root, 'click', rootClick);
   crossvent.add(dom.close, 'click', remove);
   crossvent.add(dom.ok, 'click', ok);
   crossvent.add(dom.input, 'keypress', enter);
@@ -57,6 +58,14 @@ function prompt (options, done) {
 
   function focusDialog () {
     dom.input.focus();
+  }
+  
+  function rootClick (e) {
+    var str = e.target.classList.value;
+    console.log(str);
+    if (!str.includes('wk-prompt')){
+      remove();
+    }
   }
 
   function enter (e) {
