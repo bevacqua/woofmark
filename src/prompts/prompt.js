@@ -25,6 +25,7 @@ function classify (group, classes) {
 }
 
 function prompt (options, done) {
+  var scrollSize=0; // For window.scroll 
   var text = strings.prompts[options.type];
   var dom = render({
     id: 'wk-prompt-' + options.type,
@@ -41,6 +42,14 @@ function prompt (options, done) {
   crossvent.add(dom.input, 'keypress', enter);
   crossvent.add(dom.dialog, 'keydown', esc);
   classify(dom, options.classes.prompts);
+
+  // Disappearing the popup when scrolled.
+  window.onscroll= function() {
+    scrollSize++;
+    if(scrollSize>10){
+      remove();
+    }
+  };
 
   var xhr = options.xhr;
   var upload = options.upload;
