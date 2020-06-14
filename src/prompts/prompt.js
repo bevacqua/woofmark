@@ -71,7 +71,7 @@ function prompt (options, done) {
   
   function rootClick (e) {
     var classlist = e.target.classList.value;
-    if (!classlist.includes('wk-prompt')){
+    if (!classlist.includes('wk-prompt')) {
       remove();
     }
   }
