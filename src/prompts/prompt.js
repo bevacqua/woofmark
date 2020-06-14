@@ -46,7 +46,7 @@ function prompt (options, done) {
   // Disappearing the popup when scrolled.
   window.onscroll= function() {
     scrollSize++;
-    if(scrollSize>10){
+    if (scrollSize>10) {
       remove();
     }
   };
