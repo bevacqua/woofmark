@@ -38,8 +38,11 @@ function heading (chunks) {
   chunks.startTag = chunks.endTag = '';
   chunks.skip({ before: 1, after: 1 });
 
-  var levelToCreate = level < 2 ? 4 : level - 1;
-  if (levelToCreate > 0) {
+  var levelToCreate = level > 3 ? 0 : level + 1;
+  if (levelToCreate === 0) {
+    chunks.startTag = chunks.startTag.replace(/#+/, '');
+  }
+  else {
     chunks.startTag = many('#', levelToCreate) + ' ';
   }
 }
