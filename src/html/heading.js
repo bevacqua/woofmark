@@ -15,8 +15,10 @@ function heading (chunks) {
     add();
   } 
 
+  // func changes headings
   function swap () {
     var level = parseInt(lead[1], 10);
+    // checks for the next heading size. Calls remove() if <h4> is reached.
     var next = level > 3 ? remove() : level + 1;
     chunks.before = chunks.before.replace(rleading, '<h' + next + '>');
     chunks.after = chunks.after.replace(rtrailing, '</h' + next + '>');
@@ -27,6 +29,7 @@ function heading (chunks) {
     chunks.after = chunks.after.replace(rtrailing, '');
   }
 
+  // func called to enter a new heading
   function add () {
     if (!chunks.selection) {
       chunks.selection = strings.placeholders.heading;
