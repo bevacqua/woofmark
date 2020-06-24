@@ -25,6 +25,7 @@ function classify (group, classes) {
 }
 
 function prompt (options, done) {
+  var scrollSize = 0; // For window.scroll 
   var text = strings.prompts[options.type];
   var dom = render({
     id: 'wk-prompt-' + options.type,
@@ -35,11 +36,20 @@ function prompt (options, done) {
   var domup;
 
   crossvent.add(dom.cancel, 'click', remove);
+  crossvent.add(root, 'click', rootClick);
   crossvent.add(dom.close, 'click', remove);
   crossvent.add(dom.ok, 'click', ok);
   crossvent.add(dom.input, 'keypress', enter);
   crossvent.add(dom.dialog, 'keydown', esc);
   classify(dom, options.classes.prompts);
+
+  // Disappearing the popup when scrolled.
+  window.onscroll = function () {
+    scrollSize++;
+    if (scrollSize > 10) {
+      remove();
+    }
+  };
 
   var xhr = options.xhr;
   var upload = options.upload;
@@ -57,6 +67,14 @@ function prompt (options, done) {
 
   function focusDialog () {
     dom.input.focus();
+  }
+
+  // function will be called when click any other place except the editor box and onClick it will remove the popup.
+  function rootClick (e) {
+    var editorClassList = e.target.classList.value;
+    if (!editorClassList.includes('wk-prompt')) {
+      remove();
+    }
   }
 
   function enter (e) {
