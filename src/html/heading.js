@@ -13,15 +13,23 @@ function heading (chunks) {
     swap();
   } else {
     add();
-  }
+  } 
 
+  // func changes headings
   function swap () {
     var level = parseInt(lead[1], 10);
-    var next = level <= 1 ? 4 : level - 1;
+    // checks for the next heading size. Calls remove() if <h4> is reached.
+    var next = level > 3 ? remove() : level + 1;
     chunks.before = chunks.before.replace(rleading, '<h' + next + '>');
     chunks.after = chunks.after.replace(rtrailing, '</h' + next + '>');
   }
 
+  function remove () {
+    chunks.before = chunks.before.replace(rleading, '');
+    chunks.after = chunks.after.replace(rtrailing, '');
+  }
+
+  // func called to enter a new heading
   function add () {
     if (!chunks.selection) {
       chunks.selection = strings.placeholders.heading;
