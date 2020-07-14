@@ -63,5 +63,9 @@ module.exports = {
     upload: ', or upload a file',
     uploading: 'Uploading your file...',
     uploadfailed: 'The upload failed! That\'s all we know.'
-  }
+  },
+  modes: {
+    wysiwyg: 'wysiwyg',
+    markdown: 'm\u2193',
+  },
 };

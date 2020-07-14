@@ -98,7 +98,7 @@ woofmark(textarea, {
       tokenizers: [{
         token: /(^|\s)@([A-z]+)\b/g,
         transform: function (all, separator, id) {
-          return separator + '<a href="/users/' + id '">@' + id + '</a>';
+          return separator + '<a href="/users/' + id + '">@' + id + '</a>';
         }
       }]
     });
@@ -128,7 +128,7 @@ woofmark(textarea, {
       tokenizers: [{
         token: /(^|\s)@([A-z]+)\b/g,
         transform: function (all, separator, id) {
-          return separator + '<a href="/users/' + id '">@' + id + '</a>';
+          return separator + '<a href="/users/' + id + '">@' + id + '</a>';
         }
       }]
     });
@@ -209,11 +209,17 @@ If you wish to set up file uploads, _in addition to letting the user just paste 
   // endpoint where the images will be uploaded to, required
   url: '/uploads',
 
+  // image field key, passed to bureaucracy, which defaults to 'uploads'
+  fieldKey: 'uploads',
+
+  // optional additional form submission data, passed to `bureaucracy`
+  formData: { description: 'A new image' },
+
+  // optional options for `xhr` upload request, passed to `bureaucracy`
+  xhrOptions: { headers: {} },
+
   // optional text describing the kind of files that can be uploaded
   restriction: 'GIF, JPG, and PNG images',
-
-  // what to call the FormData field?
-  key: 'woofmark_upload',
 
   // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
   validate: function isItAnImageFile (file) {
@@ -222,31 +228,32 @@ If you wish to set up file uploads, _in addition to letting the user just paste 
 }
 ```
 
+`woofmark` expects a JSON response including a `results` property that's an array describing the success of each file upload. Each file's entry should include an `href` and a `title`:
+
+```js
+{
+  results: [
+    { href: '/images/new.jpg', title: 'New image' }
+  ]
+}
+```
+
+For more information on file uploads, see [`bureaucracy`](https://github.com/bevacqua/bureaucracy).
+
 ### `options.attachments`
 
 Virtually the same as `images`, except an anchor `<a>` tag will be used instead of an image `<img>` tag.
 
-### `options.xhr`
-
-If you want to use either `options.images` or `options.attachments` for file uploads, you'll have to tell `woofmark` how to communicate with the servers. You can use the `xhr` module for this, or anything that exposes a similar API.
+To set the formatting of the inserted attachment link, set `options.mergeHtmlAndAttachment`; the default follows this format:
 
 ```js
-{
-  xhr: require('xhr')
-}
-```
-
-The server will receive the file upload as `req.files[key]` _(Express)_. Afterwards you should respond with the following:
-
-- Status code between `200` and `299` if the upload succeeded
-- A JSON object in the response body, containing an `href` and a `title`
-
-Example:
-
-```js
-{
-  "href": "http://localhost:9000/img/2015060123502510300.png",
-  "title": "Screen Shot 2015-06-01 at 21.44.35 (43.82 KB)"
+function mergeHtmlAndAttachment (chunks, link) {
+  var linkText = chunks.selection || link.title;
+  return {
+    before: chunks.before,
+    selection: '<a href="' + link.href + '">' + linkText + '</a>',
+    after: chunks.after,
+  };
 }
 ```
 
@@ -282,7 +289,7 @@ You can optionally pass in a `combo`, in which case `editor.addCommand(combo, fn
 
 ### `editor.runCommand(fn)`
 
-If you just want to run a command without setting up a keyboard shortcut or a button, you can use this method. Note that there won't be any `e` event argument in this case, you'll only get `mode, chunks` passed to `fn`. You can still run the command asynchronously using `this.async()`.
+If you just want to run a command without setting up a keyboard shortcut or a button, you can use this method. Note that there won't be any `e` event argument in this case, you'll only get `chunks, mode` passed to `fn`. You can still run the command asynchronously using `this.async()`. Note that the argument order `chunks, mode` is the reverse of that passed to addCommand (`mode, chunks`).
 
 ### `editor.parseMarkdown()`
 
@@ -296,9 +303,9 @@ This is the same method passed as an option.
 
 Destroys the `editor` instance, removing all event handlers. The editor is reverted to `markdown` mode, and assigned the proper Markdown source code if needed. Then we go back to being a plain old and dull `<textarea>` element.
 
-### `editor.value()`
+### `editor.value(text)`
 
-Returns the current Markdown value for the `editor`.
+If optional Markdown string `text` is provided, it is used to overwrite the current editor content, parsing into HTML if necessary. Regardless of whether `text` is provided, `value()` returns the current Markdown value for the `editor`. 
 
 ### `editor.editable`
 

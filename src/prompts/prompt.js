@@ -1,6 +1,7 @@
 'use strict';
 
 var crossvent = require('crossvent');
+var bureaucracy = require('bureaucracy');
 var render = require('./render');
 var classes = require('../classes');
 var strings = require('../strings');
@@ -10,10 +11,6 @@ var ESCAPE_KEY = 27;
 var dragClass = 'wk-dragging';
 var dragClassSpecific = 'wk-prompt-upload-dragging';
 var root = document.documentElement;
-
-function always () {
-  return true;
-}
 
 function classify (group, classes) {
   Object.keys(group).forEach(customize);
@@ -51,16 +48,17 @@ function prompt (options, done) {
     }
   };
 
-  var xhr = options.xhr;
   var upload = options.upload;
   if (typeof upload === 'string') {
     upload = { url: upload };
   }
+
+  var bureaucrat = null;
   if (upload) {
-    arrangeUploads();
-  }
-  if (options.autoUpload) {
-    submit(options.autoUpload);
+    bureaucrat = arrangeUploads();
+    if (options.autoUpload) {
+      bureaucrat.submit(options.autoUpload);
+    }
   }
 
   setTimeout(focusDialog, 0);
@@ -95,7 +93,7 @@ function prompt (options, done) {
 
   function ok () {
     remove();
-    done({ definition: dom.input.value });
+    done({ definitions: [dom.input.value] });
   }
 
   function remove () {
@@ -111,9 +109,6 @@ function prompt (options, done) {
     crossvent[op](root, 'mouseout', dragstop);
   }
 
-  function warn () {
-    classes.add(domup.warning, 'wk-prompt-error-show');
-  }
   function dragging () {
     classes.add(domup.area, dragClass);
     classes.add(domup.area, dragClassSpecific);
@@ -127,18 +122,51 @@ function prompt (options, done) {
   function arrangeUploads () {
     domup = render.uploads(dom, strings.prompts.types + (upload.restriction || options.type + 's'));
     bindUploadEvents();
-
-    crossvent.add(domup.fileinput, 'change', handleChange, false);
     crossvent.add(domup.area, 'dragover', handleDragOver, false);
     crossvent.add(domup.area, 'drop', handleFileSelect, false);
     classify(domup, options.classes.prompts);
-  }
 
-  function handleChange (e) {
-    stop(e);
-    submit(domup.fileinput.files);
-    domup.fileinput.value = '';
-    domup.fileinput.value = null;
+    var bureaucrat = bureaucracy.setup(domup.fileinput, {
+      method: upload.method,
+      formData: upload.formData,
+      fieldKey: upload.fieldKey,
+      xhrOptions: upload.xhrOptions,
+      endpoint: upload.url,
+      validate: upload.validate || 'image'
+    });
+
+    bureaucrat.on('started', function () {
+      classes.rm(domup.failed, 'wk-prompt-error-show');
+      classes.rm(domup.warning, 'wk-prompt-error-show');
+    });
+    bureaucrat.on('valid', function () {
+      classes.add(domup.area, 'wk-prompt-uploading');
+    });
+    bureaucrat.on('invalid', function () {
+      classes.add(domup.warning, 'wk-prompt-error-show');
+    });
+    bureaucrat.on('error', function () {
+      classes.add(domup.failed, 'wk-prompt-error-show');
+    });
+    bureaucrat.on('success', receivedImages);
+    bureaucrat.on('ended', function () {
+      classes.rm(domup.area, 'wk-prompt-uploading');
+    });
+
+    return bureaucrat;
+
+    function receivedImages (results) {
+      var body = results[0];
+      dom.input.value = body.href + ' "' + body.title + '"';
+      remove();
+      done({
+        definitions: results.map(toDefinition),
+        attachment: options.type === 'attachment'
+      });
+      function toDefinition (result) {
+        return result.href + ' "' + result.title + '"';
+      }
+    }
   }
 
   function handleDragOver (e) {
@@ -149,56 +177,12 @@ function prompt (options, done) {
   function handleFileSelect (e) {
     dragstop();
     stop(e);
-    submit(e.dataTransfer.files);
+    bureaucrat.submit(e.dataTransfer.files);
   }
 
   function stop (e) {
     e.stopPropagation();
     e.preventDefault();
-  }
-
-  function valid (files) {
-    var i;
-    for (i = 0; i < files.length; i++) {
-      if ((upload.validate || always)(files[i])) {
-        return files[i];
-      }
-    }
-    warn();
-  }
-
-  function submit (files) {
-    classes.rm(domup.failed, 'wk-prompt-error-show');
-    classes.rm(domup.warning, 'wk-prompt-error-show');
-    var file = valid(files);
-    if (!file) {
-      return;
-    }
-    var form = new FormData();
-    var req = {
-      'Content-Type': 'multipart/form-data',
-      headers: {
-        Accept: 'application/json'
-      },
-      method: upload.method || 'PUT',
-      url: upload.url,
-      body: form
-    };
-
-    form.append(upload.key || 'woofmark_upload', file, file.name);
-    classes.add(domup.area, 'wk-prompt-uploading');
-    xhr(req, handleResponse);
-
-    function handleResponse (err, res, body) {
-      classes.rm(domup.area, 'wk-prompt-uploading');
-      if (err || res.statusCode < 200 || res.statusCode > 299) {
-        classes.add(domup.failed, 'wk-prompt-error-show');
-        return;
-      }
-      dom.input.value = body.href + ' "' + body.title + '"';
-      remove();
-      done({ definition: dom.input.value, attachment: options.type === 'attachment' });
-    }
   }
 }
 

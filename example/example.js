@@ -18,8 +18,7 @@ woofmark(document.querySelector('#ta'), {
   },
   attachments: {
     url: '/uploads/attachments'
-  },
-  xhr: mockXhr
+  }
 });
 
 function parseHTML (value, options) {

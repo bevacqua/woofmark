@@ -1,6 +1,6 @@
 {
   "name": "woofmark",
-  "version": "3.0.2",
+  "version": "4.2.3",
   "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
   "main": "dist/woofmark.js",
   "homepage": "https://github.com/bevacqua/woofmark",
