@@ -8,11 +8,7 @@ function commands (el, id) {
 }
 
 function modes (el, id) {
-  var texts = {
-    markdown: 'm\u2193',
-    wysiwyg: 'wysiwyg'
-  };
-  setText(el, texts[id] || id);
+  setText(el, strings.modes[id] || id);
 }
 
 module.exports = {

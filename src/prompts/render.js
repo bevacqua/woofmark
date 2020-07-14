@@ -69,6 +69,7 @@ function uploads (dom, warning) {
   domup.upload[ac](domup.fileinput);
   domup.fileinput.id = fup;
   domup.fileinput.type = 'file';
+  domup.fileinput.multiple = 'multiple';
   dom.dialog.className += ' wk-prompt-uploads';
   dom.inputContainer.className += ' wk-prompt-input-container-uploads';
   dom.input.className += ' wk-prompt-input-uploads';

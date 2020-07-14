@@ -3,7 +3,6 @@
 var many = require('../many');
 var extendRegExp = require('../extendRegExp');
 var trimChunks = require('../chunks/trim');
-var re = RegExp;
 
 function MarkdownChunks () {
 }
@@ -43,13 +42,13 @@ MarkdownChunks.prototype.skip = function (options) {
   var afterCount = 'after' in o ? o.after : 1;
 
   this.selection = this.selection.replace(/(^\n*)/, '');
-  this.startTag = this.startTag + re.$1;
+  this.startTag = this.startTag + RegExp.$1;
   this.selection = this.selection.replace(/(\n*$)/, '');
-  this.endTag = this.endTag + re.$1;
+  this.endTag = this.endTag + RegExp.$1;
   this.startTag = this.startTag.replace(/(^\n*)/, '');
-  this.before = this.before + re.$1;
+  this.before = this.before + RegExp.$1;
   this.endTag = this.endTag.replace(/(\n*$)/, '');
-  this.after = this.after + re.$1;
+  this.after = this.after + RegExp.$1;
 
   if (this.before) {
     this.before = replace(this.before, ++beforeCount, '$');
@@ -62,7 +61,7 @@ MarkdownChunks.prototype.skip = function (options) {
   function replace (text, count, suffix) {
     var regex = o.any ? '\\n*' : many('\\n?', count);
     var replacement = many('\n', count);
-    return text.replace(new re(regex + suffix), replacement);
+    return text.replace(new RegExp(regex + suffix), replacement);
   }
 };
 

@@ -20,7 +20,10 @@ function extractDefinitions (text, definitions) {
   }
 }
 
-function pushDefinition (chunks, definition, attachment) {
+function pushDefinition (options) {
+  var chunks = options.chunks;
+  var definition = options.definition;
+  var attachment = options.attachment;
   var regex = /(\[)((?:\[[^\]]*\]|[^\[\]])*)(\][ ]?(?:\n[ ]*)?\[)((?:attachment-)?\d+)(\])/g;
   var anchor = 0;
   var definitions = {};
@@ -91,7 +94,7 @@ function linkOrImageOrAttachment (chunks, options) {
   if (chunks.endTag.length > 1 && chunks.startTag.length > 0) {
     chunks.startTag = chunks.startTag.replace(/!?\[/, '');
     chunks.endTag = '';
-    pushDefinition(chunks);
+    pushDefinition({ chunks: chunks });
     return;
   }
 
@@ -99,7 +102,7 @@ function linkOrImageOrAttachment (chunks, options) {
   chunks.startTag = chunks.endTag = '';
 
   if (/\n\n/.test(chunks.selection)) {
-    pushDefinition(chunks);
+    pushDefinition({ chunks: chunks });
     return;
   }
   resume = this.async();
@@ -108,30 +111,45 @@ function linkOrImageOrAttachment (chunks, options) {
   (options.prompts[type] || options.prompts.link)(options, once(resolved));
 
   function resolved (result) {
-    var link = parseLinkInput(result.definition);
-    if (link.href.length === 0) {
-      resume(); return;
-    }
+    var links = result
+      .definitions
+      .map(parseLinkInput)
+      .filter(long);
 
-    chunks.selection = (' ' + chunks.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, '$1\\').substr(1);
-
-    var key = result.attachment ? '  [attachment-9999]: ' : ' [9999]: ';
-    var definition = key + link.href + (link.title ? ' "' + link.title + '"' : '');
-    var anchor = pushDefinition(chunks, definition, result.attachment);
-
-    if (!result.attachment) {
-      add();
-    }
-
+    links.forEach(renderLink);
     resume();
 
-    function add () {
-      chunks.startTag = image ? '![' : '[';
-      chunks.endTag = '][' + anchor + ']';
+    function renderLink (link, i) {
+      chunks.selection = (' ' + chunks.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, '$1\\').substr(1);
 
-      if (!chunks.selection) {
-        chunks.selection = strings.placeholders[type];
+      var key = result.attachment ? '  [attachment-9999]: ' : ' [9999]: ';
+      var definition = key + link.href + (link.title ? ' "' + link.title + '"' : '');
+      var anchor = pushDefinition({
+        chunks: chunks,
+        definition: definition,
+        attachment: result.attachment
+      });
+
+      if (!result.attachment) {
+        add();
       }
+
+      function add () {
+        chunks.startTag = image ? '![' : '[';
+        chunks.endTag = '][' + anchor + ']';
+
+        if (!chunks.selection) {
+          chunks.selection = strings.placeholders[type];
+        }
+
+        if (i < links.length - 1) { // has multiple links, not the last one
+          chunks.before += chunks.startTag + chunks.selection + chunks.endTag + '\n';
+        }
+      }
+    }
+
+    function long (link) {
+      return link.href.length > 0;
     }
   }
 }

@@ -41,13 +41,14 @@ function linkOrImageOrAttachment (chunks, options) {
 
   function resolved (result) {
     var parts;
-    var link = parseLinkInput(result.definition);
-    if (link.href.length === 0) {
+    var links = result.definitions.map(parseLinkInput).filter(long);
+    if (links.length === 0) {
       resume(); return;
     }
+    var link = links[0];
 
     if (type === 'attachment') {
-      parts = options.mergeHtmlAndAttachment(chunks.before + chunks.selection + chunks.after, link);
+      parts = options.mergeHtmlAndAttachment(chunks, link);
       chunks.before = parts.before;
       chunks.selection = parts.selection;
       chunks.after = parts.after;
@@ -56,12 +57,10 @@ function linkOrImageOrAttachment (chunks, options) {
       return;
     }
 
-    var title = link.title ? ' title="' + link.title + '"' : '';
-
     if (image) {
-      imageWrap();
+      imageWrap(link, links.slice(1));
     } else {
-      linkWrap();
+      linkWrap(link, links.slice(1));
     }
 
     if (!chunks.selection) {
@@ -69,16 +68,40 @@ function linkOrImageOrAttachment (chunks, options) {
     }
     resume();
 
-    function imageWrap () {
-      chunks.before += '<img src="' + link.href + '" alt="';
-      chunks.after = '"' + title + ' />' + chunks.after;
+    function long (link) {
+      return link.href.length > 0;
     }
 
-    function linkWrap () {
+    function getTitle (link) {
+      return link.title ? ' title="' + link.title + '"' : '';
+    }
+
+    function imageWrap (link, rest) {
+      var after = chunks.after;
+      chunks.before += tagopen(link);
+      chunks.after = tagclose(link);
+      if (rest.length) {
+        chunks.after += rest.map(toAnotherImage).join('');
+      }
+      chunks.after += after;
+      function tagopen (link) { return '<img src="' + link.href + '" alt="'; }
+      function tagclose (link) { return '"' + getTitle(link) + ' />'; }
+      function toAnotherImage (link) { return ' ' + tagopen(link) + tagclose(link); }
+    }
+
+    function linkWrap (link, rest) {
+      var after = chunks.after;
       var names = options.classes.input.links;
       var classes = names ? ' class="' + names + '"' : '';
-      chunks.before += '<a href="' + link.href + '"' + title + classes + '>';
-      chunks.after = '</a>' + chunks.after;
+      chunks.before += tagopen(link);
+      chunks.after = tagclose();
+      if (rest.length) {
+        chunks.after += rest.map(toAnotherLink).join('');
+      }
+      chunks.after += after;
+      function tagopen (link) { return '<a href="' + link.href + '"' + getTitle(link) + classes + '>'; }
+      function tagclose () { return '</a>'; }
+      function toAnotherLink (link) { return ' ' + tagopen(link) + tagclose(); }
     }
   }
 }

@@ -69,16 +69,23 @@ function bindCommands (surface, options, editor) {
         type: type,
         surface: surface,
         prompts: options.prompts,
-        xhr: options.xhr,
         upload: options[type + 's'],
         classes: options.classes,
-        mergeHtmlAndAttachment: options.mergeHtmlAndAttachment,
+        mergeHtmlAndAttachment: options.mergeHtmlAndAttachment || mergeHtmlAndAttachment,
         autoUpload: autoUpload
       });
     };
   }
   function bind (id, combo, fn) {
     return editor.addCommandButton(id, combo, suppress(fn));
+  }
+  function mergeHtmlAndAttachment (chunks, link) {
+    var linkText = chunks.selection || link.title;
+    return {
+      before: chunks.before,
+      selection: '<a href="' + link.href + '">' + linkText + '</a>',
+      after: chunks.after,
+    };
   }
   function router (method) {
     return function routed (mode, chunks) { commands[mode][method].call(this, chunks); };

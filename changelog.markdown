@@ -1,3 +1,11 @@
+# 4.2.1 Bureaucracy
+
+- Use `bureaucracy` as a replacement for file upload browsing
+
+# 4.1.1 Value Add
+
+- Changed `.value()` method into a getter/setter
+
 # 4.0.3 Hard Place
 
 - Drastically simplified selection remembrance architecture, relayed to parsers that know better
