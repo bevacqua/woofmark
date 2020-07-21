@@ -3,3 +3,4 @@ node_js:
   - '10'
   - '12'
 pre_script: npm run build
+script: npm run test
