@@ -230,7 +230,7 @@ function woofmark (textarea, options) {
         
          for (let i = 0; i <= wrongBoldCount.length - 1; i++) {
            if (textarea.value.match(matchWrongBold2)) {
-            wrongBoldCount[i] = wrongBoldCount[i].replace(' **', '** ')
+            wrongBoldCount[i] = wrongBoldCount[i].replace(' **', '** ');
              textarea.value = textarea.value.replace(matchWrongBold2, wrongBoldCount[i]);
            }
          }
@@ -242,7 +242,7 @@ function woofmark (textarea, options) {
        
         for (let i = 0; i <= wrongItalicCount.length - 1; i++) {
           if (textarea.value.match(matchWrongItalic2)) {
-            wrongItalicCount[i] = wrongItalicCount[i].replace(' _', '_ ')
+            wrongItalicCount[i] = wrongItalicCount[i].replace(' _', '_ ');
             textarea.value = textarea.value.replace(matchWrongItalic2, wrongItalicCount[i]);
           }
         }
