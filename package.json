@@ -32,7 +32,7 @@
     "seleccion": "2.0.0"
   },
   "devDependencies": {
-    "browserify": "8.1.0",
+    "browserify": "16.5.2",
     "clean-css-cli": "^4.3.0",
     "domador": "2.4.3",
     "jest": "^26.1.0",
