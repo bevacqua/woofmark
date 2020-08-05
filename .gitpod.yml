@@ -1,9 +1,9 @@
 tasks:
-  init: |
+  - init: |
       npm install
       npm run build
       npm install http-server && node_modules/http-server/bin/http-server
-  command: |
+    command: |
       gp preview http://localhost:8080
 
 github:
