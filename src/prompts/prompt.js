@@ -22,7 +22,7 @@ function classify (group, classes) {
 }
 
 function prompt (options, done) {
-  var scrollSize = 0; // For window.scroll 
+  var scrollSize = 0; // For window.scroll
   var text = strings.prompts[options.type];
   var dom = render({
     id: 'wk-prompt-' + options.type,
@@ -33,7 +33,7 @@ function prompt (options, done) {
   var domup;
 
   crossvent.add(dom.cancel, 'click', remove);
-  crossvent.add(root, 'click', rootClick);
+  //crossvent.add(root, 'click', rootClick);
   crossvent.add(dom.close, 'click', remove);
   crossvent.add(dom.ok, 'click', ok);
   crossvent.add(dom.input, 'keypress', enter);
@@ -68,12 +68,12 @@ function prompt (options, done) {
   }
 
   // function will be called when click any other place except the editor box and onClick it will remove the popup.
-  function rootClick (e) {
-    var editorClassList = e.target.classList.value;
-    if (!editorClassList.includes('wk-prompt')) {
-      remove();
-    }
-  }
+  // function rootClick (e) {
+  //   var editorClassList = e.target.classList.value;
+  //   if (!editorClassList.includes('wk-prompt')) {
+  //     remove();
+  //   }
+  // }
 
   function enter (e) {
     var key = e.which || e.keyCode;
