@@ -10,6 +10,7 @@ var rememberSelection = require('./rememberSelection');
 var bindCommands = require('./bindCommands');
 var InputHistory = require('./InputHistory');
 var getCommandHandler = require('./getCommandHandler');
+var getActiveElement = require('./getActiveElement');
 var getSurface = require('./getSurface');
 var classes = require('./classes');
 var renderers = require('./renderers');
@@ -203,7 +204,8 @@ function woofmark (textarea, options) {
     var currentMode = editor.mode;
     var old = modes[currentMode].button;
     var button = modes[nextMode].button;
-    var focusing = !!e || doc.activeElement === textarea || doc.activeElement === editable;
+    var ae = getActiveElement();
+    var focusing = !!e || ae === textarea || ae === editable;
 
     stop(e);
 
