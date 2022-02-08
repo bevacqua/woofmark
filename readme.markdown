@@ -80,13 +80,13 @@ assert.equal(parseHTML(parseMarkdown(parsed)), parsed);
 As an example, consider the following piece of Markdown:
 
 ```markdown
-Hey @bevacqua I _love_ [woofmark](https://github.com/bevacqua/woofmark)!
+Hey @CamJN I _love_ [woofmark](https://github.com/CamJN/woofmark)!
 ```
 
 Without any custom Markdown hooks, it would translate to HTML similar to the following:
 
 ```html
-<p>Hey @bevacqua I <em>love</em> <a href="https://github.com/bevacqua/woofmark">woofmark</a>!</p>
+<p>Hey @CamJN I <em>love</em> <a href="https://github.com/CamJN/woofmark">woofmark</a>!</p>
 ```
 
 However, suppose we were to add a tokenizer in our `megamark` configuration, like below:
@@ -110,16 +110,16 @@ woofmark(textarea, {
 Our HTML output would now look slightly different.
 
 ```html
-<p>Hey <a href="/users/bevacqua">@bevacqua</a> I <em>love</em> <a href="https://github.com/bevacqua/woofmark">woofmark</a>!</p>
+<p>Hey <a href="/users/CamJN">@CamJN</a> I <em>love</em> <a href="https://github.com/CamJN/woofmark">woofmark</a>!</p>
 ```
 
 The problem is that `parseHTML` doesn't know about the tokenizer, so if you were to convert the HTML back into Markdown, you'd get:
 
 ```markdown
-Hey [@bevacqua](/users/bevacqua) I _love_ [woofmark](https://github.com/bevacqua/woofmark)!
+Hey [@CamJN](/users/CamJN) I _love_ [woofmark](https://github.com/CamJN/woofmark)!
 ```
 
-The solution is to let `parseHTML` _"know"_ about the tokenizer, so to speak. In the example below, `domador` is now aware that links that start with `@` should be converted back into something like `@bevacqua`.
+The solution is to let `parseHTML` _"know"_ about the tokenizer, so to speak. In the example below, `domador` is now aware that links that start with `@` should be converted back into something like `@CamJN`.
 
 ```js
 woofmark(textarea, {
@@ -305,7 +305,7 @@ Destroys the `editor` instance, removing all event handlers. The editor is rever
 
 ### `editor.value(text)`
 
-If optional Markdown string `text` is provided, it is used to overwrite the current editor content, parsing into HTML if necessary. Regardless of whether `text` is provided, `value()` returns the current Markdown value for the `editor`. 
+If optional Markdown string `text` is provided, it is used to overwrite the current editor content, parsing into HTML if necessary. Regardless of whether `text` is provided, `value()` returns the current Markdown value for the `editor`.
 
 ### `editor.editable`
 
@@ -393,9 +393,9 @@ MIT
 
 [1]: https://github.com/bevacqua/megamark
 [2]: https://github.com/bevacqua/domador
-[3]: https://github.com/bevacqua/woofmark/blob/master/resources/demo.png
-[4]: http://bevacqua.github.io/woofmark
+[3]: https://github.com/CamJN/woofmark/blob/master/resources/demo.png
+[4]: http://CamJN.github.io/woofmark
 [5]: https://github.com/bevacqua/kanye#kanyeoncombo-options-listener
-[6]: https://github.com/bevacqua/woofmark/blob/master/src/html/hr.js
+[6]: https://github.com/CamJN/woofmark/blob/master/src/html/hr.js
 [7]: https://github.com/bevacqua/horsey
 [8]: https://github.com/bevacqua/banksy
