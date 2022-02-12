@@ -1,6 +1,6 @@
 {
   "name": "@camjn/woofmark",
-  "version": "4.2.7",
+  "version": "4.2.8",
   "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
   "main": "src/woofmark.js",
   "scripts": {
