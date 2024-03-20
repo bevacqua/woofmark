@@ -10,6 +10,7 @@ var rememberSelection = require('./rememberSelection');
 var bindCommands = require('./bindCommands');
 var InputHistory = require('./InputHistory');
 var getCommandHandler = require('./getCommandHandler');
+var getActiveElement = require('./getActiveElement');
 var getSurface = require('./getSurface');
 var classes = require('./classes');
 var renderers = require('./renderers');
@@ -203,7 +204,8 @@ function woofmark (textarea, options) {
     var currentMode = editor.mode;
     var old = modes[currentMode].button;
     var button = modes[nextMode].button;
-    var focusing = !!e || doc.activeElement === textarea || doc.activeElement === editable;
+    var ae = getActiveElement();
+    var focusing = !!e || ae === textarea || ae === editable;
 
     stop(e);
 
@@ -217,6 +219,34 @@ function woofmark (textarea, options) {
     if (nextMode === 'markdown') {
       if (currentMode === 'html') {
         textarea.value = parse('parseHTML', textarea.value).trim();
+        // if textarea contains wrongly formatted bold or italic text i.e texts that have space before the closing tag
+        // E.g **text **, remove the space before the tag and place it after the tag.
+        const matchWrongBold = /\*\*[A-Z][^*]+ \*\*/gi;
+        const matchWrongItalic = /_[A-Z][^_]+ _/gi;
+
+        if (textarea.value.match(matchWrongBold)) {
+          const wrongBoldCount = textarea.value.match(matchWrongBold);
+          const matchWrongBold2 = /\*\*[A-Z][^*]+ \*\*/i;
+
+          for (let i = 0; i <= wrongBoldCount.length - 1; i++) {
+            if (textarea.value.match(matchWrongBold2)) {
+              wrongBoldCount[i] = wrongBoldCount[i].replace(' **', '** ')
+              textarea.value = textarea.value.replace(matchWrongBold2, wrongBoldCount[i]);
+            }
+          }
+        }
+
+        if (textarea.value.match(matchWrongItalic)) {
+          const wrongItalicCount = textarea.value.match(matchWrongItalic);
+          const matchWrongItalic2 = /_[A-Z][^_]+ _/i;
+
+          for (let i = 0; i <= wrongItalicCount.length - 1; i++) {
+            if (textarea.value.match(matchWrongItalic2)) {
+              wrongItalicCount[i] = wrongItalicCount[i].replace(' _', '_ ')
+              textarea.value = textarea.value.replace(matchWrongItalic2, wrongItalicCount[i]);
+            }
+          }
+        }
       } else {
         textarea.value = parse('parseHTML', editable).trim();
       }

@@ -1,7 +1,7 @@
 'use strict';
 
-var doc = global.document;
 var isVisibleElement = require('./isVisibleElement');
+var getActiveElement = require('./getActiveElement');
 var fixEOL = require('./fixEOL');
 var MarkdownChunks = require('./markdown/MarkdownChunks');
 var HtmlChunks = require('./html/HtmlChunks');
@@ -24,7 +24,8 @@ InputState.prototype.init = function () {
   if (!isVisibleElement(el)) {
     return;
   }
-  if (!this.initialState && doc.activeElement && doc.activeElement !== el) {
+  var ae = getActiveElement();
+  if (!this.initialState && ae && ae !== el) {
     return;
   }
   self.surface.readSelection(self);

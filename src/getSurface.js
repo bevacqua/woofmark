@@ -5,6 +5,7 @@ var seleccion = require('seleccion');
 var fixEOL = require('./fixEOL');
 var many = require('./many');
 var cast = require('./cast');
+var getActiveElement = require('./getActiveElement');
 var getSelection = seleccion.get;
 var setSelection = seleccion.set;
 var ropen = /^(<[^>]+(?: [^>]*)?>)/;
@@ -70,7 +71,8 @@ function surface (textarea, editable, droparea) {
       textarea.selectionEnd = state.end;
       textarea.scrollTop = state.scrollTop;
     } else if (doc.selection) {
-      if (doc.activeElement && doc.activeElement !== textarea) {
+      var ae = getActiveElement();
+      if (ae && ae !== textarea) {
         return;
       }
       textarea.focus();
@@ -93,7 +95,8 @@ function surface (textarea, editable, droparea) {
   }
 
   function ancientlyReadSelectionTextarea (state) {
-    if (doc.activeElement && doc.activeElement !== textarea) {
+    var ae = getActiveElement();
+    if (ae && ae !== textarea) {
       return;
     }
 

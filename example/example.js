@@ -3,7 +3,7 @@
 var woofmark = require('..');
 var megamark = require('megamark');
 var domador = require('domador');
-var demo = 'https://raw.githubusercontent.com/bevacqua/woofmark/master/resources/demo.png';
+var demo = 'https://raw.githubusercontent.com/CamJN/woofmark/master/resources/demo.png';
 var rfence = /(^|\s)md-lang-((?:[^\s]|$)+)/;
 var rimage = /^image\/(gif|png|p?jpe?g)$/i;
 
